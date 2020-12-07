@@ -285,7 +285,7 @@ const tools = {
         });
     },
 
-// 世界坐标转相对坐标
+    // 世界坐标转相对坐标
     InverseTransformPoint(origin, point) {
         var xx = new Laya.Vector3();
         origin.getRight(xx);
@@ -357,6 +357,29 @@ const tools = {
         return value;
     },
 
+    /**[SixGod]
+     * 屏幕坐标转世界坐标
+     * @param {Laya.Camera} camera  参照相机
+     * @param {Laya.Vector3} point  需要转换的点
+     */
+    ScreenToWorld2(camera, point) {
+        var halfFOV = (camera.fieldOfView * 0.5) * Math.PI / 180;
+        let height = point.z * Math.tan(halfFOV);
+        let width = height * camera.aspectRatio;
+
+        let lowerLeft = this.GetLowerLeft(camera.transform, point.z, width, height);
+        let v = this.GetScreenScale(width, height);
+
+        // 放到同一坐标系（相机坐标系）上计算相对位置
+        var value = new Laya.Vector3();
+        var lowerLeftA = this.InverseTransformPoint(camera.transform, lowerLeft);
+        value = new Laya.Vector3(-point.x / v.x, point.y / v.y, 0);
+        Laya.Vector3.add(lowerLeftA, value, value);
+        // 转回世界坐标系
+        value = this.TransformPoint(camera.transform, value);
+        return value;
+    },
+
     // 屏幕坐标转世界坐标
     ScreenToWorld(point: Laya.Vector3) {
         var distance = point.z;
@@ -400,6 +423,58 @@ const tools = {
         // 转回世界坐标系
         value = this.TransformPoint(tx, value);
         return value;
+    },
+
+    //深度拷贝json对象的函数，
+    //source：待拷贝对象
+    //返回一个新的对象
+    DeepCopy(source: Object): any 
+    {
+        if(null == source || {} == source || [] == source)
+        {
+            return source;
+        }
+        
+        let newObject : any;
+        let isArray = false;
+        if((source as any).length)
+        {
+            newObject = [];
+            isArray = true;
+        }
+        else
+        {
+            newObject = {};
+            isArray = false;
+        }
+        
+	    for (let key of Object.keys(source))
+	    {
+	        if(null == source[key])
+	        {
+	            if (isArray)
+	            {
+	                newObject.push(null);
+	            }
+	            else
+	            {
+	                newObject[key] = null;
+	            }
+	        }
+	        else
+	        {
+	            let sub = (typeof source[key] == 'object') ? this.DeepCopy(source[key]) : source[key];
+	            if(isArray)
+	            {
+	                newObject.push(sub);
+	            }
+	            else
+	            {
+	                newObject[key] = sub;
+	            }
+	        }
+	    }
+	    return newObject;
     },
 
 }
