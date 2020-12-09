@@ -1,5 +1,6 @@
 import platform from "./platform";
 import urls from "./urls";
+import gameconstdata from "./gameconstdata"
 
 const tools = {
 
@@ -177,6 +178,19 @@ const tools = {
         });
         return [difhour,difmin,difsec];
     },
+
+     // 给指定的敌人添加血槽
+     addbloodline(object,x,y){
+        // 在ui界面里把初始点画出来
+        let bloodline = new Laya.Sprite();
+        bloodline.graphics.drawLine(-20, 50, 20, 50, 'green', 4);
+        bloodline.name = 'bloodline';
+        object.addChild(bloodline);
+        bloodline.x = x;
+        bloodline.y = y;
+        return bloodline;
+    },
+
 
     // 给指定UI内的对象添加小红点
     addredtippoint(object,skinurl:string='ui/redpoint.png'){
@@ -425,6 +439,43 @@ const tools = {
         return value;
     },
 
+    // 求两个V3角度
+    getAngle(_a:Laya.Vector3, _b:Laya.Vector3):number
+    {
+            let b:Laya.Vector3 = new Laya.Vector3(_b.x, _b.y, _b.z);
+            let a:Laya.Vector3 = new Laya.Vector3(_a.x, _a.y, _a.z);
+            b.x -= a.x;
+            b.z -= a.z;
+
+            let deltaAngle:number = 0;
+            if (b.x == 0 && b.z == 0) {
+                    return 0;
+            } else if (b.x > 0 && b.z > 0) {
+                    deltaAngle = 0;
+            } else if (b.x > 0 && b.z == 0) {
+                    return 90;
+            } else if (b.x > 0 && b.z < 0) {
+                    deltaAngle = 180;
+            } else if (b.x == 0 && b.z < 0) {
+                    return 180;
+            } else if (b.x < 0 && b.z < 0) {
+                    deltaAngle = -180;
+            } else if (b.x < 0 && b.z == 0) {
+                    return -90;
+            } else if (b.x < 0 && b.z > 0) {
+                    deltaAngle = 0;
+            }
+            let angle:number = this.radianToAngle(Math.atan(b.x / b.z)) - deltaAngle;
+            // console.log("getAngle", angle);
+            return angle;
+    },
+
+    // 弧度转角度
+    radianToAngle(radian){
+        let angle = radian / Math.PI * 180;
+        return angle;
+    },
+
     //深度拷贝json对象的函数，
     //source：待拷贝对象
     //返回一个新的对象
@@ -477,6 +528,25 @@ const tools = {
 	    return newObject;
     },
 
-}
+    // 原地旋转二位矩阵
+    rotateMaps(matrix:number[][]) {
+        const n = matrix.length;
+        // 倒叙循环进行90度的反转
+        for (let i = n-1; i >= 0; i--) {
+            // 新数组补位到原数组中，为了是实现原地的旋转操作，如果不需要
+            for (let j = 0; j < n ; j++) {
+                // console.log(`当前坐标[${i},${j}]`)
+                const current = matrix[i][j];
+                matrix[j].push(current);
+                // 没完成一组的赋值操作，就删除旋转前数组
+                if(j === n - 1) {
+                    matrix[i].splice(0, n);
+                }
+            }
+        }
+        return matrix;
+    }
+
+    }
 
 export default tools;
