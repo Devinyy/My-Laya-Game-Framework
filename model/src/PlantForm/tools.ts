@@ -1,6 +1,6 @@
 import platform from "./platform";
 import urls from "./urls";
-import gameconstdata from "./gameconstdata"
+import gameconstdata from "../Data/gameconstdata"
 
 const tools = {
 
@@ -545,8 +545,62 @@ const tools = {
             }
         }
         return matrix;
+    },
+
+    // 根据角度旋转二位矩阵
+    rotationarray(matrix:number[][],spinangle:number){
+        let resultarray = [[0,0,0],[0,0,0],[0,0,0]];
+        // 根据旋转角度选择不同的计算方法
+        console.log('spinangle = ',spinangle);
+        for(let i=0;i<matrix.length;i++)
+        {   
+            for(let j=0;j<matrix[i].length;j++)
+            {
+                if(spinangle == 0){
+                    resultarray[i][j]=matrix[i][j];  //顺时针旋转0度
+                }
+                else if(spinangle == 90){
+                    resultarray[i][j]=matrix[matrix.length-1-j][i];  //顺时针旋转90度
+                }
+                else if(spinangle == 180){
+                    resultarray[i][j]=matrix[matrix.length-1-i][matrix.length-1-j]; //顺时针旋转180度
+                }
+                else if(spinangle == 270){
+                    resultarray[i][j]=matrix[j][matrix.length-1-i];   //顺时针旋转270度
+                }
+            }
+        }
+        return resultarray;
+    },
+
+    // 根据角度旋转二位矩阵中的某个点
+    rotationpoint(matrix:number[][],spinangle:number,point:number[]){
+        // 根据旋转角度选择不同的计算方法
+        let i = 0;
+        let j = 0;
+        if(spinangle == 0){
+            //顺时针旋转0度
+            i = point[0];
+            j = point[1];  
+        }
+        else if(spinangle == 90){
+            //顺时针旋转90 度
+            i = point[1];
+            j = matrix.length-1-point[0];
+        }
+        else if(spinangle == 180){
+            //顺时针旋转180度
+            i = matrix.length-1-point[0];
+            j = matrix.length-1-point[1];
+        }
+        else if(spinangle == 270){
+            //顺时针旋转270度
+            i = matrix.length-1-point[1];
+            j = point[0];
+        }
+        return [i,j];
     }
 
-    }
+}
 
 export default tools;

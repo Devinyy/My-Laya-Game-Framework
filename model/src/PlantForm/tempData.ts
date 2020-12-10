@@ -1,7 +1,7 @@
 var tempData = {
     'openid' : false,
     'diamond' : 0,
-    'level': 1, // 关卡
+    'level': 0, // 关卡
 
     'last_x': 0, // 上次鼠标所在的x轴
     'last_z': 0, // 上次鼠标所在的z轴
