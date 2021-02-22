@@ -99,14 +99,14 @@ const tools = {
         for(let i = 0;i<20;i++){
             Laya.timer.once(20*i,this,()=>{
                 let gold = new Laya.Image();
-                gold.skin = 'ui/icon_battle_money_02.png';
+                gold.skin = 'ui/ass0/icon_money_03.png';
                 platform.playEffect('res/music/zuanshi.mp3');
                 let x = Laya.stage.width/2-100;
                 let y = Laya.stage.height/2-100;
                 gold.pos(Laya.stage.width/2,Laya.stage.height/2);                                        
                 this.addChild(gold);    
                 Laya.Tween.to(gold,{x:x+Math.random()*300-150-25, y:y+Math.random()*300-150-22},200,Laya.Ease.quartOut,Laya.Handler.create(this,()=>{//Laya.Ease.quartOut
-                    Laya.Tween.to(gold,{x:20,y:20},250,Laya.Ease.quartIn,Laya.Handler.create(this,()=>{//Laya.Ease.quartIn
+                    Laya.Tween.to(gold,{x:45,y:20},250,Laya.Ease.quartIn,Laya.Handler.create(this,()=>{//Laya.Ease.quartIn
                         gold.destroy();                                                
                     }));
                 }));
@@ -179,13 +179,17 @@ const tools = {
         return [difhour,difmin,difsec];
     },
 
-     // 给指定的敌人添加血槽
-     addbloodline(object,x,y){
+    // 给指定的敌人添加血槽
+    addbloodline(object,x,y){
         // 在ui界面里把初始点画出来
         let bloodline = new Laya.Sprite();
-        bloodline.graphics.drawLine(-20, 50, 20, 50, 'green', 4);
+        bloodline.graphics.drawLine(-20, -60, 20, -60, '#222222', 4);
         bloodline.name = 'bloodline';
         object.addChild(bloodline);
+        let bloodline2 = new Laya.Sprite();
+        bloodline2.graphics.drawLine(-20, -60, 20, -60, 'green', 4);
+        bloodline2.name = 'bloodline2';
+        bloodline.addChild(bloodline2);
         bloodline.x = x;
         bloodline.y = y;
         return bloodline;
@@ -193,7 +197,7 @@ const tools = {
 
 
     // 给指定UI内的对象添加小红点
-    addredtippoint(object,skinurl:string='ui/redpoint.png'){
+    addredtippoint(object,skinurl:string='ui/ass1/redpoint.png'){
         let redtips = new Laya.Image;
         redtips.name = 'redtips';
         redtips.skin = skinurl;
@@ -205,7 +209,7 @@ const tools = {
     },
 
     // 给指定UI内的对象移除小红点
-    delredtippoint(object,skinurl:string='ui/redpoint.png'){
+    delredtippoint(object,skinurl:string='ui/ass1/redpoint.png'){
         while(object.getChildByName('redtips')){
             let redtips = object.getChildByName('redtips') as Laya.Image;
             if(redtips){
@@ -221,9 +225,9 @@ const tools = {
     },
 
     // 游戏过度动画函数
-    transition1(level,isyindao = false){
+    transition1(){
         let img1 = new Laya.Image;
-        img1.skin = 'ui/bg_loading.png';
+        img1.skin = 'ui/z_bigpic/Main_BG.jpg';
         img1.width = Laya.stage.width;
         img1.height = Laya.stage.height;
         let x = 0;
@@ -231,71 +235,53 @@ const tools = {
         img1.pos(x,0); 
         img1.zOrder = 9999;    
         Laya.stage.addChild(img1);
-        let imglogo = new Laya.Image;
-        imglogo.skin = 'ui/loading00.png';
-        imglogo.anchorX = 0.5;
-        imglogo.anchorY = 0.5;
-        imglogo.pos(288,354);                         
-        img1.addChild(imglogo);
-        let tiplabel = new Laya.Label;
-        tiplabel.text = '戴上耳机体验效果最佳';
-        tiplabel.italic = true;
-        tiplabel.bold = true;
-        tiplabel.font = 'Microsoft YaHei';
-        tiplabel.fontSize = 32;
-        tiplabel.color = '#00f4ff';
-        tiplabel.align = 'center';
-        tiplabel.valign = 'middle';
-        tiplabel.anchorX = 0.5;
-        tiplabel.anchorY = 0.5;
-        tiplabel.pos(Laya.stage.width/2,600);
-        img1.addChild(tiplabel);
-        Laya.Tween.to(img1,{y:0},88,Laya.Ease.quartIn,Laya.Handler.create(this,()=>{//Laya.Ease.quartIn
-            Laya.stage.event('chooseedgame',[level,isyindao]);
-            Laya.stage.on('guodu2',this,function(){
-                img1.removeSelf();
-                img1.destroy(true); 
-            });
+        img1.name = 'img1';
+        img1.on(Laya.Event.MOUSE_DOWN,img1,(e)=>{e.stopPropagation();});
+        img1.on(Laya.Event.MOUSE_MOVE,img1,(e)=>{e.stopPropagation();});
+        img1.on(Laya.Event.MOUSE_UP,img1,(e)=>{e.stopPropagation();});
+        Laya.loader.create("prefab/startmiddle.json", Laya.Handler.create(this, (res)=>{
+            let startmiddle = Laya.loader.getRes("prefab/startmiddle.json");
+            let cell = new Laya.View();
+            cell.createView(startmiddle);
+            img1.addChild(cell);
+            cell.pos(Laya.stage.width,Laya.stage.height/2);
         }));
+        Laya.Tween.to(img1,{y:0},88,Laya.Ease.quartIn,Laya.Handler.create(this,()=>{}));
     },
 
     // 游戏过度动画函数
     transition2(){
-        Laya.timer.once(888,this,function(){
-            let img2 = new Laya.Image;
-            img2.skin = 'ui/bg_loading.png';
-            img2.width = Laya.stage.width;
-            img2.height = Laya.stage.height;
-            let x = 0;
-            let y = 0;
-            img2.pos(x,y);                                        
-            Laya.stage.addChild(img2);
-            let imglogo = new Laya.Image;
-            imglogo.skin = 'ui/loading00.png';
-            imglogo.anchorX = 0.5;
-            imglogo.anchorY = 0.5;
-            imglogo.pos(288,354);
-            img2.addChild(imglogo);
-            let tiplabel = new Laya.Label;
-            tiplabel.text = '戴上耳机体验效果最佳';
-            tiplabel.italic = true;
-            tiplabel.bold = true;
-            tiplabel.font = 'Microsoft YaHei';
-            tiplabel.fontSize = 32;
-            tiplabel.color = '#00f4ff';
-            tiplabel.align = 'center';
-            tiplabel.valign = 'middle';
-            tiplabel.anchorX = 0.5;
-            tiplabel.anchorY = 0.5;
-            tiplabel.pos(Laya.stage.width/2,600);
-            img2.addChild(tiplabel);
-            Laya.stage.event('guodu2');
-            img2.zOrder = 9999;    
-            Laya.Tween.to(img2,{y:-Laya.stage.height},1288,Laya.Ease.quartIn,Laya.Handler.create(this,()=>{//Laya.Ease.quartIn
-                Laya.stage.event('trasitionover');
-                img2.removeSelf();
-                img2.destroy(true);                                                
-            }));
+        Laya.timer.once(1500,this,function(){
+            let img1 = Laya.stage.getChildByName('img1') as Laya.Image;
+            if(img1){
+                let img2 = new Laya.Image;
+                img2.skin = 'ui/z_bigpic/Main_BG.jpg';
+                img2.width = Laya.stage.width;
+                img2.height = Laya.stage.height;
+                let x = 0;
+                let y = 0;
+                img2.pos(x,y);                                        
+                Laya.stage.addChild(img2);
+                img1.removeSelf();
+                img1.destroy();
+                img2.on(Laya.Event.MOUSE_DOWN,img2,(e)=>{e.stopPropagation();});
+                img2.on(Laya.Event.MOUSE_MOVE,img2,(e)=>{e.stopPropagation();});
+                img2.on(Laya.Event.MOUSE_UP,img2,(e)=>{e.stopPropagation();});
+                Laya.stage.event('guodu2');
+                img2.zOrder = 9999;    
+                Laya.loader.create("prefab/startmiddle.json", Laya.Handler.create(this, (res)=>{
+                    let startmiddle = Laya.loader.getRes("prefab/startmiddle.json");
+                    let cell = new Laya.View();
+                    cell.createView(startmiddle);
+                    img2.addChild(cell);
+                    cell.pos(Laya.stage.width,Laya.stage.height/2);
+                }));
+                Laya.Tween.to(img2,{y:-Laya.stage.height},1,Laya.Ease.quartIn,Laya.Handler.create(this,()=>{//Laya.Ease.quartIn
+                    Laya.stage.event('trasitionover');
+                    img2.removeSelf();
+                    img2.destroy(true);                                                
+                }));
+            }
         });
     },
 
@@ -551,7 +537,7 @@ const tools = {
     rotationarray(matrix:number[][],spinangle:number){
         let resultarray = [[0,0,0],[0,0,0],[0,0,0]];
         // 根据旋转角度选择不同的计算方法
-        console.log('spinangle = ',spinangle);
+        // console.log('spinangle = ',spinangle);
         for(let i=0;i<matrix.length;i++)
         {   
             for(let j=0;j<matrix[i].length;j++)
@@ -568,6 +554,19 @@ const tools = {
                 else if(spinangle == 270){
                     resultarray[i][j]=matrix[j][matrix.length-1-i];   //顺时针旋转270度
                 }
+            }
+        }
+        return resultarray;
+    },
+
+    // 水平翻转二维矩阵
+    xrotationarray(matrix:number[][]){
+        let resultarray = [[0,0,0],[0,0,0],[0,0,0]];
+        for(let i=0;i<matrix.length;i++)
+        {   
+            for(let j=0;j<matrix[i].length;j++)
+            {
+                resultarray[i][j]=matrix[matrix.length-1-i][j];  //顺时针旋转0度
             }
         }
         return resultarray;
@@ -599,7 +598,217 @@ const tools = {
             j = point[0];
         }
         return [i,j];
-    }
+    },
+
+    // 水平翻转二位矩阵中的某个点
+    xrotationpoint(matrix:number[][],point:number[]){
+        // 根据旋转角度选择不同的计算方法
+        let i = 0;
+        let j = 0;
+        i = matrix.length-1-point[0];
+        j = j;
+        return [i,j];
+    },
+
+    // 计算概率 固定数组结构 通过权重
+    countProByWeight(dataArr:Array<any>, isRepeat = true, count = 1)
+    {
+        // 数据结构必须要是 [{"weight:100"}] || [{"rate:100"}]
+        let natrueArr = dataArr;
+        let arr = natrueArr.concat();
+        let _data:any = [];
+
+        for(let c = 1; c <= count; c++)
+        {
+            let totalWeight = 0;
+            for(let i = 0; i < arr.length; i++)
+            {
+                if(arr[i].weight){
+                    totalWeight += Number(arr[i].weight);
+                }else{
+                    totalWeight += Number(arr[i].rate);
+                }
+            }
+            let r:number = tools.getRandomIntInclusive(1, totalWeight);
+            let n:number = 0;
+            for(let _i:number = 0; _i < arr.length; _i++)
+            {
+                    let data:any = arr[_i];
+                    if(data.weight){
+                        var w:number = Number(data.weight);
+                    }else{
+                        var w:number = Number(data.rate);
+                    }
+                    if(r>n && r<=n+w)
+                    {
+                        _data.push(data);
+                        if(!isRepeat) arr.splice(_i, 1);
+                        break;
+                    }else n += w;
+            }
+        }
+        return _data;
+    },
+
+    // 比较敌人的移动距离
+    compare(property){
+        return function(a,b){
+            if(a && b){
+                var value1 = a[property];
+                var value2 = b[property];
+                if(value1){
+                    if(value2){
+                        return -(value1 - value2);
+                    }
+                }
+                else return 0;
+            }
+        }
+    },
+
+    // 去除一个数末尾多余的0并返回
+    deletezero(num){
+        num = Number(num);
+        let s = num.toString();
+        if(s.indexOf(".") > 0){
+          //正则表达
+          s = s.replace("0+?$", "");//去掉后面无用的零
+          s = s.replace("[.]$", "");//如小数点后面全是零则去掉小数点
+        }
+        return s;
+    },
+
+    // 创建新手引导的遮罩
+    createMask():Laya.View{
+        var layer:Laya.View = new Laya.View();           
+        layer.size(Laya.stage.width,Laya.stage.height);
+        layer.zOrder = 98;      
+        var bg = new Laya.Box();
+        bg.size(Laya.stage.width,Laya.stage.height);    
+        bg.bgColor = '#000000';
+        bg.alpha = 0.8;
+        layer.addChild(bg);
+        bg.mouseEnabled = false;
+        bg.on(Laya.Event.MOUSE_DOWN,bg,(e)=>{e.stopPropagation();});
+        bg.on(Laya.Event.MOUSE_MOVE,bg,(e)=>{e.stopPropagation();});
+        bg.on(Laya.Event.MOUSE_UP,bg,(e)=>{e.stopPropagation();});
+
+        // 然后添加公主
+        Laya.loader.create("prefab/dialog2.json", Laya.Handler.create(this, function(){
+            let cellView = Laya.loader.getRes("prefab/dialog2.json");
+            let cell = new Laya.View();
+            cell.createView(cellView);
+            cell.name = 'dialog2';
+            layer.addChild(cell);
+            // 调节节点的位置
+            cell.x = bg.width / 2;
+            cell.y = bg.height / 2;
+            cell.visible = false;
+            Laya.stage.event('addfinish');
+        }));
+
+        return layer;
+    },
+    
+    //201119
+    attr(a,b,keys:string[]=[]){
+        // if(tools.isValid(a) && tools.isValid(b)){
+            for(var i = 0;i<keys.length;i++){
+                var key = keys[i];
+                a[key] = b[key];
+            }
+        // }
+    },
+
+    isValid(node){
+        if(node){
+            return true;
+        }
+        else return false;
+    },
+
+    //201119 复制精灵和img和button外观 图省事 应该有别的复制法
+    copyImgNode(node:Laya.Node,parent:Laya.Node=null){
+        if(tools.isValid(node)){                                 
+            if(node instanceof Laya.Image || node instanceof Laya.Button){
+                var a = new Laya.Image();                    
+                this.attr(a,node,[
+                    'skin','sizeGrid',
+                    'x','y','width','height','left','right','top','bottom','centerX','centerY',
+                    'pivotX','pivotY','anchorX','anchorY','scaleX','scaleY','skewX','skewY','rotation','alpha',
+                    'name','visible'
+                ]);                    
+                for(var i = 0;i<node.numChildren;i++){
+                    this.copyImgNode(node.getChildAt(i),a);
+                }
+                if(tools.isValid(parent)){
+                    parent.addChild(a);
+                }
+                return a;
+            }else if(node instanceof Laya.Label){
+                var l = new Laya.Label();
+                this.attr(l,node,[
+                    'text','italic','bold','fontSize','color','stroke','strokeColor',
+                    'x','y','width','height','left','right','top','bottom','centerX','centerY',
+                    'pivotX','pivotY','anchorX','anchorY','scaleX','scaleY','skewX','skewY','rotation','alpha',
+                    'name','visible'
+                ]);
+                for(var i = 0;i<node.numChildren;i++){
+                    this.copyImgNode(node.getChildAt(i),l);
+                }
+                if(tools.isValid(parent)){
+                    parent.addChild(l);
+                }
+                return l;
+            }else if(node instanceof Laya.Box){
+                var d = new Laya.Box();                
+                this.attr(d,node,[
+                    'bgColor',
+                    'x','y','width','height','left','right','top','bottom','centerX','centerY',
+                    'pivotX','pivotY','anchorX','anchorY','scaleX','scaleY','skewX','skewY','rotation','alpha',
+                    'name','visible'
+                ]);
+                for(var i = 0;i<node.numChildren;i++){
+                    this.copyImgNode(node.getChildAt(i),d);
+                }
+                if(tools.isValid(parent)){
+                    parent.addChild(d);
+                }
+                return d;
+
+            }else if(node instanceof Laya.Sprite){
+                var b = new Laya.Sprite();                                        
+                this.attr(b,node,[
+                    'texture',
+                    'x','y','width','height','left','right','top','bottom','centerX','centerY',
+                    'pivotX','pivotY','anchorX','anchorY','scaleX','scaleY','skewX','skewY','rotation','alpha',
+                    'name','visible'
+                ]);
+                for(var i = 0;i<node.numChildren;i++){
+                    this.copyImgNode(node.getChildAt(i),b);
+                }
+                if(tools.isValid(parent)){
+                    parent.addChild(b);
+                }
+                return b;
+            }else{
+                var c = new Laya.Sprite();                    
+                this.attr(c,node,[
+                    'x','y','width','height','left','right','top','bottom','centerX','centerY',
+                    'pivotX','pivotY','anchorX','anchorY','scaleX','scaleY','skewX','skewY','rotation','alpha',
+                    'name','visible'
+                ]);
+                for(var i = 0;i<node.numChildren;i++){
+                    this.copyImgNode(node.getChildAt(i),c);
+                }
+                if(tools.isValid(parent)){
+                    parent.addChild(c);
+                }
+                return c;
+            }
+        }
+    },
+
 
 }
 

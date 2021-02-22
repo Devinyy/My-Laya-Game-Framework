@@ -1,4 +1,3 @@
-require('utils/ald-game.js');
 if ((typeof swan !== 'undefined') && (typeof swanGlobal !== 'undefined')) {
 	require("swan-game-adapter.js");
 	require("libs/laya.bdmini.js");

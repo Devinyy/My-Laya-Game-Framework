@@ -1,101 +1,79 @@
 var tempData = {
     'openid' : false,
-    'diamond' : 0,
+    'fontname' : '',
+    'isyindaoover': 0, // 是否通过新手引导
+    'gold' : 0, // 金币
+    'diamond' : 0, // 钻石数量
+    'strength':0, // 体力数
     'level': 0, // 关卡
-
-    'last_x': 0, // 上次鼠标所在的x轴
-    'last_z': 0, // 上次鼠标所在的z轴
-    'horizonspeed': 0.04, // 人物水平移动的速度
-    'all_distance': 0, // 道路总长度
-    'fasheweizhi': 0, // 玩家发射导弹击毁 boss 的位置
-    'lastmovedis' : 0, // 上次移动的道路距离长度
-    'isyindao': false, // 是否为初始引导关卡
-    'thismissflag': 0, //这次遗漏的小球的flag
-    'thismissflagcount': 0, //这次遗漏的相同flag的小球的数量
-    'map':'', // 本关的地图
-    'thislevellife':0, // 本关剩余生命值
-    'thislevelweapon':0, // 本关武器
-    'thislevelcount' :0, // 本关分数
-    'thislevelcombo' :0, // 本关连击数
-    'thislevelmoney' :0, // 本关金钱数
-    'thislevelenemy' :0, // 本关敌人数
-    'thislevelenergy' :0, // 本关能量值
-    'isspecialtime' :false, // 本关是否为特殊关卡时间
-    'thislevelbestscore' :0, // 本关理论最高分
-
-    'isspecialattack': false,// 是否开启特殊攻击模式
-    'xiaobosstimedianwei':[], // 小boss以及之后节奏点的时间点位
-
-    'count': 0, // 这一关获得的分数
-
-    'isequitweapon': 0, // 玩家是否装备有武器
-
-    'skin': [0,0,0],   // 目前使用的皮肤
-    'skinsuipian': [0,0,0],   // 目前使用的皮肤碎片
-    'skins': [[0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0],], // 所有拥有的皮肤
-
-    'upattribute': [5,5,10,10,10,20,20,20],
-    'weaponupattribute': [0,5,10,10,10,20,20,20],
-    'lifeupattribute': [0,1,2,2,2,3,3,3],
-    'moneyup':1,
-    'scoreup':1,
-
-    
-    'songs' : [0], // 目前所有歌曲的解锁状态
-    'stars': [0], // 目前所有歌曲的星星数
-    'highscores': [0], // 目前所有歌曲的最高分
-    'scorelevel': [0.60, 0.80, 0.95], // 三星达标分数百分比
-
-    'todayjiesuoskins': 0, // 今天解锁皮肤数
-    'todayjiesuosongs':0, // 今天的解锁歌曲数
-    'todayvediotimes':0, // 今天的视频观看数
-    'todaygifttimes':0, // 今天的在线宝箱领取数量
-    'todaygametimes':0, // 今天的游戏次数
-    'todaysupplygifttimes':0, // 今天领取补给宝箱次数
-    'todayusestrength':0, // 今天消耗体力数量
-    'todaymoney':0, // 今天获得的金币数
-    
-    'inmainuitime':0, // 进入主界面的时间
-    'leavetime':0, // 离开主界面的时间
-
-    'SIGNINTIME': 0, // 本次登陆时间戳
-    'OPENGIFTUITIME': 0, // 进入宝箱界面时间戳
-    'LEAVETIME': 0, // 离开游戏时间戳
-    'issecondday': false, // 是否第二天进入游戏
-    'isseconddaymission': false, // 是否第二天进入任务ui
-
-    'giftstatuslist': [0], // 礼物领取状态列表
-    'time' : 0, // 记录现在正在解锁的宝箱还需等待的时间
-    'nowgift' : 0, // 记录现在正在解锁的宝箱
-    'limitgiftstatus': [0,0,0], // 记录限量宝箱当天的领取状态
-    'onlinegiftstatus': [[0,0,0,0,0,0,0,0,0,0],
-                         [0,0,0,0,0,0,0,0,0,0]], // 记录在线宝箱当天的领取状态
-    'baoxianglingqutimes': 0 , //宝箱领取次数
-    'limitgift1':0, //当天的限量礼包1的奖励
-    'num1': 0, //当天的限量礼包1奖励的数量
-    'limitgift2': 0, //当天的限量礼包2的奖励
-    'num2': 0, //当天的限量礼包1奖励的数量
-    'limitgift3': 0, //当天的限量礼包3的奖励
-    'key': 0, //钥匙数
-    'strength':0, //体力数
-    'vediocard':0, // 视频卡数
-
+    'lineup': [1,2,3,4,5],  // 当前出战阵容
+    'lineup1': [1,2,3,4,5], // 阵容1 
+    'lineup2': [1,2,3,4,5], // 阵容2 
+    'lineup3': [1,2,3,4,5], // 阵容3 
+    'nowchoosetower':0, // 现在选择的防御塔
+    'towerlevel': [ 1,1,1,1,1,0,0,0,0,0,
+                    0,0,0,0,0,0,0,0,0,0 ],  // 现在所有的防御塔的等级
+    'towerfragment': [  0,0,0,0,0,0,0,0,0,0,
+                        0,0,0,0,0,0,0,0,0,0 ], // 所有拥有的防御塔的碎片
+    'signingiftarray': [  0,0,0,0,0,0,0 ],  // 签到礼包领取状态
     'mission1':0, //当天的任务1
     'mission1num': 0, //当天任务1所需的达标数
     'mission2': 0, //当天的任务2
     'mission2num': 0, //当天任务2所需的达标数
     'mission3': 0, //当天的任务3
     'mission3num': 0, //当天任务3所需的达标数
-    'dajiangmission':0, //当天的大奖类别
-
-    'gainnow':0, // 当前获得的奖励类型
-    'gainnownum':0, // 当前获得的奖励类型数量
-
     'missionstatus':[0,0,0,0], // 当前任务完成的情况
+    'todayopenchesttimes': 0, // 今天开启宝箱数量
+    'todaysuccessgametimes': 0, // 今天通关次数
+    'todayupdatetowertimes':0, // 今天升级炮塔次数
+    'todaykillenemytimes':0, // 今天击杀敌人个数
+    'todayusedoubleattacktimes':0, // 今天使用战力双倍次数
+    'achievementlevel':0, // 当前成就总等级
+    'achievementnum':0, // 当前成就值
+    'achievementarray':[0,0,0,0,0,0,0], // 当前每个成就的等级
+    'killenemysum':0, // 当前击杀敌人的数量总和
+    'updatetowersum':0, // 当前升级炮塔总和
+    'gettowersum':0, // 当前获得炮塔总和
+    'useturntablesum':0, // 当前参加转盘抽奖总和
+    'openfreechestsum':0, // 当前开启免费宝箱总和
+    'openclassicchestsum':0, // 当前开启经典宝箱总和
+    'opensupremechestsum':0, // 当前开启至尊宝箱总和
+    'attendendlesssum':0, // 当前参加无尽模式总和
+    'todayopenfreechesttime':0, // 今天开启免费宝箱次数
+    'todayopenfreediamondtime':0, // 今天开启免费钻石宝箱次数
+    'todayopenturntabletime':0, // 今天开启幸运转盘次数
+    'nextgetdiamondtime':0, // 下次领取免费钻石的时间戳
+    'nextgetfreechesttime':0, // 下次领取免费宝箱的时间戳
+    'nextgetsupremechesttime':0, // 下次领取至尊宝箱的时间戳
+    'freediamondcooldowntime':0, // 下次领取免费钻石的时间戳
+    'freechestdcooldowntime':0, // 下次领取免费宝箱的时间戳
+    'limitgiftstatus':[0,0,0], // 当天的限量礼包的领取状态
+    'limitgift1':0, //当天的限量礼包1的奖励
+    'num1': 0, //当天的限量礼包1奖励的数量
+    'limitgift2': 0, //当天的限量礼包2的奖励
+    'num2': 0, //当天的限量礼包2奖励的数量
+    'limitgift3': 0, //当天的限量礼包3的奖励
+    'num3': 0, //当天的限量礼包3奖励的数量
+    'thistimegetrewardresulgt':[], // 本次抽奖获得的物品
+    'thistimeopenschesttype':0, // 本次打开的宝箱种类
+     
+    'skin': [0,0,0],   // 目前使用的皮肤
+    'skinsuipian': [0,0,0],   // 目前使用的皮肤碎片
+    'skins': [[0,0,0,0,0,0,0,0],
+              [0,0,0,0,0,0,0,0],
+              [0,0,0,0,0,0,0,0],], // 所有拥有的皮肤
+    'inmainuitime':0, // 进入主界面的时间
+    'leavetime':0, // 离开主界面的时间
+    'SIGNINTIME': 0, // 本次登陆时间戳
+    'OPENGIFTUITIME': 0, // 进入宝箱界面时间戳
+    'LEAVETIME': 0, // 离开游戏时间戳
+    'issecondday': false, // 是否第二天进入游戏
+    'isseconddaymission': false, // 是否第二天进入任务ui
+                         
+    
 
     'signInDays' : 0,   // 签到天数
+    'signInDays2' : 0,   // 签到天数2
     'signInStatus': 1,  // 签到状态
     'isclick_qiandao':  0,
     'isgameover_to_main' : 0,

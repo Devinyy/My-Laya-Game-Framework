@@ -42,11 +42,23 @@ var BlockType = {
 						[1,0,0],
 						[1,1,0]],
 		"blockbasepoint":[0,0]}
-    ],
+	],
 	"type4_4": [{
+		"blockarray":[	[1,0,0],
+						[1,1,1],
+						[0,0,0]],
+		"blockbasepoint":[0,0]}
+    ],
+	"type4_5": [{
 		"blockarray":[	[1,0,0],
 						[1,1,0],
 						[0,1,0]],
+		"blockbasepoint":[0,0]}
+	],
+	"type4_6": [{
+		"blockarray":[	[1,1,0],
+						[0,1,1],
+						[0,0,0]],
 		"blockbasepoint":[0,0]}
     ],
 	"type5_1": [{
@@ -75,8 +87,8 @@ var BlockType = {
     ],
 	"type5_5": [{
 		"blockarray":[	[1,1,1],
-						[0,1,0],
-						[0,1,0]],
+						[0,1,1],
+						[0,0,0]],
 		"blockbasepoint":[0,0]}
     ]
 }

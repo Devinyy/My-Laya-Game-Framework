@@ -1,3 +1,4 @@
+import GamingData from "../Data/gamingdata";
 import tempData from "./tempData";
 import urls from "./urls";
 
@@ -255,9 +256,46 @@ var platform = (()=>{
                 var list = [
                     'atlas',
                     'mainui',  
-                    'unity',   
                     'music',
                     'dragonbones',
+                ];                         
+                var temp = ()=>{
+                    var name = list.shift();
+                    if(name){
+                        const loadTask = Laya.Browser.window.wx.loadSubpackage({
+                            name:name,
+                            success:(res)=>{
+                                console.log('分包加载成功=',name);
+                                temp();
+                            },
+                            fail:(res)=>{
+                                console.log('分包加载失败=',name);
+                                list.unshift(name);
+                                setTimeout(temp,1000);
+                            }
+                        });
+                        // loadTask.onProgressUpdate(res => {
+                        //     console.log('下载进度', res.progress)
+                        //     console.log('已经下载的数据长度', res.totalBytesWritten)
+                        //     console.log('预期需要下载的数据总长度', res.totalBytesExpectedToWrite)
+                        // })
+                    }else{
+                        this.onBaseResLoaded();
+                        callback && callback();
+                    }
+                };
+                temp();
+            }else{
+                this.onBaseResLoaded();
+                callback && callback();
+            }
+        },
+
+        //加载unity分包
+        loadunityPacks(callback:Function){
+            if(Laya.Browser.window.wx){
+                var list = [ 
+                    'unity',
                 ];                         
                 var temp = ()=>{
                     var name = list.shift();
@@ -297,13 +335,6 @@ var platform = (()=>{
 
         init(){ 
             
-            // 给全局变量赋值
-            tempData.diamond = this.hasStorageSync('diamond') ? this.getStorageSync('diamond','number') : 0;
-            this.setStorageSync('diamond',tempData.diamond);
-            tempData.level = this.hasStorageSync('level') ? this.getStorageSync('level','number') : 1;
-            tempData.baoxianglingqutimes = this.hasStorageSync('baoxianglingqutimes') ? this.getStorageSync('lebaoxianglingqutimesvel','number') : 0;
-            tempData.time = this.hasStorageSync('baoxianglingqutimes') ? this.hasStorageSync('baoxianglingqutimes','number') : 0;
-            
             console.log('oldPlayer',this.getStorageSync('oldPlayer'));
             //老玩家标志
             if(this.getStorageSync('oldPlayer')) {
@@ -327,123 +358,61 @@ var platform = (()=>{
             // 初始化分享
             this.initShare();
             
-            // 歌曲是否解锁
-            tempData.songs = this.hasStorageSync('songs') ? this.getStorageSync('songs','object') : [1,1,0,1000,0,1000,0,0,1500,0]; 
-
-            // 分数星星相关
-            tempData.stars = this.hasStorageSync('stars') ? this.getStorageSync('stars','object') : [0]; 
-            tempData.highscores = this.hasStorageSync('highscores') ? this.getStorageSync('highscores','object') : [0]; 
-            // 补全所有星星
-            while (tempData.stars.length < urls.guanqiamusic.length){
-                tempData.stars.push(0);
-            }
-            // 补全所有最高分
-            while (tempData.highscores.length < urls.guanqiamusic.length){
-                tempData.highscores.push(0);
-            }
-
-            //皮肤相关
-            tempData.skin = this.hasStorageSync('skin') ? this.getStorageSync('skin','object') : [0,0,-1]; // 正在使用的皮肤
-            this.setStorageSync('skin',tempData.skin);
-            tempData.skinsuipian = this.hasStorageSync('skinsuipian') ? this.getStorageSync('skinsuipian','object') : [0,0,0]; // 目前各个部位已有的皮肤碎片数量
-            this.setStorageSync('skinsuipian',tempData.skinsuipian);
-            tempData.skins = this.hasStorageSync('skins') ? this.getStorageSync('skins','object') : [[111,0,0,0,0,0,0,0],
-                                                                                                     [111,0,0,0,0,0,0,0],
-                                                                                                     [0,0,0,0,0,0,0,0],]; // 所有的皮肤列表
-            this.setStorageSync('skins',tempData.skins);
-            // 皮肤加成相关
-            tempData.moneyup = this.hasStorageSync('moneyup') ? this.getStorageSync('moneyup','number') : 1;
-            tempData.scoreup = this.hasStorageSync('scoreup') ? this.getStorageSync('scoreup','number') : 1;
-
-            // 礼包领取相关
-            tempData.giftstatuslist = this.hasStorageSync('giftstatuslist') ? this.getStorageSync('giftstatuslist','object') : [0];
-            // 补全所有礼包状态
-            let i = 1;
-            while (tempData.giftstatuslist.length < urls.gifts[0].Online.length){
-                let num = 0;
-                for(let j=0;j<=i;j++){
-                    num += urls.gifts[0].Online[j].time;
-                }
-                tempData.giftstatuslist.push(num);
-                i++;
-            }
-            this.setStorageSync('giftstatuslist',tempData.giftstatuslist);
-            // 限量宝箱的领取状态
-            tempData.limitgiftstatus = this.hasStorageSync('limitgiftstatus') ? this.getStorageSync('limitgiftstatus','object') : [0];
-            while (tempData.limitgiftstatus.length < urls.gifts[0].Limit.length){
-                tempData.limitgiftstatus.push(0);
-            }
-            this.setStorageSync('limitgiftstatus',tempData.limitgiftstatus);
-            // 在线宝箱的领取状态
-            tempData.onlinegiftstatus = this.hasStorageSync('onlinegiftstatus') ? this.getStorageSync('onlinegiftstatus','object') : [];
-            while(tempData.onlinegiftstatus.length<2){
-                let list = [];
-                while (list.length < urls.gifts[0].Online.length){
-                    list.push(0);
-                }
-                tempData.onlinegiftstatus.push(list);
-            }
-            this.setStorageSync('onlinegiftstatus',tempData.onlinegiftstatus);
-
+            // 给全局变量赋值
+            // 是否通过新手引导
+            tempData.isyindaoover = this.hasStorageSync('isyindaoover') ? this.getStorageSync('isyindaoover','number') : 0;
+            this.setStorageSync('isyindaoover',tempData.isyindaoover);
+            // 金币
+            tempData.gold = this.hasStorageSync('gold') ? this.getStorageSync('gold','number') : 100;
+            this.setStorageSync('gold',tempData.gold);
+            // 钻石
+            tempData.diamond = this.hasStorageSync('diamond') ? this.getStorageSync('diamond','number') : 500;
+            this.setStorageSync('diamond',tempData.diamond);
+            // 体力数量
+            tempData.strength = this.hasStorageSync('strength') ? this.getStorageSync('strength','number') : 50;
+            this.setStorageSync('strength',tempData.strength);
+            // 当前关卡
+            tempData.level = this.hasStorageSync('level') ? this.getStorageSync('level','number') : 0;
+            this.setStorageSync('level',tempData.level);
+            // 当前阵容
+            tempData.lineup = this.hasStorageSync('lineup') ? this.getStorageSync('lineup','object') : [1,2,3,4,5];
+            this.setStorageSync('lineup',tempData.lineup);
+            tempData.lineup1 = this.hasStorageSync('lineup1') ? this.getStorageSync('lineup1','object') : [1,2,3,4,5];
+            this.setStorageSync('lineup1',tempData.lineup1);
+            tempData.lineup2 = this.hasStorageSync('lineup2') ? this.getStorageSync('lineup2','object') : [1,2,3,4,5];
+            this.setStorageSync('lineup2',tempData.lineup2);
+            tempData.lineup3 = this.hasStorageSync('lineup3') ? this.getStorageSync('lineup3','object') : [1,2,3,4,5];
+            this.setStorageSync('lineup3',tempData.lineup3);
+            // 当前所有防御塔的等级
+            // tempData.towerlevel = this.hasStorageSync('towerlevel') ? this.getStorageSync('towerlevel','object') : [    1,1,1,1,1,1,1,1,1,1,
+            //                                                                                                             1,1,1,1,1,1,1,1,1,1,];
+            tempData.towerlevel = this.hasStorageSync('towerlevel') ? this.getStorageSync('towerlevel','object') : [    1,1,1,1,1,1,0,0,0,0,
+                                                                                                                        0,0,0,0,0,0,0,0,0,0,];
+            this.setStorageSync('towerlevel',tempData.towerlevel);
+            // 当前所有防御塔的碎片
+            tempData.towerfragment = this.hasStorageSync('towerfragment') ? this.getStorageSync('towerfragment','object') : [   0,0,0,0,0,0,0,0,0,0,
+                                                                                                                                0,0,0,0,0,0,0,0,0,0,];
+            this.setStorageSync('towerfragment',tempData.towerfragment);
+            // 当前签到礼包的领取状态
+            tempData.signingiftarray = this.hasStorageSync('signingiftarray') ? this.getStorageSync('signingiftarray','object') : [ 0,0,0,0,0,0,0 ];
+            this.setStorageSync('signingiftarray',tempData.signingiftarray);
             // 当天任务的完成状态
             tempData.missionstatus = this.hasStorageSync('missionstatus') ? this.getStorageSync('missionstatus','object') : [0];
             while (tempData.missionstatus.length < 4){
                 tempData.missionstatus.push(0);
             }
-            this.setStorageSync('missionstatus',tempData.missionstatus);
-
-            // 钥匙数量
-            tempData.key = this.hasStorageSync('key') ? this.getStorageSync('key','number') : 0;
-            this.setStorageSync('key',tempData.key);
-
-            // 体力数量
-            tempData.strength = this.hasStorageSync('strength') ? this.getStorageSync('strength','number') : 20;
-            this.setStorageSync('strength',tempData.strength);
-
-            // 视频卡数量
-            tempData.vediocard = this.hasStorageSync('vediocard') ? this.getStorageSync('vediocard','number') : 0;
-            this.setStorageSync('vediocard',tempData.vediocard);
-
-            // 今天的解锁皮肤数
-            tempData.todayjiesuoskins = this.hasStorageSync('todayjiesuoskins') ? this.getStorageSync('todayjiesuoskins','number') : 0;
-            this.setStorageSync('todayjiesuoskins',tempData.todayjiesuoskins);
-
-            // 今天的解锁歌曲数
-            tempData.todayjiesuosongs = this.hasStorageSync('todayjiesuosongs') ? this.getStorageSync('todayjiesuosongs','number') : 0;
-            this.setStorageSync('todayjiesuosongs',tempData.todayjiesuosongs);
-
-            // 今天看视频观看数
-            tempData.todayvediotimes = this.hasStorageSync('todayvediotimes') ? this.getStorageSync('todayvediotimes','number') : 0;
-            this.setStorageSync('todayvediotimes',tempData.todayvediotimes);
-
-            // 今天的在线宝箱领取数量
-            tempData.todaygifttimes = this.hasStorageSync('todaygifttimes') ? this.getStorageSync('todaygifttimes','number') : 0;
-            this.setStorageSync('todaygifttimes',tempData.todaygifttimes);
-
-            // 今天的游戏次数
-            tempData.todaygametimes = this.hasStorageSync('todaygametimes') ? this.getStorageSync('todaygametimes','number') : 0;  
-            this.setStorageSync('todaygametimes',tempData.todaygametimes);
-
-            // 今天的领取补给宝箱次数
-            tempData.todaysupplygifttimes = this.hasStorageSync('todaysupplygifttimes') ? this.getStorageSync('todaysupplygifttimes','number') : 0; 
-            this.setStorageSync('todaysupplygifttimes',tempData.todaysupplygifttimes);
-
-            // 今天的获得的金币数
-            tempData.todaymoney = this.hasStorageSync('todaymoney') ? this.getStorageSync('todaymoney','number') : 0;
-            this.setStorageSync('todaymoney',tempData.todaymoney);
-
-            // 今天的消耗体力数量
-            tempData.todayusestrength = this.hasStorageSync('todayusestrength') ? this.getStorageSync('todayusestrength','number') : 0; 
-            this.setStorageSync('todayusestrength',tempData.todayusestrength);
-
-            // 今天的限定皮肤观看次数
-            tempData.todaylimitskintime = this.hasStorageSync('todaylimitskintime') ? this.getStorageSync('todaylimitskintime','number') : 0; 
-            this.setStorageSync('todaylimitskintime',tempData.todaylimitskintime);
-
-            // 今天的转盘观看次数
-            tempData.todayturntabletime = this.hasStorageSync('todayturntabletime') ? this.getStorageSync('todayturntabletime','number') : 0; 
-            this.setStorageSync('todayturntabletime',tempData.todayturntabletime);
-
+            // 今天开启宝箱数量
+            tempData.todayopenchesttimes = this.hasStorageSync('todayopenchesttimes') ? this.getStorageSync('todayopenchesttimes','number') : 0;
+            // 今天通关次数
+            tempData.todaysuccessgametimes = this.hasStorageSync('todaysuccessgametimes') ? this.getStorageSync('todaysuccessgametimes','number') : 0;
+            // 今天升级炮塔次数
+            tempData.todayupdatetowertimes = this.hasStorageSync('todayupdatetowertimes') ? this.getStorageSync('todayupdatetowertimes','number') : 0;
+            // 今天击杀敌人个数
+            tempData.todaykillenemytimes = this.hasStorageSync('todaykillenemytimes') ? this.getStorageSync('todaykillenemytimes','number') : 0;
+            // 今天使用战力双倍次数
+            tempData.todayusedoubleattacktimes = this.hasStorageSync('todayusedoubleattacktimes') ? this.getStorageSync('todayusedoubleattacktimes','number') : 0;
+            // 今天打开幸运转盘次数
+            tempData.todayopenturntabletime = this.hasStorageSync('todayopenturntabletime') ? this.getStorageSync('todayopenturntabletime','number') : 0;
             // 判断当前进入游戏是否为第二天
             let issecondday = this.isSecondDay();
             tempData.issecondday = issecondday;
@@ -453,18 +422,84 @@ var platform = (()=>{
             if(issecondday){
                 // 重置本次登陆时间
                 this.signInTime();
-                tempData.todaygametimes = 0;
-                tempData.todayjiesuosongs = 0;
-                tempData.todaymoney = 0;
-                tempData.todaygifttimes = 0;
-                tempData.todayjiesuoskins = 0;
-                tempData.todaysupplygifttimes = 0;
-                tempData.todayusestrength = 0;
-                tempData.todayvediotimes = 0;
-                tempData.todaylimitskintime = 0;
-                tempData.todayturntabletime = 0;
+                tempData.todayopenchesttimes = 0;
+                tempData.todaysuccessgametimes = 0;
+                tempData.todayupdatetowertimes = 0;
+                tempData.todaykillenemytimes = 0;
+                tempData.todayusedoubleattacktimes = 0;    
+                tempData.todayopenfreechesttime = 5;
+                tempData.todayopenfreediamondtime = 5;
+                tempData.todayopenturntabletime = 0;    
             }
+            this.setStorageSync('todayopenchesttimes',tempData.todayopenchesttimes);
+            this.setStorageSync('todaysuccessgametimes',tempData.todaysuccessgametimes);
+            this.setStorageSync('todayupdatetowertimes',tempData.todayupdatetowertimes);
+            this.setStorageSync('todaykillenemytimes',tempData.todaykillenemytimes);
+            this.setStorageSync('todayusedoubleattacktimes',tempData.todayusedoubleattacktimes);
+            this.setStorageSync('todayopenturntabletime',tempData.todayopenturntabletime);
+            // 当前成就总等级
+            tempData.achievementlevel = this.hasStorageSync('achievementlevel') ? this.getStorageSync('achievementlevel','number') : 0;
+            // 当前成就值
+            tempData.achievementnum = this.hasStorageSync('achievementnum') ? this.getStorageSync('achievementnum','number') : 0;
+            // 当前每个成就的等级
+            tempData.achievementarray = this.hasStorageSync('achievementarray') ? this.getStorageSync('achievementarray','object') : [0,0,0,0,0,0,0];
+            this.setStorageSync('achievementlevel',tempData.achievementlevel);
+            this.setStorageSync('achievementnum',tempData.achievementnum);
+            this.setStorageSync('achievementarray',tempData.achievementarray);
+            // 当前击杀的总敌人数
+            tempData.killenemysum = this.hasStorageSync('killenemysum') ? this.getStorageSync('killenemysum','number') : 0;
+            // 当前升级炮塔总和
+            tempData.updatetowersum = this.hasStorageSync('updatetowersum') ? this.getStorageSync('updatetowersum','number') : 0;
+            // 当前获得炮塔总和
+            tempData.gettowersum = this.hasStorageSync('gettowersum') ? this.getStorageSync('gettowersum','number') : 0;
+            // 当前参加转盘抽奖总和
+            tempData.useturntablesum = this.hasStorageSync('useturntablesum') ? this.getStorageSync('useturntablesum','number') : 0;
+            // 当前开启经典宝箱总和
+            tempData.openfreechestsum = this.hasStorageSync('openfreechestsum') ? this.getStorageSync('openfreechestsum','number') : 0;
+            // 当前开启经典宝箱总和
+            tempData.openclassicchestsum = this.hasStorageSync('openclassicchestsum') ? this.getStorageSync('openclassicchestsum','number') : 0;
+            // 当前开启至尊宝箱总和
+            tempData.opensupremechestsum = this.hasStorageSync('opensupremechestsum') ? this.getStorageSync('opensupremechestsum','number') : 0;
+            // 当前参加无尽模式总和
+            tempData.attendendlesssum = this.hasStorageSync('attendendlesssum') ? this.getStorageSync('attendendlesssum','number') : 0;
+            this.setStorageSync('killenemysum',tempData.killenemysum);
+            this.setStorageSync('updatetowersum',tempData.updatetowersum);
+            this.setStorageSync('gettowersum',tempData.gettowersum);
+            this.setStorageSync('useturntablesum',tempData.useturntablesum);
+            this.setStorageSync('openfreechestsum',tempData.opensupremechestsum);
+            this.setStorageSync('openclassicchestsum',tempData.opensupremechestsum);
+            this.setStorageSync('opensupremechestsum',tempData.opensupremechestsum);
+            this.setStorageSync('attendendlesssum',tempData.attendendlesssum);
 
+            // 今天开启免费钻石次数
+            tempData.todayopenfreediamondtime = this.hasStorageSync('todayopenfreediamondtime') ? this.getStorageSync('todayopenfreediamondtime','number') : 5;
+            platform.setStorageSync('todayopenfreediamondtime',tempData.todayopenfreediamondtime);
+            // 下次领取免费钻石的时间戳
+            let nowtime = new Date().getTime();
+            tempData.nextgetdiamondtime = this.hasStorageSync('nextgetdiamondtime') ? this.getStorageSync('nextgetdiamondtime','number') : nowtime;
+            platform.setStorageSync('nextgetdiamondtime',tempData.nextgetdiamondtime);
+            // 今天开启免费宝箱次数
+            tempData.todayopenfreechesttime = this.hasStorageSync('todayopenfreechesttime') ? this.getStorageSync('todayopenfreechesttime','number') : 5;
+            platform.setStorageSync('todayopenfreechesttime',tempData.todayopenfreechesttime);
+            // 下次领取至尊宝箱的时间戳
+            nowtime = new Date().getTime();
+            tempData.nextgetfreechesttime = this.hasStorageSync('nextgetfreechesttime') ? this.getStorageSync('nextgetfreechesttime','number') : nowtime;
+            platform.setStorageSync('nextgetfreechesttime',tempData.nextgetfreechesttime);
+            // 下次领取至尊宝箱的时间戳
+            nowtime = new Date().getTime();
+            tempData.nextgetsupremechesttime = this.hasStorageSync('nextgetsupremechesttime') ? this.getStorageSync('nextgetsupremechesttime','number') : nowtime;
+            platform.setStorageSync('nextgetsupremechesttime',tempData.nextgetsupremechesttime);
+            // 今天限量礼包的领取状态
+            tempData.limitgiftstatus = this.hasStorageSync('limitgiftstatus') ? this.getStorageSync('limitgiftstatus','object') : [0,0,0];
+            platform.setStorageSync('limitgiftstatus',tempData.limitgiftstatus);
+            // 下次领取免费钻石的时间戳
+            nowtime = new Date().getTime();
+            tempData.freediamondcooldowntime = this.hasStorageSync('freediamondcooldowntime') ? this.getStorageSync('freediamondcooldowntime','number') : nowtime;
+            platform.setStorageSync('freediamondcooldowntime',tempData.freediamondcooldowntime);
+            // 下次领取免费宝箱的时间戳
+            nowtime = new Date().getTime();
+            tempData.freechestdcooldowntime = this.hasStorageSync('freechestdcooldowntime') ? this.getStorageSync('freechestdcooldowntime','number') : nowtime;
+            platform.setStorageSync('freechestdcooldowntime',tempData.freechestdcooldowntime);
             //是否特定场景值进来的用户
             if(Laya.Browser.window.wx && Laya.Browser.window.wx.getLaunchOptionsSync){
                 var info = Laya.Browser.window.wx.getLaunchOptionsSync();
@@ -539,6 +574,7 @@ var platform = (()=>{
         initSignInData(){
             function reset(){
                 tempData.signInDays = 0;
+                tempData.signInDays2 = 0;
                 tempData.signInStatus = 1;
                 
             }
@@ -557,15 +593,27 @@ var platform = (()=>{
                         tempData.signInDays = this.getStorageSync('SIGNINDAYS','number');
                     }else{
                         tempData.signInDays = 0;
-                    }                    
+                    }
+                    if(this.hasStorageSync('SIGNINDAYS2')){
+                        tempData.signInDays2 = this.getStorageSync('SIGNINDAYS2','number');
+                    }else{
+                        tempData.signInDays2 = 0;
+                    }
                     tempData.signInStatus = dayNextThatDay == today ? 1 : 0;
                     if(dayNextThatDay != today){
                         this.setStorageSync('isclick_qiandao',0);
                     }
                     
                 }else{
+                    if(this.hasStorageSync('SIGNINDAYS')){
+                        tempData.signInDays = this.getStorageSync('SIGNINDAYS','number');
+                    }else{
+                        tempData.signInDays = 0;
+                    }  
+                    tempData.signInDays2 = tempData.signInDays;
                     console.log('用户签到不连续');
-                    reset();
+                    tempData.signInStatus = 1;
+                    // reset();
                 }                
             }else{
                 console.log('用户未曾签到过');
@@ -587,6 +635,7 @@ var platform = (()=>{
                 tempData.signInDays++;
                 tempData.signInStatus = 0;
                 this.setStorageSync('SIGNINDAYS',tempData.signInDays);
+                this.setStorageSync('SIGNINDAYS2',tempData.signInDays2);
                 this.setStorageSync('SIGNINSTAMP',new Date().getTime());
                 console.log('tempData.signInDays',tempData.signInDays);
                 return true;
@@ -649,6 +698,10 @@ var platform = (()=>{
                         
         },
 
+        saveGold(){
+            this.setStorageSync('gold',tempData.gold);
+        },
+
         saveDiamond(){
             this.setStorageSync('diamond',tempData.diamond);
         },
@@ -691,6 +744,8 @@ var platform = (()=>{
             if(Laya.Browser.window.wx){
                 Laya.Browser.window.wx.onShow(()=>{      
                     console.log('wx onShow');
+                    Laya.timer.scale = 1;
+                    platform.playMusic(GamingData.nowbgmusic,0);
                     Laya.stage.event('wxOnShow');
                     let currentStamp = new Date().getTime();
                     if(currentStamp - timestamp > 1.5 * 1000){
@@ -710,12 +765,13 @@ var platform = (()=>{
                     console.log('wx hide');
                     timestamp = new Date().getTime();
                     Laya.stage.event('wxOnHide');
+                    Laya.timer.scale = 0;
                 });
             }            
         },
 
         // 普通的分享
-        share(success:Function=null,fail:Function=null,complele:Function=null){            
+        share(success:Function=null,fail:Function=()=>{ this.showToast('分享失败') },complele:Function=null){            
 
             if(Laya.Browser.window.wx && Laya.Browser.window.wx.shareAppMessage){
 
@@ -820,7 +876,6 @@ var platform = (()=>{
         },
 
         playEffect(path:string){
-            console.log('playEffect=',path);
             Laya.SoundManager.playSound(path,1);
         },
 
@@ -833,9 +888,12 @@ var platform = (()=>{
             if(Laya.Browser.window.wx){ 
                 // music = Laya.SoundManager.playMusic(path,loop); 
                 if(loop){
-                    var loopflag:boolean = false;
+                    music = wxAudioMgr.playMusic(path,false);
                 }
-                music = wxAudioMgr.playMusic(path,loopflag);
+                else{
+                    music = wxAudioMgr.playMusic(path,true);
+                    console.log('循环播放');
+                }
                 return music;
             }else{
                 music = Laya.SoundManager.playMusic(path,loop); 
