@@ -772,18 +772,8 @@ var platform = (()=>{
 
         // 普通的分享
         share(success:Function=null,fail:Function=()=>{ this.showToast('分享失败') },complele:Function=null){            
-
             if(Laya.Browser.window.wx && Laya.Browser.window.wx.shareAppMessage){
-
-                if(!tempData.isfirstplayer){
-                    if(!tempData.isfirstshare){
-                        this.aldSendEvent('游戏分享人数');
-                    }
-                    this.aldSendEvent('游戏分享次数');
-                }
-
                 let info = this.getShareInfo();
-
                 Laya.Browser.window.wx.shareAppMessage({
                     title:info.title,
                     imageUrl:info.imageUrl
@@ -1102,95 +1092,6 @@ var platform = (()=>{
                 });
             }else{
                 Laya.stage.event('wxLoadInterstitialAdFailed',null);
-            }
-        },
-
-        // 发送自定义事件函数
-        /**
-		 * 使用 EventDispatcher 对象注册指定类型的事件侦听器对象，以使侦听器能够接收事件通知。
-		 * @param eventname 事件的类型。
-		 * @param keydata (可选)传入的事件参数与值，格式为 {'参数key' : '参数value'}
-		 */
-        aldSendEvent(eventname:string , keydata?:{} ){
-            if(Laya.Browser.window.wx){
-                Laya.Browser.window.wx.aldSendEvent(eventname,keydata);
-            }
-        },
-
-        //关卡开始
-        /**
-		 * 使用 EventDispatcher 对象注册指定类型的事件侦听器对象，以使侦听器能够接收事件通知。
-		 * @param stageId   关卡ID
-		 * @param stageName 关卡名称
-		 * @param userId    用户ID（可选）
-		 */
-        aldStageonStart(stageId:number,stageName:string,userId?:string){
-            if(!userId) userId = '';
-            if(Laya.Browser.window.wx){
-                Laya.Browser.window.wx.aldStage.onStart({
-                    stageId   : String(stageId), //关卡ID， 必须是1 || 2 || 1.1 || 12.2 格式 该字段必传
-                    stageName : stageName,//关卡名称，该字段必传
-                    userId    : userId //用户ID
-                  });
-            }
-        },
-
-        //关卡进行中
-        /**
-		 * 使用 EventDispatcher 对象注册指定类型的事件侦听器对象，以使侦听器能够接收事件通知。
-		 * @param stageId   关卡ID
-		 * @param stageName 关卡名称
-		 * @param userId    用户ID（可选）
-         * @param event     事件类型  （1、payStart:发起支付 2、paySuccess:支付成功 3、payFail:支付失败 4、tools:使用道具 5、award:奖励）
-		 * @param params    事件参数
-		 * @param params.itemName  商品/道具名称 
-         * @param params.itemId    商品/道具ID（可选）
-         * @param params.itemCount 商品/道具数量（可选，默认：1） 
-         * @param params.desc      商品/道具描述（可选）
-         * @param params.itemMoney 商品/道具价格（可选 默认:0）
-		 */
-        aldStageonRunning(stageId:string,stageName:string,event:string,params:{ itemName:string, itemId?:string, itemCount?:number, desc?:string, itemMoney?:Number},userId?:'',){
-            if(!params.itemId) params.itemId = '';
-            if(!params.itemCount) params.itemCount = 1;
-            if(!params.desc) params.desc = '';
-            if(!params.itemMoney) params.itemMoney = 0;
-            if(!userId) userId = '';
-            if(Laya.Browser.window.wx){
-                // 在关卡中使用道具
-                Laya.Browser.window.wx.aldStage.onRunning({
-                    stageId   : stageId,
-                    stageName : stageName,
-                    userId    : userId,
-                    event     : event,
-                    params    : params,
-                })
-            }
-        },
-
-        //关卡结束
-        /**
-		 * 使用 EventDispatcher 对象注册指定类型的事件侦听器对象，以使侦听器能够接收事件通知。
-		 * @param stageId      关卡ID
-		 * @param stageName    关卡名称
-		 * @param userId       用户ID（可选）
-         * @param success      事件类型  （1、true:关卡完成 2、false:关卡失败）
-		 * @param params       事件参数
-         * @param params.desc  对关卡失败/成功的描述（可选）
-		 */
-        aldStageonEnd(stageId:string,stageName:string,success:boolean,params:{desc?:string,},userId?:'',){
-            if(!params.desc) params.desc = '';
-            if(!userId) userId = '';
-            let event = '';
-            success ? event='complete' : event='fail';
-            if(Laya.Browser.window.wx){
-                // 在关卡中使用道具
-                Laya.Browser.window.wx.aldStage.onEnd({
-                    stageId   : stageId,
-                    stageName : stageName,
-                    userId    : userId,
-                    event     : event,
-                    params    : params,
-                })
             }
         },
 
