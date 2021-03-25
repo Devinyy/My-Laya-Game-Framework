@@ -18,41 +18,6 @@ export default class soundMgr {
         }
     }
 
-    private static wxPlayMusic(url:string,loop:boolean=false){
-        //这个就不复用了 反正就一个bgm
-        console.log('play music==',url);
-        if(soundMgr.music){
-            soundMgr.music.destroy();
-        }
-        soundMgr.music = Laya.Browser.window.wx.createInnerAudioContext();
-        soundMgr.music.src = url;
-        soundMgr.music.loop = loop;
-        soundMgr.music.play(); 
-        return soundMgr.music;
-    }
-
-    private static wxStopMusic(url:string){
-        console.log('stop music==',url);
-        if(soundMgr.music){
-            soundMgr.music.destroy();
-            soundMgr.music = null;
-        }            
-    }
-
-    private static wxPauseMusic(url:string){
-        console.log('pause music==',url);
-        if(soundMgr.music){
-            soundMgr.music.pause();
-        }
-    }
-
-    private static wxResumeMusic(url:string){
-        console.log('resume music==',url);
-        if(soundMgr.music){                
-            soundMgr.music.play();
-        }
-    }
-
     public static playEffect(path:string){
         Laya.SoundManager.playSound(path,1);
     }
@@ -105,6 +70,41 @@ export default class soundMgr {
             if(soundMgr.music){
                 soundMgr.music.resume();
             }
+        }
+    }
+
+    private static wxPlayMusic(url:string,loop:boolean=false){
+        //这个就不复用了 反正就一个bgm
+        console.log('play music==',url);
+        if(soundMgr.music){
+            soundMgr.music.destroy();
+        }
+        soundMgr.music = Laya.Browser.window.wx.createInnerAudioContext();
+        soundMgr.music.src = url;
+        soundMgr.music.loop = loop;
+        soundMgr.music.play(); 
+        return soundMgr.music;
+    }
+
+    private static wxStopMusic(url:string){
+        console.log('stop music==',url);
+        if(soundMgr.music){
+            soundMgr.music.destroy();
+            soundMgr.music = null;
+        }            
+    }
+
+    private static wxPauseMusic(url:string){
+        console.log('pause music==',url);
+        if(soundMgr.music){
+            soundMgr.music.pause();
+        }
+    }
+
+    private static wxResumeMusic(url:string){
+        console.log('resume music==',url);
+        if(soundMgr.music){                
+            soundMgr.music.play();
         }
     }
 
