@@ -1,6 +1,7 @@
 import GamingData from "../Data/gamingdata";
 import tempData from "./tempData";
 import urls from "./urls";
+import soundMgr from "./soundMgr";
 
 const LOCAL_VERSION = '1.0.6';
 const LEQU_GAME_ID = 343;
@@ -18,57 +19,6 @@ function clampf(a,min,max){
     else if(a>max) return max;
     return a;
 }
-
-// 音乐相关函数
-var wxAudioMgr = (()=>{
-    var sounds = {};
-    var music = null;    
-    return{        
-
-        StopSound(audio){
-            if(audio){
-                audio.stop();
-            }
-        },
-
-        playMusic(url:string,loop:boolean=false){
-            //这个就不复用了 反正就一个bgm
-            console.log('play music==',url);
-            if(music){
-                music.destroy();
-            }
-            music = Laya.Browser.window.wx.createInnerAudioContext();
-            music.src = url;
-            music.loop = loop;
-            ////music.playbackRate = 2.0;////
-            music.play();                       
-            return music;
-        },
-
-        stopMusic(url:string){
-            console.log('stop music==',url);
-            if(music){
-                music.destroy();
-                music = null;
-            }            
-        },
-
-        pauseMusic(url:string){
-            console.log('pause music==',url);
-            if(music){
-                music.pause();
-            }
-        },
-
-        resumeMusic(url:string){
-            console.log('resume music==',url);
-            if(music){                
-                music.play();
-            }
-        }
-        
-    }
-})();
 
 var platform = (()=>{
     
@@ -123,9 +73,6 @@ var platform = (()=>{
 
     var music = null;    
 
-    //记录已经加载的分包key 问题是进入开始界面所有歌曲都是可以播放的状态... 这就很难过了 ...
-    var gameLayerEnterTimes = 0;
-
     //插屏广告
     var interstitialAd = null;
 
@@ -133,8 +80,6 @@ var platform = (()=>{
 
     //指定用户
     var isTrickedUser = false;
-    
-
 
     return{ 
 
@@ -745,7 +690,7 @@ var platform = (()=>{
                 Laya.Browser.window.wx.onShow(()=>{      
                     console.log('wx onShow');
                     Laya.timer.scale = 1;
-                    platform.playMusic(GamingData.nowbgmusic,0);
+                    soundMgr.playMusic(GamingData.nowbgmusic,0);
                     Laya.stage.event('wxOnShow');
                     let currentStamp = new Date().getTime();
                     if(currentStamp - timestamp > 1.5 * 1000){
@@ -852,63 +797,6 @@ var platform = (()=>{
                 });
             }
         },
-
-        playEffect(path:string){
-            Laya.SoundManager.playSound(path,1);
-        },
-
-        stopSound(path:string){            
-            Laya.SoundManager.stopSound(path);
-        },
-
-        playMusic(path:string,loop:number):any{
-            console.log('play music=',path);
-            if(Laya.Browser.window.wx){ 
-                // music = Laya.SoundManager.playMusic(path,loop); 
-                if(loop){
-                    music = wxAudioMgr.playMusic(path,false);
-                }
-                else{
-                    music = wxAudioMgr.playMusic(path,true);
-                    console.log('循环播放');
-                }
-                return music;
-            }else{
-                music = Laya.SoundManager.playMusic(path,loop); 
-                return music;
-            }            
-        },
-
-        stopMusic(path:string=''){
-            console.log('stop music=',path);
-            if(Laya.Browser.window.wx){
-                wxAudioMgr.stopMusic(path);
-            }else{
-                Laya.SoundManager.stopMusic();
-            }
-        },
-
-        pauseMusic(path:string){
-            console.log('pause music=',path);
-            if(Laya.Browser.window.wx){
-                wxAudioMgr.pauseMusic(path);
-            }else{
-                if(music){
-                    music.pause();
-                }
-            }
-        },
-
-        resumeMusic(path:string){
-            console.log('resume music=',path);
-            if(Laya.Browser.window.wx){
-                wxAudioMgr.resumeMusic(path);
-            }else{
-                if(music){
-                    music.resume();
-                }
-            }
-        },   
 
         isIphoneX(){
             if(Laya.Browser.window.wx && Laya.Browser.window.wx.getSystemInfoSync){

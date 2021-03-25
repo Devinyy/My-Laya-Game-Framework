@@ -1,7 +1,13 @@
 import platform from "./platform";
 
 export default class Utils {
-    constructor() { }
+
+    /**设置单例的引用方式，方便其他类引用 */
+    static instance: Utils;
+
+    constructor() { 
+        Utils.instance = this;
+    }
 
 
     public static ttfName: string = "SimHei";
