@@ -1,11 +1,15 @@
 import platform from "./platform";
-import urls from "./urls";
-import gameconstdata from "../Data/gameconstdata"
 
-const tools = {
+
+export default class Utils {
+    constructor() { }
+
+
+    public static ttfName: string = "SimHei";
+    public static NumfontName: string = "SimHei";
 
     // 判断当前设备的宽高比
-    ischangping(){
+    public static ischangping(): boolean{
         let stagewidth = Laya.stage.width;
         let stageheight = Laya.stage.height;
         if (stageheight/stagewidth > 1.7795138888888888){
@@ -14,16 +18,16 @@ const tools = {
         else{
             return false;
         }
-    },
+    }
 
     // ui 长屏适配
-    uichangping(){
-        this.width = Laya.stage.width;
-        this.height = Laya.stage.height;
-    },
+    public static uichangping(object:Laya.Scene) {
+        object.width = Laya.stage.width;
+        object.height = Laya.stage.height;
+    }
 
     // 根据手机宽高比例选择不同的相机视野
-    changeCameraField(camera:Laya.Camera){
+    public static changeCameraField(camera:Laya.Camera) {
         let stagewidth = Laya.stage.width;
         let stageheight = Laya.stage.height;
         if (stageheight/stagewidth > 1.7795138888888888){
@@ -32,11 +36,11 @@ const tools = {
         else{
             camera.fieldOfView = 50;
         }
-    },
+    }
 
     // 发现子节点
-    findChildNode:function(parent:any,path:string):Laya.Node{
-        let result = parent;
+    public static findChildNode(parentObj:any,path:string):Laya.Node {
+        let result = parentObj;
         let names = path.split('/');
         for(let i = 0;i<names.length;i++){
             let name = names[i];
@@ -50,10 +54,10 @@ const tools = {
         }
         console.log('success to find node=',result.name);
         return result;
-    },
+    }
 
     // 发射投影
-    setCastShadow(node:Laya.Sprite3D,bool:boolean){
+    public static setCastShadow(node:Laya.Sprite3D,bool:boolean){
         if(node && !node.destroyed){
             if(node instanceof Laya.MeshSprite3D){
                 node.meshRenderer.castShadow = bool;
@@ -61,13 +65,13 @@ const tools = {
                 node.skinnedMeshRenderer.castShadow = bool;
             }
             for(var i = 0;i<node.numChildren;i++){
-                this.setCastShadow(node.getChildAt(i),bool);
+                this.setCastShadow((node.getChildAt(i) as Laya.Sprite3D),bool);
             }
         }
-    },
+    }
 
     // 接收投影
-    setReceiveShadow(node:Laya.Sprite3D,bool:boolean){
+    public static setReceiveShadow(node:Laya.Sprite3D,bool:boolean){
         if(node && !node.destroyed){
             if(node instanceof Laya.MeshSprite3D){
                 node.meshRenderer.receiveShadow = bool;
@@ -75,69 +79,28 @@ const tools = {
                 node.skinnedMeshRenderer.receiveShadow = bool;
             }
             for(var i = 0;i<node.numChildren;i++){
-                this.setReceiveShadow(node.getChildAt(i),bool);
+                this.setReceiveShadow((node.getChildAt(i) as Laya.Sprite3D),bool);
             }
         }
-    },
+    }
 
     // 传一个a返回一个min到max之间的数
-    clampf(a,min,max){
+    public static clampf(a,min,max){
         if(a<min) return min;
         else if(a>max) return max;
         return a;
-    },
+    }
 
     // 得到一个两数之间的随机整数，包括两个数在内
-    getRandomIntInclusive(min:number, max:number) {
+    public static getRandomIntInclusive(min:number, max:number) {
         min = Math.ceil(min);
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min + 1)) + min; //含最大值，含最小值 
-    },
+    }
 
-    // 增加获得的金币
-    addgainmoney(){
-        for(let i = 0;i<20;i++){
-            Laya.timer.once(20*i,this,()=>{
-                let gold = new Laya.Image();
-                gold.skin = 'ui/ass0/icon_money_03.png';
-                platform.playEffect('res/music/zuanshi.mp3');
-                let x = Laya.stage.width/2-100;
-                let y = Laya.stage.height/2-100;
-                gold.pos(Laya.stage.width/2,Laya.stage.height/2);                                        
-                this.addChild(gold);    
-                Laya.Tween.to(gold,{x:x+Math.random()*300-150-25, y:y+Math.random()*300-150-22},200,Laya.Ease.quartOut,Laya.Handler.create(this,()=>{//Laya.Ease.quartOut
-                    Laya.Tween.to(gold,{x:45,y:20},250,Laya.Ease.quartIn,Laya.Handler.create(this,()=>{//Laya.Ease.quartIn
-                        gold.destroy();                                                
-                    }));
-                }));
-            });
-            if(i==19){
-                let count = 0;
-                Laya.timer.once(20*i,this,()=>{
-                    // 更改本关获得的金钱数量
-                    for (let i=Number(this.money_num.text);i<=Number(this.money_num.text)+1000;i+=2){
-                        Laya.timer.once(2*count,this,function(){
-                            this.money_num.text = String(i);
-                            if(i == this.diamond +1000){
-                                Laya.timer.once(2*(count+1),this,function(){
-                                    this.diamond += 1000;
-                                    platform.setStorageSync('diamond',this.diamond);
-                                    Laya.stage.event('likaibuzu');
-                                    this.close();
-                                    // Laya.Scene.open("gaindoublediamond.json",false);
-                                });
-                                
-                            }
-                        });
-                        count += 1;
-                    }
-                });
-            }
-        }
-    },
 
     // 计算当前时间到第二天的时间差
-    dif_to_nextday(){
+    public static dif_to_nextday(lab_countDown:Laya.Label){
         // 获取现在的小时分钟秒
         let nowhour = new Date().getHours();
         let nowmin = new Date().getMinutes();
@@ -147,7 +110,7 @@ const tools = {
         let difhour = 23 - nowhour;
         let difmin = 59 - nowmin;
         let difsec = 60 - nowsec;
-        this.shuaxinshijian.text = '任务刷新时间：' + difhour + ':' + difmin + ':' + difsec;
+        lab_countDown.text = '任务刷新时间：' + difhour + ':' + difmin + ':' + difsec;
         let sumtime = difsec + difmin * 60 + difhour *3600;
         // 时时刷新倒计时
         Laya.timer.loop(1000,this,function(){
@@ -158,29 +121,29 @@ const tools = {
                 let sec = Math.floor( (sumtime - hour*3600 - min*60) );
                 if(min<10){
                     if(sec<10){
-                        this.shuaxinshijian.text = '任务刷新时间：' + hour + ':0' + min + ':0' + sec;
+                        lab_countDown.text = '任务刷新时间：' + hour + ':0' + min + ':0' + sec;
                     }else{
-                        this.shuaxinshijian.text = '任务刷新时间：' + hour + ':0' + min + ':' + sec;
+                        lab_countDown.text = '任务刷新时间：' + hour + ':0' + min + ':' + sec;
                     }
                 }else{
                     if(sec<10){
-                        this.shuaxinshijian.text = '任务刷新时间：' + hour + ':' + min + ':0' + sec;
+                        lab_countDown.text = '任务刷新时间：' + hour + ':' + min + ':0' + sec;
                     }else{
-                        this.shuaxinshijian.text = '任务刷新时间：' + hour + ':' + min + ':' + sec;
+                        lab_countDown.text = '任务刷新时间：' + hour + ':' + min + ':' + sec;
                     }
                 }
                 console.log(hour,min,sec);
             }
             else{
                 sumtime = 59 + 59 * 60 + 23 *3600;
-                this.shuaxinshijian.text = '任务刷新时间：' + '23' + ':' + '59' + ':' + '59';
+                lab_countDown.text = '任务刷新时间：' + '23' + ':' + '59' + ':' + '59';
             }
         });
         return [difhour,difmin,difsec];
-    },
+    }
 
     // 给指定的敌人添加血槽
-    addbloodline(object,x,y){
+    public static addbloodline(object,x,y){
         // 在ui界面里把初始点画出来
         let bloodline = new Laya.Sprite();
         bloodline.graphics.drawLine(-20, -60, 20, -60, '#222222', 4);
@@ -193,11 +156,10 @@ const tools = {
         bloodline.x = x;
         bloodline.y = y;
         return bloodline;
-    },
-
+    }
 
     // 给指定UI内的对象添加小红点
-    addredtippoint(object,skinurl:string='ui/ass1/redpoint.png'){
+    public static addredtippoint(object,skinurl:string='ui/ass1/redpoint.png'){
         let redtips = new Laya.Image;
         redtips.name = 'redtips';
         redtips.skin = skinurl;
@@ -206,10 +168,10 @@ const tools = {
         redtips.height = 32;
         redtips.x = object.width - 25;
         redtips.y = -16;
-    },
+    }
 
     // 给指定UI内的对象移除小红点
-    delredtippoint(object,skinurl:string='ui/ass1/redpoint.png'){
+    public static delredtippoint(object,skinurl:string='ui/ass1/redpoint.png'){
         while(object.getChildByName('redtips')){
             let redtips = object.getChildByName('redtips') as Laya.Image;
             if(redtips){
@@ -217,15 +179,10 @@ const tools = {
                 redtips.destroy();
             }
         }
-    },
-
-    // 按钮点击放大缩小效果加音效
-    clickuibtn(object){
-        platform.playEffect('res/music/anniu.mp3');
-    },
+    }
 
     // 游戏过度动画函数
-    transition1(){
+    public static transition1(){
         let img1 = new Laya.Image;
         img1.skin = 'ui/z_bigpic/Main_BG.jpg';
         img1.width = Laya.stage.width;
@@ -247,10 +204,10 @@ const tools = {
             cell.pos(Laya.stage.width,Laya.stage.height/2);
         }));
         Laya.Tween.to(img1,{y:0},88,Laya.Ease.quartIn,Laya.Handler.create(this,()=>{}));
-    },
+    }
 
     // 游戏过度动画函数
-    transition2(){
+    public static transition2(){
         Laya.timer.once(1500,this,function(){
             let img1 = Laya.stage.getChildByName('img1') as Laya.Image;
             if(img1){
@@ -283,10 +240,10 @@ const tools = {
                 }));
             }
         });
-    },
+    }
 
     // 世界坐标转相对坐标
-    InverseTransformPoint(origin, point) {
+    public static InverseTransformPoint(origin, point) {
         var xx = new Laya.Vector3();
         origin.getRight(xx);
         var yy = new Laya.Vector3();
@@ -300,15 +257,15 @@ const tools = {
         var z = this.ProjectDistance(point, origin.position, zz1);
         var value = new Laya.Vector3(x, y, z);
         return value;
-    },
+    }
 
     // 相对坐标转世界坐标
-    TransformPoint(origin, point) {
+    public static TransformPoint(origin, point) {
         var value = new Laya.Vector3();
         Laya.Vector3.transformQuat(point, origin.rotation, value);
         Laya.Vector3.add(value, origin.position, value);
         return value;
-    },
+    }
 
     /**[SixGod]
      * 向量投影长度, 向量CA 在向量 CB 上的投影长度
@@ -316,21 +273,21 @@ const tools = {
      * @param {Laya.Vector3} C
      * @param {Laya.Vector3} B
      */
-    ProjectDistance(A, C, B) {
+    public static ProjectDistance(A, C, B) {
         var CA = new Laya.Vector3();
         Laya.Vector3.subtract(A, C, CA);
         var angle = this.Angle2(CA, B) * Math.PI / 180;
         var distance = Laya.Vector3.distance(A, C);
         distance *= Math.cos(angle);
         return distance;
-    },
+    }
 
     /**[SixGod]
      * 向量夹角
      * @param {Laya.Vector3} ma 向量A
      * @param {Laya.Vector3} mb 向量B
      */
-    Angle2(ma, mb) {
+    public static Angle2(ma, mb) {
         var v1 = (ma.x * mb.x) + (ma.y * mb.y) + (ma.z * mb.z);
         var ma_val = Math.sqrt(ma.x * ma.x + ma.y * ma.y + ma.z * ma.z);
         var mb_val = Math.sqrt(mb.x * mb.x + mb.y * mb.y + mb.z * mb.z);
@@ -341,13 +298,13 @@ const tools = {
 
         var angleAMB = Math.acos(cosM) * 180 / Math.PI;
         return angleAMB;
-    },
+    }
 
     /** 世界坐标转屏幕坐标
      * @param {Laya.Camera} camera   参照相机
      * @param {Laya.Vector3} point   需要转换的点
      */
-    WorldToScreen2(camera, point) {
+    public static WorldToScreen2(camera, point) {
         var pointA = this.InverseTransformPoint(camera.transform, point);
         var distance = pointA.z;
 
@@ -355,42 +312,19 @@ const tools = {
         camera.viewport.project(point, camera.projectionViewMatrix, out);
         var value = new Laya.Vector3(out.x / Laya.stage.clientScaleX, out.y / Laya.stage.clientScaleY, distance);
         return value;
-    },
-
-    /**[SixGod]
-     * 屏幕坐标转世界坐标
-     * @param {Laya.Camera} camera  参照相机
-     * @param {Laya.Vector3} point  需要转换的点
-     */
-    ScreenToWorld2(camera, point) {
-        var halfFOV = (camera.fieldOfView * 0.5) * Math.PI / 180;
-        let height = point.z * Math.tan(halfFOV);
-        let width = height * camera.aspectRatio;
-
-        let lowerLeft = this.GetLowerLeft(camera.transform, point.z, width, height);
-        let v = this.GetScreenScale(width, height);
-
-        // 放到同一坐标系（相机坐标系）上计算相对位置
-        var value = new Laya.Vector3();
-        var lowerLeftA = this.InverseTransformPoint(camera.transform, lowerLeft);
-        value = new Laya.Vector3(-point.x / v.x, point.y / v.y, 0);
-        Laya.Vector3.add(lowerLeftA, value, value);
-        // 转回世界坐标系
-        value = this.TransformPoint(camera.transform, value);
-        return value;
-    },
+    }
 
     // 屏幕坐标转世界坐标
-    ScreenToWorld(point: Laya.Vector3) {
+    public static ScreenToWorld(camera:Laya.Camera, point: Laya.Vector3) {
         var distance = point.z;
-        var halfFOV = (this.mainCamera.fieldOfView * 0.5) * Math.PI / 180;
+        var halfFOV = (camera.fieldOfView * 0.5) * Math.PI / 180;
         var height = distance * Math.tan(halfFOV);
-        var width = height * this.mainCamera.aspectRatio;
+        var width = height * camera.aspectRatio;
 
         // 相机在 distance距离的截面左下角世界坐标位置
         // LowerLeft
         var lowerLeft = new Laya.Vector3();
-        var tx = this.mainCamera.transform;
+        var tx = camera.transform;
 
         // lowerLeft = tx.position - (tx.right * width);
         var right = new Laya.Vector3();
@@ -423,10 +357,10 @@ const tools = {
         // 转回世界坐标系
         value = this.TransformPoint(tx, value);
         return value;
-    },
+    }
 
     // 求两个V3角度
-    getAngle(_a:Laya.Vector3, _b:Laya.Vector3):number
+    public static getAngle(_a:Laya.Vector3, _b:Laya.Vector3):number
     {
             let b:Laya.Vector3 = new Laya.Vector3(_b.x, _b.y, _b.z);
             let a:Laya.Vector3 = new Laya.Vector3(_a.x, _a.y, _a.z);
@@ -454,18 +388,18 @@ const tools = {
             let angle:number = this.radianToAngle(Math.atan(b.x / b.z)) - deltaAngle;
             // console.log("getAngle", angle);
             return angle;
-    },
+    }
 
     // 弧度转角度
-    radianToAngle(radian){
+    public static radianToAngle(radian){
         let angle = radian / Math.PI * 180;
         return angle;
-    },
+    }
 
     //深度拷贝json对象的函数，
     //source：待拷贝对象
     //返回一个新的对象
-    DeepCopy(source: Object): any 
+    public static DeepCopy(source: Object): any 
     {
         if(null == source || {} == source || [] == source)
         {
@@ -512,10 +446,42 @@ const tools = {
 	        }
 	    }
 	    return newObject;
-    },
+    }
+
+    /**
+     * 更换贴图
+     * @param bg1:3D网格精灵
+     * @param url:贴图的地址
+     */
+    public static changeTexture(MeshSpriteObj:Laya.MeshSprite3D, textureUrl:string) {
+        let bg1material = MeshSpriteObj.meshRenderer.material as laya.d3.core.material.UnlitMaterial;
+        // 换贴图
+        Laya.loader.load(textureUrl,Laya.Handler.create(this,(texture)=> {
+            bg1material.albedoTexture = texture;
+        }));
+    }
+
+    /**
+     * 修改材质球
+     * @param MeshSpriteObj:3D网格精灵
+     * @param isSharedMatretial:是否更改共享材质球
+     */
+     public static getMaterial(MeshSpriteObj:Laya.MeshSprite3D, isSharedMatretial:boolean) {
+        if(isSharedMatretial) {
+            // 修改共享材质球
+            // 获取取sharedMaterial材质球
+            var MeshSpriteMaterial = MeshSpriteObj.meshRenderer.sharedMaterial  as laya.d3.core.material.BlinnPhongMaterial;
+        }
+        else {
+            var MeshSpriteMaterial = MeshSpriteObj.meshRenderer.material  as laya.d3.core.material.BlinnPhongMaterial;
+        }
+        
+        return MeshSpriteMaterial;
+    }
+    
 
     // 原地旋转二位矩阵
-    rotateMaps(matrix:number[][]) {
+    public static rotateMaps(matrix:number[][]) {
         const n = matrix.length;
         // 倒叙循环进行90度的反转
         for (let i = n-1; i >= 0; i--) {
@@ -531,10 +497,10 @@ const tools = {
             }
         }
         return matrix;
-    },
+    }
 
     // 根据角度旋转二位矩阵
-    rotationarray(matrix:number[][],spinangle:number){
+    public static rotationarray(matrix:number[][],spinangle:number){
         let resultarray = [[0,0,0],[0,0,0],[0,0,0]];
         // 根据旋转角度选择不同的计算方法
         // console.log('spinangle = ',spinangle);
@@ -557,10 +523,10 @@ const tools = {
             }
         }
         return resultarray;
-    },
+    }
 
     // 水平翻转二维矩阵
-    xrotationarray(matrix:number[][]){
+    public static xrotationarray(matrix:number[][]){
         let resultarray = [[0,0,0],[0,0,0],[0,0,0]];
         for(let i=0;i<matrix.length;i++)
         {   
@@ -570,10 +536,10 @@ const tools = {
             }
         }
         return resultarray;
-    },
+    }
 
     // 根据角度旋转二位矩阵中的某个点
-    rotationpoint(matrix:number[][],spinangle:number,point:number[]){
+    public static rotationpoint(matrix:number[][],spinangle:number,point:number[]){
         // 根据旋转角度选择不同的计算方法
         let i = 0;
         let j = 0;
@@ -598,20 +564,20 @@ const tools = {
             j = point[0];
         }
         return [i,j];
-    },
+    }
 
     // 水平翻转二位矩阵中的某个点
-    xrotationpoint(matrix:number[][],point:number[]){
+    public static xrotationpoint(matrix:number[][],point:number[]){
         // 根据旋转角度选择不同的计算方法
         let i = 0;
         let j = 0;
         i = matrix.length-1-point[0];
         j = j;
         return [i,j];
-    },
+    }
 
     // 计算概率 固定数组结构 通过权重
-    countProByWeight(dataArr:Array<any>, isRepeat = true, count = 1)
+    public static countProByWeight(dataArr:Array<any>, isRepeat = true, count = 1)
     {
         // 数据结构必须要是 [{"weight:100"}] || [{"rate:100"}]
         let natrueArr = dataArr;
@@ -629,7 +595,7 @@ const tools = {
                     totalWeight += Number(arr[i].rate);
                 }
             }
-            let r:number = tools.getRandomIntInclusive(1, totalWeight);
+            let r:number = this.getRandomIntInclusive(1, totalWeight);
             let n:number = 0;
             for(let _i:number = 0; _i < arr.length; _i++)
             {
@@ -648,10 +614,10 @@ const tools = {
             }
         }
         return _data;
-    },
+    }
 
     // 比较敌人的移动距离
-    compare(property){
+    public static compare(property){
         return function(a,b){
             if(a && b){
                 var value1 = a[property];
@@ -664,10 +630,10 @@ const tools = {
                 else return 0;
             }
         }
-    },
+    }
 
     // 去除一个数末尾多余的0并返回
-    deletezero(num){
+    public static deletezero(num){
         num = Number(num);
         let s = num.toString();
         if(s.indexOf(".") > 0){
@@ -676,10 +642,10 @@ const tools = {
           s = s.replace("[.]$", "");//如小数点后面全是零则去掉小数点
         }
         return s;
-    },
+    }
 
     // 创建新手引导的遮罩
-    createMask():Laya.View{
+    public static createMask():Laya.View{
         var layer:Laya.View = new Laya.View();           
         layer.size(Laya.stage.width,Laya.stage.height);
         layer.zOrder = 98;      
@@ -708,108 +674,77 @@ const tools = {
         }));
 
         return layer;
-    },
-    
-    //201119
-    attr(a,b,keys:string[]=[]){
-        // if(tools.isValid(a) && tools.isValid(b)){
-            for(var i = 0;i<keys.length;i++){
-                var key = keys[i];
-                a[key] = b[key];
-            }
-        // }
-    },
+    }
 
-    isValid(node){
-        if(node){
-            return true;
+    public static ChangeListLabelFont(parent) {
+        if (parent instanceof Laya.List) {
+            var itemRenderTemp = parent.itemRender;
+            var childs = itemRenderTemp["child"];
         }
-        else return false;
-    },
+        else
+            var childs = parent;
 
-    //201119 复制精灵和img和button外观 图省事 应该有别的复制法
-    copyImgNode(node:Laya.Node,parent:Laya.Node=null){
-        if(tools.isValid(node)){                                 
-            if(node instanceof Laya.Image || node instanceof Laya.Button){
-                var a = new Laya.Image();                    
-                this.attr(a,node,[
-                    'skin','sizeGrid',
-                    'x','y','width','height','left','right','top','bottom','centerX','centerY',
-                    'pivotX','pivotY','anchorX','anchorY','scaleX','scaleY','skewX','skewY','rotation','alpha',
-                    'name','visible'
-                ]);                    
-                for(var i = 0;i<node.numChildren;i++){
-                    this.copyImgNode(node.getChildAt(i),a);
+        for (var childI = 0; childI < childs.length; childI++) {
+            var childTemp = childs[childI];
+            if (this.ttfName) {
+                if (childTemp["type"] == "Label") {
+                    childTemp["props"]["font"] = this.ttfName;
                 }
-                if(tools.isValid(parent)){
-                    parent.addChild(a);
+                var childTempsChildre = childTemp["child"]
+                if (childTempsChildre && childTempsChildre.length != 0) {
+                    this.ChangeListLabelFont(childTempsChildre);
                 }
-                return a;
-            }else if(node instanceof Laya.Label){
-                var l = new Laya.Label();
-                this.attr(l,node,[
-                    'text','italic','bold','fontSize','color','stroke','strokeColor',
-                    'x','y','width','height','left','right','top','bottom','centerX','centerY',
-                    'pivotX','pivotY','anchorX','anchorY','scaleX','scaleY','skewX','skewY','rotation','alpha',
-                    'name','visible'
-                ]);
-                for(var i = 0;i<node.numChildren;i++){
-                    this.copyImgNode(node.getChildAt(i),l);
-                }
-                if(tools.isValid(parent)){
-                    parent.addChild(l);
-                }
-                return l;
-            }else if(node instanceof Laya.Box){
-                var d = new Laya.Box();                
-                this.attr(d,node,[
-                    'bgColor',
-                    'x','y','width','height','left','right','top','bottom','centerX','centerY',
-                    'pivotX','pivotY','anchorX','anchorY','scaleX','scaleY','skewX','skewY','rotation','alpha',
-                    'name','visible'
-                ]);
-                for(var i = 0;i<node.numChildren;i++){
-                    this.copyImgNode(node.getChildAt(i),d);
-                }
-                if(tools.isValid(parent)){
-                    parent.addChild(d);
-                }
-                return d;
-
-            }else if(node instanceof Laya.Sprite){
-                var b = new Laya.Sprite();                                        
-                this.attr(b,node,[
-                    'texture',
-                    'x','y','width','height','left','right','top','bottom','centerX','centerY',
-                    'pivotX','pivotY','anchorX','anchorY','scaleX','scaleY','skewX','skewY','rotation','alpha',
-                    'name','visible'
-                ]);
-                for(var i = 0;i<node.numChildren;i++){
-                    this.copyImgNode(node.getChildAt(i),b);
-                }
-                if(tools.isValid(parent)){
-                    parent.addChild(b);
-                }
-                return b;
-            }else{
-                var c = new Laya.Sprite();                    
-                this.attr(c,node,[
-                    'x','y','width','height','left','right','top','bottom','centerX','centerY',
-                    'pivotX','pivotY','anchorX','anchorY','scaleX','scaleY','skewX','skewY','rotation','alpha',
-                    'name','visible'
-                ]);
-                for(var i = 0;i<node.numChildren;i++){
-                    this.copyImgNode(node.getChildAt(i),c);
-                }
-                if(tools.isValid(parent)){
-                    parent.addChild(c);
-                }
-                return c;
             }
         }
-    },
+    }
 
+    //循环遍历所有子物体 寻找Label
+    public static findAndChangeFont(parent, isChangeFont = true) {
+        // var widthFix = Laya.stage.width / GameConfig.width;
+        // var heightFix = Laya.stage.height / GameConfig.height;
+        // console.log("findAndChangeFont.",widthFix, heightFix);
+        for (let i = 0; i < parent._children.length; i++) {
+            let child = parent._children[i];
+            // this.sceneWFixed(child);
+            // child.scaleY = child.scaleY / this.heightFix * this.widthFix;
+
+            if (this.ttfName && isChangeFont) {
+                if (child instanceof Laya.Label) {
+                    this.ChangeLabel(child);
+                }
+                if (child._children.length != 0) {
+                    this.findAndChangeFontChild(child);
+                }
+            }
+        }
+    }
+
+    public static findAndChangeFontChild(parent) {
+        for (let i = 0; i < parent._children.length; i++) {
+            let child = parent._children[i];
+
+            if (this.ttfName) {
+                if (child instanceof Laya.Label) {
+                    this.ChangeLabel(child);
+                }
+                if (child._children.length != 0) {
+                    this.findAndChangeFontChild(child);
+                }
+            }
+        }
+    }
+
+    public static ChangeLabel(child) {
+        if (child.name == "Num_Font") {
+            child.font = this.ttfName;
+            // child.bold = true;
+            // console.log("替换字体:", this.NumfontName);
+        }
+        else {
+            child.font = this.ttfName;
+            // child.bold = true;
+        }
+
+    }
 
 }
-
-export default tools;
