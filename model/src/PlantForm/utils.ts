@@ -1,6 +1,5 @@
 import platform from "./platform";
 
-
 export default class Utils {
     constructor() { }
 

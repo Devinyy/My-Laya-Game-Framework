@@ -807,14 +807,6 @@ var platform = (()=>{
             }
         },
 
-        // 打印数据
-        console(str){
-            if(Laya.Browser.window.wx && Laya.Browser.window.wx.showToast){
-            }else{
-                console.log(str);
-            }
-        },
-
         vibrateShortWhitCD(){             
             //return;            
             if(vibrateTooOften){
@@ -824,10 +816,6 @@ var platform = (()=>{
             // if(vibrateCoolDownTimeout){
             //     clearTimeout(vibrateCoolDownTimeout);
             // }
-            vibrateCoolDownTimeout = setTimeout(()=>{
-                this.vibrateShort();
-                vibrateTooOften = false;
-            },30);
         },
 
         vibrateShort(){
