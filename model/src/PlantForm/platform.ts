@@ -465,56 +465,6 @@ var platform = (()=>{
             return isConnected;
         },
 
-        // 查看是否有此值存储
-        hasStorageSync(key:string){
-            var value = Laya.LocalStorage.getItem(key);
-            return !(value === null || value === undefined || value === '');
-        },
-
-        // 获取本地存储的键值
-        getStorageSync(key:string,type:string){
-            if(type == 'object'){
-                // let getvalue = Laya.LocalStorage.getJSON(key);
-                // console.log('getJSON' + key , getvalue);                
-                // return Laya.LocalStorage.getJSON(key);
-                var str = Laya.LocalStorage.getItem(key);
-                try{
-                    console.log('getJSON' + key , JSON.parse(str));             
-                    return JSON.parse(str);
-                }catch(err){
-                    return null;
-                }
-
-            }else{
-                var value = Laya.LocalStorage.getItem(key);
-                switch(type){
-                    default:
-                    case 'string':
-                    return value;
-                    case 'number':
-                    return Number(value);
-                    case 'boolean':
-                    return value == 'true';
-                }                
-            }
-        },        
-
-        // 往本地存数值
-        setStorageSync(key:string,value:any){
-            if(typeof value == 'object'){
-                console.log('setJSON',key,value);                
-                localStorage.setItem(key,JSON.stringify(value));
-                // Laya.LocalStorage.setJSON(key,value);
-            }else{
-                Laya.LocalStorage.setItem(key,value);
-            }
-        },
-
-        // 往本地删除数据
-        deleteStorageSync(key:string){
-            Laya.LocalStorage.removeItem(key);
-        },
-
         //初始化签到数据
         initSignInData(){
             function reset(){
