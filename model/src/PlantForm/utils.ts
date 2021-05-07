@@ -15,9 +15,7 @@ export default class Utils {
 
     // 判断当前设备的宽高比
     public static ischangping(): boolean{
-        let stagewidth = Laya.stage.width;
-        let stageheight = Laya.stage.height;
-        if (stageheight/stagewidth > 1.7795138888888888){
+        if (Laya.stage.height/Laya.stage.width > 1.7795138888888888){
             return true;
         }
         else{
@@ -750,6 +748,84 @@ export default class Utils {
             // child.bold = true;
         }
 
+    }
+
+/**
+    *
+    * @param ctrlPosArr 贝塞尔曲线控制点坐标
+    * @param precison 精度，需要计算的该条贝塞尔曲线上的点的数目
+    * @param resArr 该条贝塞尔曲线上的点（二维坐标）
+    */
+    getBezierPos(ctrlPosArr: Array<Laya.Vector3>, precison: number): Array<Laya.Vector3> {
+        // console.log(ctrlPosArr)
+        var resArr: Array<Laya.Vector3> = [];
+        precison *= 2;
+        /**贝塞尔曲线控制点数目（阶数）*/
+        var number: number = ctrlPosArr.length;
+
+        if (number < 2) {
+            console.log("控制点数不能小于 2");
+            return resArr;
+        }
+
+        /**杨辉三角数据 */
+        var yangHuiArr: Array<number> = this.getYangHuiTriangle(number);
+
+        //计算坐标
+        for (var i = 0; i < precison; i++) {
+            if (i % 2 == 1) {
+                continue;
+            }
+
+            var t: number = i / precison;
+            var tmpX: number = 0;
+            var tmpY: number = 0;
+            var tmpZ: number = 0;
+            for (let j = 0; j < number; j++) {
+
+                tmpX += Math.pow(1 - t, number - j - 1) * ctrlPosArr[j].x * Math.pow(t, j) * yangHuiArr[j];
+
+                tmpY += Math.pow(1 - t, number - j - 1) * ctrlPosArr[j].y * Math.pow(t, j) * yangHuiArr[j];
+
+                tmpZ += Math.pow(1 - t, number - j - 1) * ctrlPosArr[j].z * Math.pow(t, j) * yangHuiArr[j];
+            }
+
+
+            resArr.push(new Laya.Vector3(tmpX, tmpY, tmpZ));
+        }
+
+        return resArr;
+    }
+
+    /**
+     * 获取杨辉三角对应阶数的值
+     * @param num 杨辉三角阶数
+     */
+     getYangHuiTriangle(num: number): Array<number> {
+        //计算杨辉三角
+        var yangHuiArr = new Array<number>();
+
+        if (num === 1) {
+            yangHuiArr[0] = 1;
+        }
+        else {
+            yangHuiArr[0] = yangHuiArr[1] = 1;
+
+            for (var i = 3; i <= num; i++) {
+                var t = new Array<number>();
+                for (var j = 0; j < i - 1; j++) {
+                    t[j] = yangHuiArr[j];
+                }
+
+                yangHuiArr[0] = yangHuiArr[i - 1] = 1;
+                for (var j = 0; j < i - 2; j++) {
+                    yangHuiArr[j + 1] = t[j] + t[j + 1];
+                }
+            }
+        }
+
+        // console.log(yangHuiArr);
+        return yangHuiArr;
     }
 
 }

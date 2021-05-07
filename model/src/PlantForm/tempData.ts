@@ -1,11 +1,19 @@
 var tempData = {
     'openid' : false,
+    'auditStatus': true,
+    'lastadtype':0,
     'fontname' : '',
-    'isyindaoover': 0, // 是否通过新手引导
     'gold' : 0, // 金币
     'diamond' : 0, // 钻石数量
     'strength':0, // 体力数
     'level': 0, // 关卡
+
+    'signInDays' : 0,   // 签到天数
+    'signInDays2' : 0,   // 签到天数2
+    'signInStatus': 1,  // 签到状态
+    'signingiftarray': [  0,0,0,0,0,0,0 ],  // 签到礼包领取状态
+
+
     'lineup': [1,2,3,4,5],  // 当前出战阵容
     'lineup1': [1,2,3,4,5], // 阵容1 
     'lineup2': [1,2,3,4,5], // 阵容2 
@@ -15,7 +23,7 @@ var tempData = {
                     0,0,0,0,0,0,0,0,0,0 ],  // 现在所有的防御塔的等级
     'towerfragment': [  0,0,0,0,0,0,0,0,0,0,
                         0,0,0,0,0,0,0,0,0,0 ], // 所有拥有的防御塔的碎片
-    'signingiftarray': [  0,0,0,0,0,0,0 ],  // 签到礼包领取状态
+    
     'mission1':0, //当天的任务1
     'mission1num': 0, //当天任务1所需的达标数
     'mission2': 0, //当天的任务2
@@ -62,6 +70,7 @@ var tempData = {
     'skins': [[0,0,0,0,0,0,0,0],
               [0,0,0,0,0,0,0,0],
               [0,0,0,0,0,0,0,0],], // 所有拥有的皮肤
+              
     'inmainuitime':0, // 进入主界面的时间
     'leavetime':0, // 离开主界面的时间
     'SIGNINTIME': 0, // 本次登陆时间戳
@@ -69,68 +78,7 @@ var tempData = {
     'LEAVETIME': 0, // 离开游戏时间戳
     'issecondday': false, // 是否第二天进入游戏
     'isseconddaymission': false, // 是否第二天进入任务ui
-                         
     
-
-    'signInDays' : 0,   // 签到天数
-    'signInDays2' : 0,   // 签到天数2
-    'signInStatus': 1,  // 签到状态
-    'isclick_qiandao':  0,
-    'isgameover_to_main' : 0,
-    'isfirstplayer' : 1,
-    'uibaoxiangmodetime' : 1,  // UI中宝箱模式的切换次数
-    'uishiyongmodetime' : 1,  // UI中试用皮肤模式的切换次数
-    'isfirstshare':false, // 是否第一次分享游戏
-    'isfirstclicksong':false, // 是否第一次点击游戏
-    'isfirst1':false, // 是否第一次进入歌曲关卡
-    'isfirst2':false, // 是否第一次进入歌曲关卡
-    'isfirst3':false, // 是否第一次进入歌曲关卡
-    'isfirst4':false, // 是否第一次进入歌曲关卡
-    'isfirst5':false, // 是否第一次进入歌曲关卡
-    'isfirst6':false, // 是否第一次进入歌曲关卡
-    'isfirst7':false, // 是否第一次进入歌曲关卡
-    'isfirst8':false, // 是否第一次进入歌曲关卡
-    'isfirst9':false, // 是否第一次进入歌曲关卡
-    'isfirst10':false, // 是否第一次进入歌曲关卡
-    'isfinish1':false, // 是否完成歌曲关卡
-    'isfinish2':false, // 是否完成歌曲关卡
-    'isfinish3':false, // 是否完成歌曲关卡
-    'isfinish4':false, // 是否完成歌曲关卡
-    'isfinish5':false, // 是否完成歌曲关卡
-    'isfinish6':false, // 是否完成歌曲关卡
-    'isfinish7':false, // 是否完成歌曲关卡
-    'isfinish8':false, // 是否完成歌曲关卡
-    'isfinish9':false, // 是否完成歌曲关卡
-    'isfinish10':false, // 是否完成歌曲关卡
-    'isdie1':false, // 第一关死亡的人数
-    'isdie2':false, // 第二关死亡的人数
-    'isrevival1':false, // 第一关复活的人数
-    'isrevival2':false, // 第二关复活的人数
-    'islogin1':false,
-    'islogin2':false,
-    'islogin3':false,
-    'islogin4':false,
-    'islogin5':false,
-    'islogin6':false,
-    'islogin7':false,
-    'islogin8':false,
-    'islogin9':false,
-    'islogin10':false,
-
-    'lastadtype':0,
-
-    'todaylimitskintime':0,
-    'limitskin':0,
-
-    'todayturntabletime':0,
-
-    'isyouxijieshutanchu':0,
-    'shiyongpifu':-1,
-
-    'auditStatus': true,
-
-    'isturntableopen':false,
-
 }
 
 export default tempData;
