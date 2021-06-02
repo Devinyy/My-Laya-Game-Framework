@@ -4,12 +4,17 @@ import Dialog=Laya.Dialog;
 import Scene=Laya.Scene;
 var REG: Function = Laya.ClassUtils.regClass;
 export module ui.test {
-    export class StartUI extends Scene {
+    export class LoadUI extends Dialog {
+		public bg:Laya.Box;
+		public loadingbg:Laya.Image;
+		public Middle:Laya.Box;
+		public gamelogo:Laya.Image;
+		public stdio:Laya.Skeleton;
         constructor(){ super()}
         createChildren():void {
             super.createChildren();
-            this.loadScene("test/Start");
+            this.loadScene("test/Load");
         }
     }
-    REG("ui.test.StartUI",StartUI);
+    REG("ui.test.LoadUI",LoadUI);
 }

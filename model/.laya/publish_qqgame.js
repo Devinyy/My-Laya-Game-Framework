@@ -1,4 +1,4 @@
-// v1.8.1
+// v1.8.5
 const ideModuleDir = global.ideModuleDir;
 const workSpaceDir = global.workSpaceDir;
 
@@ -6,12 +6,13 @@ const workSpaceDir = global.workSpaceDir;
 const gulp = require(ideModuleDir + "gulp");
 const fs = require("fs");
 const path = require("path");
-const crypto = require("crypto");
 const del = require(ideModuleDir + "del");
 const revCollector = require(ideModuleDir + 'gulp-rev-collector');
-const provider = "1109625052";
-let fullRemoteEngineList = ["laya.core.js", "laya.webgl.js", "laya.filter.js", "laya.ani.js", "laya.d3.js", "laya.html.js", "laya.particle.js", "laya.ui.js", "bytebuffer.js"];
+const { getEngineVersion, getFileMd5, canUsePluginEngine } = require("./pub_utils");
 
+const provider = "1109625052";
+const minPluginVersion = "2.1.1";
+let fullRemoteEngineList = ["laya.core.js", "laya.filter.js", "laya.ani.js", "laya.tiledmap.js", "laya.d3.js", "laya.html.js", "laya.particle.js", "laya.ui.js", "laya.webgl.js", "laya.filter.js", "laya.d3Plugin.js"];
 let copyLibsTask = ["copyPlatformLibsJsFile"];
 let versiontask = ["version2"];
 
@@ -66,7 +67,7 @@ gulp.task("modifyFile_QQ", versiontask, function() {
 		versionCon = JSON.parse(versionCon);
 	}
 	let indexJsStr = (versionCon && versionCon["index.js"]) ? versionCon["index.js"] :  "index.js";
-	// 百度小游戏项目，修改index.js
+	// QQ小游戏项目，修改index.js
 	let filePath = path.join(releaseDir, indexJsStr);
 	if (!fs.existsSync(filePath)) {
 		return;
@@ -132,7 +133,7 @@ gulp.task("pluginEngin_QQ", ["version_QQ"], function(cb) {
 	if (!EngineVersion) {
 		throw new Error(`读取引擎版本号失败，请于服务提供商联系!`);
 	}
-	if (!EngineVersion || EngineVersion.includes("beta") || !canUsePluginEngine(EngineVersion)) {
+	if (!EngineVersion || EngineVersion.includes("beta") || !canUsePluginEngine(EngineVersion, minPluginVersion)) {
 		throw new Error(`该版本引擎无法使用引擎插件功能(engineVersion: ${EngineVersion})`);
 	}
 	console.log(`通过版本号检查:  ${EngineVersion}`);
@@ -172,8 +173,20 @@ gulp.task("pluginEngin_QQ", ["version_QQ"], function(cb) {
 				item = fullRemoteEngineList[i];
 				fullRequireItem = config.useMinJsLibs ? `require("./libs/min/${item}")` : `require("./libs/${item}")`;
 				if (indexJsCon.includes(fullRequireItem)) {
-					localUseEngineList.push(item);
+					let _item = item.replace(".min.js", ".js"), _minItem = item;
+					localUseEngineList.push(_item);
 					indexJsCon = indexJsCon.replace(fullRequireItem + ";", "").replace(fullRequireItem + ",", "").replace(fullRequireItem, "");
+					// 如果引用了压缩的类库，将其重命名为未压缩的类库，并拷贝到libs中
+					if (config.useMinJsLibs) {
+						let oldMinlibPath = path.join(releaseDir, "libs", "min", _minItem);
+						let newMinlibPath = path.join(releaseDir, "libs", "min", _item);
+						let newlibPath = path.join(releaseDir, "libs", _item);
+						fs.renameSync(oldMinlibPath, newMinlibPath);
+						// fs.copyFileSync(newlibPath, newMinlibPath);
+						let con = fs.readFileSync(newMinlibPath, "utf8");
+						fs.writeFileSync(newlibPath, con, "utf8");
+						fs.unlinkSync(newMinlibPath);
+					}
 				}
 			}
 			if (isOldAsProj || isNewTsProj) { // 如果as||ts_new语言，开发者将laya.js也写入index.js中了，将其删掉
@@ -201,7 +214,7 @@ gulp.task("pluginEngin_QQ", ["version_QQ"], function(cb) {
 		return new Promise(function(resolve, reject) {
 			console.log(`将本地的引擎插件移动到laya-libs中`);
 			// 3) 将本地的引擎插件移动到laya-libs中
-			let libsPath = config.useMinJsLibs ? `${releaseDir}/libs/min` : `${releaseDir}/libs`;
+			let libsPath = /** config.useMinJsLibs ? `${releaseDir}/libs/min` : */`${releaseDir}/libs`;
 			copyEnginePathList = [`${libsPath}/{${localUseEngineList.join(",")}}`];
 			if (isOldAsProj || isNewTsProj) { // 单独拷贝laya.js
 				copyEnginePathList = [`${releaseDir}/laya.js`];
@@ -239,7 +252,7 @@ gulp.task("pluginEngin_QQ", ["version_QQ"], function(cb) {
 			// plugin.json
 			let pluginCon = {"main": "index.js"};
 			fs.writeFileSync(engineplugin, JSON.stringify(pluginCon, null, 4), "utf8");
-			// signature.json
+			// signature.json，目前平台方将其作为保留用途，不会做插件的md5校验；IDE仍将生成md5
 			let signatureCon = {
 				"provider": provider,
 				"signature": []
@@ -264,90 +277,6 @@ gulp.task("pluginEngin_QQ", ["version_QQ"], function(cb) {
 		throw e;
 	})
 });
-
-function getEngineVersion() {
-	let coreLibPath = path.join(workSpaceDir, "bin", "libs", "laya.core.js");
-	let isHasCoreLib = fs.existsSync(coreLibPath);
-	let isOldAsProj = fs.existsSync(`${workSpaceDir}/asconfig.json`) && !isHasCoreLib;
-	let isNewTsProj = fs.existsSync(`${workSpaceDir}/src/tsconfig.json`) && !isHasCoreLib;
-	let EngineVersion;
-	if (isHasCoreLib) {
-		let con = fs.readFileSync(coreLibPath, "utf8");
-		let matchList = con.match(/Laya\.version\s*=\s*['"]([0-9\.]+(beta)?.*)['"]/);
-		if (!Array.isArray(matchList)) {
-			return null;
-		}
-		EngineVersion = matchList[1];
-	} else { // newts项目和旧版本as项目
-		if (isOldAsProj) {
-			let coreLibFilePath = path.join(workSpaceDir, "libs", "laya", "src", "Laya.as");
-			if (!fs.existsSync(coreLibFilePath)) {
-				return null;
-			}
-			let con = fs.readFileSync(coreLibFilePath, "utf8");
-			let matchList = con.match(/version:String\s*=\s*['"]([0-9\.]+(beta)?.*)['"]/);
-			if (!Array.isArray(matchList)) {
-				return null;
-			}
-			EngineVersion = matchList[1];
-		} else if (isNewTsProj) {
-			let coreLibFilePath = path.join(workSpaceDir, "libs", "Laya.ts");
-			if (!fs.existsSync(coreLibFilePath)) {
-				return null;
-			}
-			let con = fs.readFileSync(coreLibFilePath, "utf8");
-			let matchList = con.match(/static\s*version:\s*string\s*=\s*['"]([0-9\.]+(beta)?.*)['"]/);
-			if (!Array.isArray(matchList)) {
-				return null;
-			}
-			EngineVersion = matchList[1];
-		}
-	}
-	// 特殊处理，因为历史原因，我们有一些4位的正式版本，调整为3位
-	if (EngineVersion && /[\d\.]+/.test(EngineVersion) && EngineVersion.split(".").length > 3) {
-		let verList = EngineVersion.split(".");
-		verList.length = 3;
-		EngineVersion = verList.join(".");
-	}
-	return EngineVersion;
-}
-
-function getFileMd5(filePath) {
-	return new Promise(function(resolve, reject) {
-		let md5 = crypto.createHash('md5');
-		let stream = fs.createReadStream(filePath);
-		stream.on("data", function(data) {
-			md5.update(data);
-		});
-		stream.on("end", function() {
-			let md5Str = md5.digest('hex');
-			return resolve(md5Str);
-		});
-	});
-}
-
-function canUsePluginEngine(version) {
-	const minVersionNum = "2.1.1";
-	let compileMacthList = minVersionNum.match(/^(\d+)\.(\d+)\.(\d+)/);
-	let matchList = version.match(/^(\d+)\.(\d+)\.(\d+)/);
-	let 
-		s1n = Number(matchList[1]), // src first number
-		s2n = Number(matchList[2]),
-		s3n = Number(matchList[3]),
-		t1n = Number(compileMacthList[1]), // to first number
-		t2n = Number(compileMacthList[2]),
-		t3n = Number(compileMacthList[3]);
-    if (s1n > t1n) {
-        return true;
-	}
-    if (s1n === t1n && s2n > t2n) {
-        return true;
-    }
-    if (s1n === t1n && s2n === t2n && s3n >= t3n) {
-        return true;
-    }
-    return false;
-}
 
 gulp.task("buildQQProj", ["pluginEngin_QQ"], function() {
 	console.log("all tasks completed");

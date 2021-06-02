@@ -1,34 +1,31 @@
 (function () {
     'use strict';
 
-    var Scene = Laya.Scene;
+    var Dialog = Laya.Dialog;
     var REG = Laya.ClassUtils.regClass;
     var ui;
     (function (ui) {
         var test;
         (function (test) {
-            class StartUI extends Scene {
+            class LoadUI extends Dialog {
                 constructor() { super(); }
                 createChildren() {
                     super.createChildren();
-                    this.loadScene("test/Start");
+                    this.loadScene("test/Load");
                 }
             }
-            test.StartUI = StartUI;
-            REG("ui.test.StartUI", StartUI);
+            test.LoadUI = LoadUI;
+            REG("ui.test.LoadUI", LoadUI);
         })(test = ui.test || (ui.test = {}));
     })(ui || (ui = {}));
 
-    class Start extends ui.test.StartUI {
+    class Load extends ui.test.LoadUI {
         constructor() {
             super();
-            var scene = Laya.stage.addChild(new Laya.Scene3D());
-            var camera = (scene.addChild(new Laya.Camera(0, 0.1, 100)));
-            camera.transform.translate(new Laya.Vector3(0, 3, 3));
-            camera.transform.rotate(new Laya.Vector3(-30, 0, 0), true, false);
-            var directionLight = scene.addChild(new Laya.DirectionLight());
-            directionLight.color = new Laya.Vector3(0.6, 0.6, 0.6);
-            directionLight.transform.worldMatrix.setForward(new Laya.Vector3(1, -1, 0));
+        }
+        onAwake() {
+            this.width = Laya.stage.width;
+            this.height = Laya.stage.height;
         }
     }
 
@@ -37,16 +34,16 @@
         }
         static init() {
             var reg = Laya.ClassUtils.regClass;
-            reg("dlg/Start.ts", Start);
+            reg("view/Load.ts", Load);
         }
     }
-    GameConfig.width = 640;
-    GameConfig.height = 1136;
+    GameConfig.width = 576;
+    GameConfig.height = 1024;
     GameConfig.scaleMode = "fixedwidth";
-    GameConfig.screenMode = "none";
+    GameConfig.screenMode = "vertical";
     GameConfig.alignV = "top";
     GameConfig.alignH = "left";
-    GameConfig.startScene = "test/Start.scene";
+    GameConfig.startScene = "test/Load.scene";
     GameConfig.sceneRoot = "";
     GameConfig.debug = false;
     GameConfig.stat = false;

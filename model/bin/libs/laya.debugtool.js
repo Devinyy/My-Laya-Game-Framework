@@ -5091,7 +5091,7 @@
 	        if (this.tShowObj) {
 	            var key;
 	            key = obj["key"];
-	            this.preValueO[key] = this.tShowObj[key] = newValue;
+	            this.tShowObj[key] = this.preValueO[key] = newValue;
 	        }
 	    }
 	    showTargetInfo(tTarget) {
@@ -5116,6 +5116,10 @@
 	            var dataList;
 	            dataList = DebugPanel.getObjectData(tTarget);
 	            this.debug_view.setContents(dataList);
+	        }
+	        for (i = 0; i < len; i++) {
+	            key = DebugPanel.tObjKeys[i];
+	            this.preValueO[key] = tTarget[key];
 	        }
 	    }
 	    adptPos() {
