@@ -55,8 +55,22 @@ export default class Utils {
                 return null;
             }
         }
-        console.log('success to find node=',result.name);
         return result;
+    }
+
+    /**
+    *
+    * @param light 场景中的光线
+    * @param lightMode 阴影模式
+    * @param lightDistance 可见阴影距离
+    * @param lightResolution 生成阴影贴图尺寸
+    */
+    //设置游戏中光阴影
+    static setLightData(light: Laya.DirectionLight, lightMode: Laya.ShadowMode = Laya.ShadowMode.SoftLow, lightDistance: number = 100, lightResolution: number = 2048): void {
+        light.shadowMode = lightMode;                                       //阴影模式
+        light.shadowDistance = lightDistance;                               //可见阴影距离                        
+        light.shadowResolution = lightResolution;                           //生成阴影贴图尺寸    
+        light.shadowCascadesMode = Laya.ShadowCascadesMode.NoCascades;      //阴影的级联模式
     }
 
     // 发射投影
@@ -749,7 +763,7 @@ export default class Utils {
 
     }
 
-/**
+    /**
     *
     * @param ctrlPosArr 贝塞尔曲线控制点坐标
     * @param precison 精度，需要计算的该条贝塞尔曲线上的点的数目

@@ -1,3 +1,6 @@
+import GameCtrl from "../control/GameCtrl";
+import { Enum_viewName } from "../enum/Enum_viewName";
+import ViewMgr from "../manager/ViewMgr";
 import { ui } from "../ui/layaMaxUI";
 /**
  * 本示例采用非脚本的方式实现，而使用继承页面基类，实现页面逻辑。在IDE里面设置场景的Runtime属性即可和场景进行关联
@@ -6,16 +9,26 @@ import { ui } from "../ui/layaMaxUI";
  */
 export default class Load extends ui.test.LoadUI {
 
+    static instance: Load;
     
     constructor() {
         super();
+        Load.instance = this;
     }
 
     onAwake() {
         this.width = Laya.stage.width;
         this.height = Laya.stage.height;
+        Laya.stage.addComponent(GameCtrl);
     }
 
-    
+    onOpened() {
+        Laya.timer.once(3300, this, this.openMainUI);
+        
+    }
+
+    openMainUI() {
+        ViewMgr.openView(Enum_viewName.View_Game, true);
+    }
 
 }

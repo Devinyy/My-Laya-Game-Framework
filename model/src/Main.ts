@@ -29,6 +29,11 @@ class Main {
 	}
 
 	onConfigLoaded(): void {
+
+		// if(!Laya.Browser.window.wx) {
+		// 	Laya.Stat.show(0,0);
+		// }
+
 		//加载IDE指定的场景
 		GameConfig.startScene && Laya.Scene.open(GameConfig.startScene);
 	}
