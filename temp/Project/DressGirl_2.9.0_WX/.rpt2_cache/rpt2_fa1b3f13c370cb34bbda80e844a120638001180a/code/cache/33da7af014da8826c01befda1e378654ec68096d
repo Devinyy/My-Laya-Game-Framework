@@ -1,0 +1,8 @@
+{
+  "code": "import { GameData } from \"../Control/GameData\";\r\nimport { GameRes } from \"../Control/GameRes\";\r\nimport { SceneBase } from \"./SceneBase\";\r\nexport class EndLessScene extends SceneBase {\r\n    constructor() {\r\n        super(GameRes.Scene3D.EndLess.instance);\r\n        EndLessScene.ins = this;\r\n        this.scene.name = 'EndLessScene';\r\n    }\r\n    ready() {\r\n        return;\r\n        this.roadDataArr = GameData.Level.getEndlessLvData();\r\n        this.showbase();\r\n    }\r\n    clear() {\r\n        this.hideBase();\r\n    }\r\n    changeFood() {\r\n        for (let index = 0; index < this.endRoad.numChildren; index++) {\r\n            const child = this.endRoad.getChildAt(index);\r\n            if (child['newFood']) {\r\n                continue;\r\n            }\r\n            if (child.name.substr(0, 5) === 'FoodC') {\r\n            }\r\n        }\r\n    }\r\n}\r\n",
+  "references": [
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameData.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameRes.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Game3D/SceneBase.ts"
+  ]
+}

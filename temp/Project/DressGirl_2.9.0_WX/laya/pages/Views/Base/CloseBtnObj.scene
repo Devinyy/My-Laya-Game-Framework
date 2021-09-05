@@ -1,0 +1,37 @@
+{
+    "type":"View",
+    "selectedBox":2,
+    "searchKey":"View",
+    "props":{"y":25,"x":25,"width":50,"sceneColor":"#000000","pivotY":25,"pivotX":25,"height":50},
+    "nodeParent":-1,
+    "maxID":4,
+    "label":"View",
+    "isOpen":true,
+    "isDirectory":true,
+    "isAniNode":true,
+    "hasChild":true,
+    "compId":2,
+    "child":[
+        {
+            "type":"Image",
+            "searchKey":"Image,btnClose",
+            "props":{"y":25,"x":25,"width":48,"var":"btnClose","skin":"Game/UI/img_btn_guanbi.png","runtime":"script/Game/Views/Base/CloseBtnObj.ts","centerY":0,"centerX":0,"anchorY":0.5,"anchorX":0.5},
+            "nodeParent":2,
+            "label":"btnClose",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":3,
+            "child":[
+                ]
+        }],
+    "animations":[
+        {
+            "nodes":[
+                ],
+            "name":"ani1",
+            "id":1,
+            "frameRate":24,
+            "action":0
+        }]
+}

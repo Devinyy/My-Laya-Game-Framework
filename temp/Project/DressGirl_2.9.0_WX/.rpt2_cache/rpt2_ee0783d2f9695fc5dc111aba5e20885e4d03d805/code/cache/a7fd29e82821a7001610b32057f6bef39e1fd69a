@@ -1,0 +1,6 @@
+{
+  "code": "import { LwgGuide } from \"../../../Lwg/Lwg\";\r\nexport default class Guide extends LwgGuide.ViewGuide {\r\n    lwgOnAwake() {\r\n    }\r\n    lwgGuideCb() {\r\n    }\r\n}\r\n",
+  "references": [
+    "E:/SVN/老王哥/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Lwg/Lwg.ts"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "code": "import CloseBtnObj from \"./script/Game/Views/Base/CloseBtnObj\";\r\nimport HintBreatheObj from \"./script/Game/Views/Base/HintBreatheObj\";\r\nimport Guide from \"./script/Game/Views/Base/Guide\";\r\nimport Init from \"./script/Game/Views/Base/Init\";\r\nimport RedDotObj from \"./script/Game/Views/Base/RedDotObj\";\r\nimport SkillUpgradeObj from \"./script/Game/Views/SkillUpgradeObj\";\r\nexport default class GameConfig {\r\n    constructor() {\r\n    }\r\n    static init() {\r\n        var reg = Laya.ClassUtils.regClass;\r\n        reg(\"script/Game/Views/Base/CloseBtnObj.ts\", CloseBtnObj);\r\n        reg(\"script/Game/Views/Base/HintBreatheObj.ts\", HintBreatheObj);\r\n        reg(\"script/Game/Views/Base/Guide.ts\", Guide);\r\n        reg(\"script/Game/Views/Base/Init.ts\", Init);\r\n        reg(\"script/Game/Views/Base/RedDotObj.ts\", RedDotObj);\r\n        reg(\"script/Game/Views/SkillUpgradeObj.ts\", SkillUpgradeObj);\r\n    }\r\n}\r\nGameConfig.width = 576;\r\nGameConfig.height = 1024;\r\nGameConfig.scaleMode = \"fixedwidth\";\r\nGameConfig.screenMode = \"vertical\";\r\nGameConfig.alignV = \"top\";\r\nGameConfig.alignH = \"left\";\r\nGameConfig.startScene = \"Views/Base/Init.scene\";\r\nGameConfig.sceneRoot = \"\";\r\nGameConfig.debug = false;\r\nGameConfig.stat = false;\r\nGameConfig.physicsDebug = false;\r\nGameConfig.exportSceneToJson = true;\r\nGameConfig.init();\r\n",
+  "references": [
+    "E:/SVN/老王哥/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Game/Views/Base/CloseBtnObj.ts",
+    "E:/SVN/老王哥/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Game/Views/Base/HintBreatheObj.ts",
+    "E:/SVN/老王哥/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Game/Views/Base/Guide.ts",
+    "E:/SVN/老王哥/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Game/Views/Base/Init.ts",
+    "E:/SVN/老王哥/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Game/Views/Base/RedDotObj.ts",
+    "E:/SVN/老王哥/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Game/Views/SkillUpgradeObj.ts"
+  ]
+}

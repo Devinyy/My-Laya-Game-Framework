@@ -1,0 +1,13 @@
+{
+  "code": "import { GameEnum } from \"../Control/GameEnum\";\r\nimport { Effect3D } from \"./Effect3D\";\r\nimport { EndLessScene } from \"./EndLessScene\";\r\nimport { MainScene } from \"./MainScene\";\r\nimport { Role } from \"./Role\";\r\nimport { SkinScene } from \"./SkinScene\";\r\nimport { SkinShowScene } from \"./SkinShowScene\";\r\nexport var Control3D;\r\n(function (Control3D) {\r\n    class init {\r\n        constructor() {\r\n            new MainScene();\r\n            new EndLessScene();\r\n            new Role();\r\n            new Effect3D();\r\n            new SkinScene();\r\n            new SkinShowScene();\r\n        }\r\n    }\r\n    Control3D.init = init;\r\n    function start(sprint) {\r\n        Role.ins.setState(GameEnum.RoleState.Start, [sprint]);\r\n    }\r\n    Control3D.start = start;\r\n    function hideAll() {\r\n        SkinScene.ins.hide();\r\n        MainScene.ins.scene.active = false;\r\n        MainScene.ins.clear();\r\n        EndLessScene.ins.scene.active = false;\r\n        EndLessScene.ins.clear();\r\n    }\r\n    Control3D.hideAll = hideAll;\r\n    function showMainScene() {\r\n        hideAll();\r\n        MainScene.ins.scene.active = true;\r\n        MainScene.ins.ready();\r\n        Role.ins.changeScene(MainScene.ins.scene);\r\n        Role.ins.setState(GameEnum.RoleState.Ready);\r\n    }\r\n    Control3D.showMainScene = showMainScene;\r\n    function showEndLess() {\r\n        hideAll();\r\n        EndLessScene.ins.scene.active = true;\r\n        EndLessScene.ins.ready();\r\n        Role.ins.changeScene(EndLessScene.ins.scene);\r\n        Role.ins.setState(GameEnum.RoleState.Ready);\r\n    }\r\n    Control3D.showEndLess = showEndLess;\r\n    function showSkinScene() {\r\n        hideAll();\r\n        SkinScene.ins.show();\r\n    }\r\n    Control3D.showSkinScene = showSkinScene;\r\n})(Control3D || (Control3D = {}));\r\n",
+  "references": [
+    "E:/svn/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Game/Control/GameData.ts",
+    "E:/svn/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Game/Control/GameEnum.ts",
+    "E:/svn/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Game/Game3D/Effect3D.ts",
+    "E:/svn/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Game/Game3D/EndLessScene.ts",
+    "E:/svn/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Game/Game3D/MainScene.ts",
+    "E:/svn/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Game/Game3D/Role.ts",
+    "E:/svn/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Game/Game3D/SkinScene.ts",
+    "E:/svn/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Game/Game3D/SkinShowScene.ts"
+  ]
+}

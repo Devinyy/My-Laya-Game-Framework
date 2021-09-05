@@ -1,0 +1,47 @@
+{ 
+"RECORDS": 
+[
+  {
+    "ID": 1,
+    "describe": "引导玩家生命值",
+    "step": 5,
+    "type": "flight_hp",
+    "value": "4000"
+  },
+  {
+    "ID": 2,
+    "describe": "引导玩家攻击力",
+    "step": 5,
+    "type": "flight_attack",
+    "value": "800"
+  },
+  {
+    "ID": 3,
+    "describe": "开局文字介绍",
+    "step": 1,
+    "type": "start_des",
+    "value": "我要吃得更多，进化为更强的恐龙，打败关卡最后的邪恶恐龙！"
+  },
+  {
+    "ID": 4,
+    "describe": "变身文字介绍",
+    "step": 2,
+    "type": "change_des",
+    "value": "带有食物标志的门可以改变我的进化路线！"
+  },
+  {
+    "ID": 5,
+    "describe": "进化文字介绍",
+    "step": 3,
+    "type": "evolve_des",
+    "value": "吃到更多的食物能使我进化为更强的恐龙！"
+  },
+  {
+    "ID": 6,
+    "describe": "食物文字介绍",
+    "step": 4,
+    "type": "food_des",
+    "value": "根据进化路线，我只能吃素食或者肉食的一种才能变强，吃错了食物会受伤的！"
+  }
+]
+}

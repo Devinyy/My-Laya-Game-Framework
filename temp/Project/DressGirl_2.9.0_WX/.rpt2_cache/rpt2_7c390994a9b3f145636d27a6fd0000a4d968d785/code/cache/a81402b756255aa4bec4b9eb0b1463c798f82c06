@@ -1,0 +1,11 @@
+{
+  "code": "import { GameData } from \"../Control/GameData\";\r\nimport { GameRes } from \"../Control/GameRes\";\r\nimport { SceneBase } from \"./SceneBase\";\r\nexport class MainScene extends SceneBase {\r\n    constructor() {\r\n        super(GameRes.Scene3D.MainScene.instance);\r\n        MainScene.ins = this;\r\n        this.scene.name = 'MainScene';\r\n    }\r\n    ready() {\r\n        this.roleType = null;\r\n        this.roadDataArr = GameData.Level.getRoadDataArr();\r\n        this.showbase();\r\n        for (let index = 0; index < this.roadDataArr.length - 3; index++) {\r\n            const element = this.roadDataArr[index];\r\n            this.mileageTotal += element.length;\r\n        }\r\n    }\r\n    clear() {\r\n        this.hideBase();\r\n    }\r\n}\r\n",
+  "references": [
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Lwg/Lwg.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameData.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameEnum.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameEvent.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameRes.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Game3D/SceneBase.ts"
+  ]
+}

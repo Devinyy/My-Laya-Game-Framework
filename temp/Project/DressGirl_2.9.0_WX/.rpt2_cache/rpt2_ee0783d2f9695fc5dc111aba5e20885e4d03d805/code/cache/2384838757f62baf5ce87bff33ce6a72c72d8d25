@@ -1,0 +1,7 @@
+{
+  "code": "import { LwgPreLoad } from \"../../../Lwg/Lwg\";\r\nimport { GameResCutIn } from \"../../Control/GameRes\";\r\nexport default class PreLoadCutIn extends LwgPreLoad.PreLoadCutInScene {\r\n    lwgOpenAniAfter() {\r\n        this.lodeStart([this.preLoadOpenName] ? GameResCutIn[this.preLoadOpenName] : {});\r\n    }\r\n    lwgAllComplete() {\r\n        return 10;\r\n    }\r\n}\r\n",
+  "references": [
+    "E:/SVN/老王哥/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Lwg/Lwg.ts",
+    "E:/SVN/老王哥/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Game/Control/GameRes.ts"
+  ]
+}

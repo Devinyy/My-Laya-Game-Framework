@@ -1,0 +1,6 @@
+{
+  "code": "export default class SubPkg {\r\n    constructor(packList, endCb) {\r\n        this.loadBasePacks(packList, endCb);\r\n    }\r\n    loadBasePacks(packList, cb) {\r\n        if (Laya.Browser.window.wx) {\r\n            Laya.Stat.hide();\r\n            const list = packList;\r\n            const temp = () => {\r\n                const name = list.shift();\r\n                if (name) {\r\n                    const loadTask = Laya.Browser.window.wx.loadSubpackage({\r\n                        name: name,\r\n                        success: (res) => {\r\n                            console.log('分包加载成功=', name);\r\n                            temp();\r\n                        },\r\n                        fail: (res) => {\r\n                            console.log('分包加载失败=', name);\r\n                            list.unshift(name);\r\n                            setTimeout(temp, 1000);\r\n                        }\r\n                    });\r\n                }\r\n                else {\r\n                    cb && cb();\r\n                }\r\n            };\r\n            temp();\r\n        }\r\n        else {\r\n            cb && cb();\r\n        }\r\n    }\r\n    ;\r\n}\r\n",
+  "references": [
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Lwg/Lwg.ts"
+  ]
+}

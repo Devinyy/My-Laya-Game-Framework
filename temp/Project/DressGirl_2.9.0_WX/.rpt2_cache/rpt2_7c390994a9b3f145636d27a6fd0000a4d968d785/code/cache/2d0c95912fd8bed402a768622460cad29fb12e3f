@@ -1,0 +1,16 @@
+{
+  "code": "import { LwgCurrency, LwgScene } from \"../../Lwg/Lwg\";\r\nimport { GameData } from \"../Control/GameData\";\r\nimport { GameEnum } from \"../Control/GameEnum\";\r\nimport GameSceneName from \"../Control/GameSceneName\";\r\nimport { Role } from \"../Game3D/Role\";\r\nimport { SkinShowScene } from \"../Game3D/SkinShowScene\";\r\nexport default class SkinTry extends LwgScene.SceneBase {\r\n    lwgOnAwake() {\r\n        SkinShowScene.ins.show(this.owner, this.openData.id);\r\n    }\r\n    lwgButton() {\r\n        this.btnOnUpAD(this.owner.btnTry, () => {\r\n            const name = GameData.Skin.getNameByID(this.openData.id);\r\n            Role.ins.changeSkin(null, null, name);\r\n            this.rule();\r\n        });\r\n        this.btnOnUp(this.owner.btnDirect, () => {\r\n            this.rule();\r\n        });\r\n    }\r\n    rule() {\r\n        if (GameData.Level.mode === GameEnum.LevelMode.common) {\r\n            LwgCurrency.Stamina.addNumDisPlayNode(-5);\r\n        }\r\n        this.openScene(GameSceneName.Levels);\r\n    }\r\n}\r\n",
+  "references": [
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/ui/layaMaxUI.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Lwg/Lwg.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameData.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameEnum.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameRes.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameSceneName.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameType.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Game3D/Control3D.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Game3D/Role.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Game3D/SkinScene.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Game3D/SkinShowScene.ts"
+  ]
+}

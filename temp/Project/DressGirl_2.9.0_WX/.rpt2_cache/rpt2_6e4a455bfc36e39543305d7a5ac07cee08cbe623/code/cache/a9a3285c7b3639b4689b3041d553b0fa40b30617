@@ -1,0 +1,16 @@
+{
+  "code": "import { LwgCurrency, LwgPlatform, LwgScene } from \"../../Lwg/Lwg\";\r\nimport { GameData } from \"../Control/GameData\";\r\nimport { GameEnum } from \"../Control/GameEnum\";\r\nimport GameSceneName from \"../Control/GameSceneName\";\r\nexport default class PropTry extends LwgScene.SceneBase {\r\n    lwgOnAwake() {\r\n        if (LwgPlatform.type === LwgPlatform.EmType.OPPO) {\r\n            this.owner.btnADNative.visible = true;\r\n            this.owner.btnADGet.centerX = 140;\r\n        }\r\n        if (GameData.Level.mode === GameEnum.LevelMode.endless) {\r\n            this.owner.lbDescribe.text = '使用后可无敌冲刺5秒';\r\n        }\r\n        else {\r\n            this.owner.lbDescribe.text = '使用后可无敌冲刺5秒';\r\n        }\r\n    }\r\n    lwgButton() {\r\n        this.btnOnUpAD(this.owner.btnADGet, () => {\r\n            this.rule(GameEnum.MoveForwardArgs.sprint);\r\n        });\r\n        this.btnOnUp(this.owner.btnDirect, () => {\r\n            this.rule(GameEnum.MoveForwardArgs.none);\r\n        });\r\n    }\r\n    rule(prop) {\r\n        const openData = {\r\n            sprint: prop,\r\n        };\r\n        if (GameData.Level.mode === GameEnum.LevelMode.common) {\r\n            LwgCurrency.Stamina.addNumDisPlayNode(-5);\r\n        }\r\n        this.openScene(GameSceneName.Levels, openData);\r\n    }\r\n}\r\n",
+  "references": [
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/ui/layaMaxUI.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Lwg/Lwg.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameData.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameEnum.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameRes.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameSceneName.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameType.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Game3D/Control3D.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Game3D/Role.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Game3D/SkinScene.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Game3D/SkinShowScene.ts"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "code": "import { LwgPreLoad } from \"../../../Lwg/Lwg\";\r\nimport { GameEnum } from \"../../Control/GameEnum\";\r\nimport { GameResCutIn } from \"../../Control/GameRes\";\r\nimport GameSceneName from \"../../Control/GameSceneName\";\r\nimport { Role } from \"../../Game3D/Role\";\r\nexport default class PreLoadCutIn extends LwgPreLoad.PreLoadCutInBase {\r\n    lwgOpenAniAfter() {\r\n        this.lodeStart([this.preLoadOpenName] ? GameResCutIn[this.preLoadOpenName] : {});\r\n        if (this.preLoadOpenName === GameSceneName.Start) {\r\n            Role.ins.setState(GameEnum.RoleState.Suspend);\r\n        }\r\n    }\r\n    lodeAllComplete() {\r\n        return 800;\r\n    }\r\n}\r\n",
+  "references": [
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Lwg/Lwg.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameEnum.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameRes.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameSceneName.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Game3D/Role.ts"
+  ]
+}

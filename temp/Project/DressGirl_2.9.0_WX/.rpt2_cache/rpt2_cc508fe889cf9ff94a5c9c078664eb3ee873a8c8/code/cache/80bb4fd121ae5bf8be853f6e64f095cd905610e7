@@ -1,0 +1,14 @@
+{
+  "code": "import { LwgScene, LwgTimer } from \"../../Lwg/Lwg\";\r\nimport { GameEnum } from \"../Control/GameEnum\";\r\nimport { GameEvent } from \"../Control/GameEvent\";\r\nimport { Role } from \"../Game3D/Role\";\r\nexport default class Resurgence extends LwgScene.SceneBase {\r\n    constructor() {\r\n        super(...arguments);\r\n        this.countDown = 9;\r\n    }\r\n    lwgOnAwake() { }\r\n    lwgOpenAniAfter() {\r\n        LwgTimer.numLoop(1000, 10, this, () => {\r\n            this.countDown -= 1;\r\n            if (this.countDown === -1) {\r\n                this.countDown = 0;\r\n                this.evNotify(GameEvent.defeated);\r\n                this.closeScene();\r\n            }\r\n            this.owner.ftcCountDown.value = this.countDown.toString();\r\n        });\r\n    }\r\n    lwgButton() {\r\n        this.btnOnUpAD(this.owner.btnResurgence, () => {\r\n            Role.ins.setState(GameEnum.RoleState.Resurgence, [this.openData.type]);\r\n            this.closeScene();\r\n        });\r\n        this.btnOnUp(this.owner.btnAbandon, () => {\r\n            this.evNotify(GameEvent.defeated);\r\n            this.closeScene();\r\n        });\r\n    }\r\n}\r\n",
+  "references": [
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/ui/layaMaxUI.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Lwg/Lwg.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameData.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameEnum.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameEvent.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameRes.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameSceneName.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameType.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Game3D/Role.ts"
+  ]
+}

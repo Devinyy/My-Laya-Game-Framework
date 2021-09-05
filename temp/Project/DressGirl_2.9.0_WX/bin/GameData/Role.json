@@ -1,0 +1,185 @@
+{ 
+"RECORDS": 
+[
+  {
+    "ID": 201,
+    "name": "dino_201",
+    "chName": "吃货小龙",
+    "describe": "基础默认",
+    "type": "0",
+    "level": -1,
+    "pathWay": 0,
+    "condition": -1,
+    "battle": false,
+    "attribute": "0_初始"
+  },
+  {
+    "ID": 202,
+    "name": "dino_202",
+    "chName": "黑红霸王龙",
+    "describe": "食肉boss",
+    "type": "999",
+    "level": -1,
+    "pathWay": 0,
+    "condition": -1,
+    "battle": false,
+    "attribute": "0_初始"
+  },
+  {
+    "ID": 203,
+    "name": "dino_203",
+    "chName": "肯特龙",
+    "describe": "食素初级",
+    "type": "A_1",
+    "level": 1,
+    "pathWay": 0,
+    "condition": -1,
+    "battle": true,
+    "attribute": "0_初始"
+  },
+  {
+    "ID": 204,
+    "name": "dino_204",
+    "chName": "三角龙",
+    "describe": "食素中级",
+    "type": "B_1",
+    "level": 2,
+    "pathWay": 0,
+    "condition": -1,
+    "battle": true,
+    "attribute": "0_初始"
+  },
+  {
+    "ID": 205,
+    "name": "dino_205",
+    "chName": "戟龙",
+    "describe": "食素高级",
+    "type": "E_1",
+    "level": 3,
+    "pathWay": 0,
+    "condition": -1,
+    "battle": true,
+    "attribute": "0_初始"
+  },
+  {
+    "ID": 206,
+    "name": "dino_206",
+    "chName": "副栉龙",
+    "describe": "食肉初级",
+    "type": "C_1",
+    "level": 1,
+    "pathWay": 0,
+    "condition": -1,
+    "battle": true,
+    "attribute": "0_初始"
+  },
+  {
+    "ID": 207,
+    "name": "dino_207",
+    "chName": "异龙",
+    "describe": "食肉高级",
+    "type": "F_1",
+    "level": 3,
+    "pathWay": 0,
+    "condition": -1,
+    "battle": true,
+    "attribute": "0_初始"
+  },
+  {
+    "ID": 208,
+    "name": "dino_208",
+    "chName": "迅猛龙",
+    "describe": "食肉中级",
+    "type": "D_1",
+    "level": 2,
+    "pathWay": 0,
+    "condition": -1,
+    "battle": true,
+    "attribute": "0_初始"
+  },
+  {
+    "ID": 209,
+    "name": "dino_209",
+    "chName": "剑龙",
+    "describe": "食素初级皮肤",
+    "type": "A_2",
+    "level": 1,
+    "pathWay": 3,
+    "condition": 7,
+    "battle": false,
+    "attribute": "1_500"
+  },
+  {
+    "ID": 210,
+    "name": "dino_210",
+    "chName": "埃德蒙顿甲龙",
+    "describe": "食素中级皮肤",
+    "type": "B_2",
+    "level": 2,
+    "pathWay": 4,
+    "condition": 3,
+    "battle": false,
+    "attribute": "1_1000"
+  },
+  {
+    "ID": 211,
+    "name": "dino_211",
+    "chName": "巨型甲龙",
+    "describe": "食素高级皮肤",
+    "type": "E_2",
+    "level": 3,
+    "pathWay": 4,
+    "condition": 3,
+    "battle": false,
+    "attribute": "1_1500"
+  },
+  {
+    "ID": 212,
+    "name": "dino_212",
+    "chName": "伤齿龙",
+    "describe": "食肉初级皮肤",
+    "type": "C_2",
+    "level": 1,
+    "pathWay": 4,
+    "condition": 3,
+    "battle": false,
+    "attribute": "2_5"
+  },
+  {
+    "ID": 213,
+    "name": "dino_213",
+    "chName": "变异迅猛龙",
+    "describe": "食肉中级皮肤",
+    "type": "D_2",
+    "level": 2,
+    "pathWay": 4,
+    "condition": 3,
+    "battle": false,
+    "attribute": "2_10"
+  },
+  {
+    "ID": 214,
+    "name": "dino_214",
+    "chName": "岩浆霸王龙",
+    "describe": "食肉高级皮肤",
+    "type": "F_2",
+    "level": 3,
+    "pathWay": 4,
+    "condition": 3,
+    "battle": false,
+    "attribute": "2_15"
+  },
+  {
+    "ID": 215,
+    "name": "dino_215",
+    "chName": "腕龙",
+    "describe": "食素boss",
+    "type": "888",
+    "level": -1,
+    "pathWay": 0,
+    "condition": -1,
+    "battle": false,
+    "attribute": "NaN"
+  }
+]
+}

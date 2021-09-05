@@ -1,0 +1,6 @@
+{
+  "code": "import { LwgAni2D, LwgScene } from \"../../../Lwg/Lwg\";\r\nexport default class HintBreathe extends LwgScene.RuntimeImgBase {\r\n    constructor() {\r\n        super();\r\n    }\r\n    onAwake() {\r\n        this.breatheBtnHint();\r\n    }\r\n    breatheBtnHint() {\r\n        LwgAni2D.circulation_scale(this, 0.05, 200, 0, () => {\r\n            this.breatheBtnHint();\r\n        });\r\n    }\r\n}\r\n",
+  "references": [
+    "E:/SVN/老王哥/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Lwg/Lwg.ts"
+  ]
+}

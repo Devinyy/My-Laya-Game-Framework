@@ -1,0 +1,7 @@
+{
+  "code": "import { LwgScene } from \"../../../Lwg/Lwg\";\r\nexport class DialogHint extends LwgScene.SceneBase {\r\n    lwgOnAwake() {\r\n        this.owner.boxTitle.visible = false;\r\n        this.owner.btnCloseDouble.visible = false;\r\n    }\r\n    lwgButton() {\r\n        this.btnOnUp(this.owner.btnCloseDouble, () => {\r\n            this.closeScene();\r\n        });\r\n        this.btnOnUpAD(this.owner.btnConfirmDouble, () => {\r\n            this.openData.onBtnConfirm && this.openData.onBtnConfirm();\r\n            this.closeScene();\r\n        });\r\n        this.btnOnUp(this.owner.btnCancelDouble, () => {\r\n            this.closeScene();\r\n        });\r\n    }\r\n}\r\n",
+  "references": [
+    "E:/svn/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/ui/layaMaxUI.ts",
+    "E:/svn/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Lwg/Lwg.ts"
+  ]
+}

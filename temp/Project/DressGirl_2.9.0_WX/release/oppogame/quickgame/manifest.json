@@ -1,0 +1,27 @@
+{
+    "package": "com.lekequ.kxbgg.nearme.gamecenter",
+    "name": "开心蹦高高",
+    "versionName": "1.0",
+    "versionCode": 1,
+    "minPlatformVersion": 1060,
+    "icon": "./512icon_02.png",
+    "orientation": "portrait",
+    "type": "game",
+    "config": {
+        "logLevel": "log"
+    },
+    "subpackages": [
+        {
+            "name": "res",
+            "root": "res//"
+        },
+        {
+            "name": "Game3D",
+            "root": "Game3D//"
+        },
+        {
+            "name": "Game",
+            "root": "Game//"
+        }
+    ]
+}

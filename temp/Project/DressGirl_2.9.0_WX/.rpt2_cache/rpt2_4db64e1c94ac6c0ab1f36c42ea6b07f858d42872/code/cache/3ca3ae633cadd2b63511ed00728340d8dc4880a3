@@ -1,0 +1,11 @@
+{
+  "code": "import { GameRes } from \"../Control/GameRes\";\r\nimport { SkinBase } from \"./SkinBase\";\r\nexport class SkinShowScene extends SkinBase {\r\n    constructor() {\r\n        super();\r\n        SkinShowScene.ins = this;\r\n        this.scene = GameRes.Scene3D.SkinShow.instance;\r\n        this.camera = this.scene.getChildByName('Main Camera');\r\n        this.fieldOfViewFirst = this.camera.fieldOfView;\r\n        this.cameraFLP = this.camera.transform.localPositionY;\r\n        this.scene.name = 'SkinShowScene';\r\n        this.skinShowPoint = this.scene.getChildByName('SkinShowPoint');\r\n        if (Laya.Browser.pixelRatio >= 16 / 9) {\r\n            this.camera.fieldOfView = this.fieldOfViewFirst + 5;\r\n        }\r\n        else {\r\n            this.camera.fieldOfView = this.fieldOfViewFirst;\r\n        }\r\n        this.skin = GameRes.Prefab3D.role01.instance.clone();\r\n        this.skinShowPoint.addChild(this.skin);\r\n        this.init();\r\n    }\r\n    show(view, id1, id2, id3) {\r\n        this.change(id1, id2, id3);\r\n        view.addChild(this.scene);\r\n    }\r\n    change(id1, id2, id3) {\r\n        id1 && this.changePart(id1);\r\n        id2 && this.changePart(id2);\r\n        id3 && this.changePart(id3);\r\n    }\r\n}\r\n",
+  "references": [
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Lwg/Lwg.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameData.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameEnum.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameRes.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameType.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Game3D/SkinBase.ts"
+  ]
+}

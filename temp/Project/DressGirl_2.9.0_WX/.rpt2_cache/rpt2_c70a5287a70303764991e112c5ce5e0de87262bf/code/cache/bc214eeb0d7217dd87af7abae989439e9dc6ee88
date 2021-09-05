@@ -1,0 +1,9 @@
+{
+  "code": "import { LwgTools } from \"../../Lwg/Lwg\";\r\nimport { GameData } from \"../Control/GameData\";\r\nimport { GameEnum } from \"../Control/GameEnum\";\r\nimport { GameRes } from \"../Control/GameRes\";\r\nexport class SkinShowScene {\r\n    constructor() {\r\n        SkinShowScene.ins = this;\r\n        this.scene = GameRes.Scene3D.SkinShow.instance;\r\n        this.camera = this.scene.getChildByName('Main Camera');\r\n        this.fieldOfViewFirst = this.camera.fieldOfView;\r\n        this.cameraFLP = this.camera.transform.localPositionY;\r\n    }\r\n    showSkin(view, name) {\r\n        view.addChild(this.scene);\r\n        if (Laya.Browser.pixelRatio >= 16 / 9) {\r\n            this.camera.fieldOfView = this.fieldOfViewFirst + 5;\r\n        }\r\n        else {\r\n            this.camera.fieldOfView = this.fieldOfViewFirst;\r\n        }\r\n        const DinoPoint = this.scene.getChildByName('DinoPoint');\r\n        LwgTools.Node.destroyAllChildren(DinoPoint);\r\n        const skin = GameRes.Prefab3D[name].instance.clone();\r\n        if (skin) {\r\n            DinoPoint.addChild(skin);\r\n            const aniCilp = GameData.Animator.getClipNameByRoleNameAndAni(skin.name, GameEnum.RoleAni.idle);\r\n            LwgTools.D3.playAnimator(skin, aniCilp);\r\n            skin.transform.localRotationEuler = new Laya.Vector3(0, 0, 0);\r\n        }\r\n        else {\r\n            console.log('当前皮肤不存在!');\r\n        }\r\n    }\r\n}\r\n",
+  "references": [
+    "E:/svn/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Lwg/Lwg.ts",
+    "E:/svn/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Game/Control/GameData.ts",
+    "E:/svn/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Game/Control/GameEnum.ts",
+    "E:/svn/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Game/Control/GameRes.ts"
+  ]
+}

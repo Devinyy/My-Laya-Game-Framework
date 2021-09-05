@@ -1,0 +1,54 @@
+{
+    "x":0,
+    "type":"View",
+    "selectedBox":2,
+    "selecteID":4,
+    "searchKey":"View",
+    "props":{"width":480,"sceneColor":"#a6a6a6","height":80},
+    "nodeParent":-1,
+    "maxID":5,
+    "label":"View",
+    "isOpen":true,
+    "isDirectory":true,
+    "isAniNode":true,
+    "hasChild":true,
+    "compId":2,
+    "child":[
+        {
+            "x":15,
+            "type":"Label",
+            "searchKey":"Label,lbKey",
+            "props":{"width":320,"var":"lbKey","valign":"middle","text":"key","height":40,"fontSize":30,"font":"Microsoft YaHei","color":"#ffffff","centerY":0,"centerX":-121,"align":"right"},
+            "nodeParent":2,
+            "label":"lbKey",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":3,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
+            "type":"TextInput",
+            "searchKey":"TextInput,txPValue",
+            "props":{"width":186,"var":"txPValue","text":"5","skin":"Lwg/UI/img_rectangle_mask_07.png","sizeGrid":"18,28,18,26","height":59,"fontSize":30,"font":"Microsoft YaHei","color":"#36ffee","centerY":0,"centerX":136,"bold":true},
+            "nodeParent":2,
+            "label":"txPValue",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":4,
+            "child":[
+                ]
+        }],
+    "animations":[
+        {
+            "nodes":[
+                ],
+            "name":"ani1",
+            "id":1,
+            "frameRate":24,
+            "action":0
+        }]
+}

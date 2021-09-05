@@ -1,0 +1,9 @@
+{
+  "code": "import { LwgScene, LwgControl } from \"../../Lwg/Lwg\";\r\nimport { GameData } from \"../Control/GameData\";\r\nimport GameSceneName from \"../Control/GameSceneName\";\r\nexport default class Defeated extends LwgScene.SceneBase {\r\n    lwgOpenAniAfter() {\r\n        this.owner.lbLvNum.text = LwgControl.Game.level.toString();\r\n        GameData.Sound.playSoundByID(20);\r\n    }\r\n    lwgButton() {\r\n        this.btnOnUp(this.owner.btnAgain, () => {\r\n            this.openScene(GameSceneName.Start);\r\n        });\r\n        this.btnOnUp(this.owner.btnSkip, () => {\r\n            LwgControl.Game.level++;\r\n            this.openScene(GameSceneName.Start);\r\n        });\r\n    }\r\n}\r\n",
+  "references": [
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/ui/layaMaxUI.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Lwg/Lwg.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameData.ts",
+    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Game/Control/GameSceneName.ts"
+  ]
+}

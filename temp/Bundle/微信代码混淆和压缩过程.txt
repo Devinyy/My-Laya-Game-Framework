@@ -1,0 +1,6 @@
+1.安装混淆：命令npm install javascript-obfuscator -g全局安装一下javascript-obfuscator
+2.安装压缩：命令npm install esbuild -g全局安装一下esbuild
+3.安装好了以后，在任意位置建立文件夹，将bundle.js放在文件夹中
+4.执行混淆命令：javascript-obfuscator bundle.js --output bundle_new.js，会生成一个混淆后的文件bundle_new.js
+5.执行压缩：esbuild bundle_new.js --bundle --outfile=bundle_end.js，会生成一个压缩后的文件bundle_end.js
+6.将bundle_end.js重命名成bundle.js以后，替换掉发布好的bundle.js

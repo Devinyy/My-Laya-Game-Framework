@@ -1,0 +1,9 @@
+{
+  "code": "import { GameRes } from \"../Control/GameRes\";\r\nexport class SkinSceneShow {\r\n    constructor() {\r\n        SkinSceneShow.ins = this;\r\n        this.scene = GameRes.Scene3D.SkinScene.instance;\r\n        this.camera = this.scene.getChildByName('Main Camera');\r\n        this.fieldOfViewFirst = this.camera.fieldOfView;\r\n        this.cameraFLP = this.camera.transform.localPositionY;\r\n    }\r\n    add(scene, name) {\r\n    }\r\n}\r\n",
+  "references": [
+    "E:/svn/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Lwg/Lwg.ts",
+    "E:/svn/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Game/Control/GameData.ts",
+    "E:/svn/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Game/Control/GameEnum.ts",
+    "E:/svn/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Game/Control/GameRes.ts"
+  ]
+}

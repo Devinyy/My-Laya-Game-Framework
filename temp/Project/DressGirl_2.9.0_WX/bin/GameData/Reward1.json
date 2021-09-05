@@ -1,0 +1,546 @@
+{ 
+"RECORDS": 
+[
+  {
+    "ID": 10001,
+    "describe": "签到奖励1",
+    "item1": [
+      102
+    ],
+    "number1": [
+      200
+    ],
+    "weight1": [
+      100
+    ],
+    "item2": [
+      null
+    ],
+    "number2": [
+      null
+    ],
+    "weight2": [
+      null
+    ],
+    "item3": [
+      null
+    ],
+    "number3": [
+      null
+    ],
+    "weight3": [
+      null
+    ]
+  },
+  {
+    "ID": 10002,
+    "describe": "签到奖励2",
+    "item1": [
+      102
+    ],
+    "number1": [
+      300
+    ],
+    "weight1": [
+      100
+    ],
+    "item2": [
+      null
+    ],
+    "number2": [
+      null
+    ],
+    "weight2": [
+      null
+    ],
+    "item3": [
+      null
+    ],
+    "number3": [
+      null
+    ],
+    "weight3": [
+      null
+    ]
+  },
+  {
+    "ID": 10003,
+    "describe": "签到奖励3",
+    "item1": [
+      102
+    ],
+    "number1": [
+      500
+    ],
+    "weight1": [
+      100
+    ],
+    "item2": [
+      null
+    ],
+    "number2": [
+      null
+    ],
+    "weight2": [
+      null
+    ],
+    "item3": [
+      null
+    ],
+    "number3": [
+      null
+    ],
+    "weight3": [
+      null
+    ]
+  },
+  {
+    "ID": 10004,
+    "describe": "签到奖励4",
+    "item1": [
+      102
+    ],
+    "number1": [
+      800
+    ],
+    "weight1": [
+      100
+    ],
+    "item2": [
+      null
+    ],
+    "number2": [
+      null
+    ],
+    "weight2": [
+      null
+    ],
+    "item3": [
+      null
+    ],
+    "number3": [
+      null
+    ],
+    "weight3": [
+      null
+    ]
+  },
+  {
+    "ID": 10005,
+    "describe": "签到奖励5",
+    "item1": [
+      102
+    ],
+    "number1": [
+      1000
+    ],
+    "weight1": [
+      100
+    ],
+    "item2": [
+      null
+    ],
+    "number2": [
+      null
+    ],
+    "weight2": [
+      null
+    ],
+    "item3": [
+      null
+    ],
+    "number3": [
+      null
+    ],
+    "weight3": [
+      null
+    ]
+  },
+  {
+    "ID": 10006,
+    "describe": "签到奖励6",
+    "item1": [
+      102
+    ],
+    "number1": [
+      1200
+    ],
+    "weight1": [
+      100
+    ],
+    "item2": [
+      null
+    ],
+    "number2": [
+      null
+    ],
+    "weight2": [
+      null
+    ],
+    "item3": [
+      null
+    ],
+    "number3": [
+      null
+    ],
+    "weight3": [
+      null
+    ]
+  },
+  {
+    "ID": 10007,
+    "describe": "签到奖励7",
+    "item1": [
+      206
+    ],
+    "number1": [
+      1
+    ],
+    "weight1": [
+      100
+    ],
+    "item2": [
+      212
+    ],
+    "number2": [
+      1
+    ],
+    "weight2": [
+      100
+    ],
+    "item3": [
+      216
+    ],
+    "number3": [
+      1
+    ],
+    "weight3": [
+      100
+    ]
+  },
+  {
+    "ID": 10008,
+    "describe": "转盘1",
+    "item1": [
+      102
+    ],
+    "number1": [
+      300
+    ],
+    "weight1": [
+      100
+    ],
+    "item2": [
+      null
+    ],
+    "number2": [
+      null
+    ],
+    "weight2": [
+      null
+    ],
+    "item3": [
+      null
+    ],
+    "number3": [
+      null
+    ],
+    "weight3": [
+      null
+    ]
+  },
+  {
+    "ID": 10009,
+    "describe": "转盘2",
+    "item1": [
+      102
+    ],
+    "number1": [
+      500
+    ],
+    "weight1": [
+      100
+    ],
+    "item2": [
+      null
+    ],
+    "number2": [
+      null
+    ],
+    "weight2": [
+      null
+    ],
+    "item3": [
+      null
+    ],
+    "number3": [
+      null
+    ],
+    "weight3": [
+      null
+    ]
+  },
+  {
+    "ID": 10010,
+    "describe": "转盘3",
+    "item1": [
+      102
+    ],
+    "number1": [
+      800
+    ],
+    "weight1": [
+      100
+    ],
+    "item2": [
+      null
+    ],
+    "number2": [
+      null
+    ],
+    "weight2": [
+      null
+    ],
+    "item3": [
+      null
+    ],
+    "number3": [
+      null
+    ],
+    "weight3": [
+      null
+    ]
+  },
+  {
+    "ID": 10011,
+    "describe": "转盘4",
+    "item1": [
+      102
+    ],
+    "number1": [
+      1000
+    ],
+    "weight1": [
+      100
+    ],
+    "item2": [
+      null
+    ],
+    "number2": [
+      null
+    ],
+    "weight2": [
+      null
+    ],
+    "item3": [
+      null
+    ],
+    "number3": [
+      null
+    ],
+    "weight3": [
+      null
+    ]
+  },
+  {
+    "ID": 10012,
+    "describe": "转盘5",
+    "item1": [
+      102
+    ],
+    "number1": [
+      1500
+    ],
+    "weight1": [
+      100
+    ],
+    "item2": [
+      null
+    ],
+    "number2": [
+      null
+    ],
+    "weight2": [
+      null
+    ],
+    "item3": [
+      null
+    ],
+    "number3": [
+      null
+    ],
+    "weight3": [
+      null
+    ]
+  },
+  {
+    "ID": 10013,
+    "describe": "转盘6",
+    "item1": [
+      102
+    ],
+    "number1": [
+      2000
+    ],
+    "weight1": [
+      100
+    ],
+    "item2": [
+      null
+    ],
+    "number2": [
+      null
+    ],
+    "weight2": [
+      null
+    ],
+    "item3": [
+      null
+    ],
+    "number3": [
+      null
+    ],
+    "weight3": [
+      null
+    ]
+  },
+  {
+    "ID": 10014,
+    "describe": "转盘",
+    "item1": [
+      102,
+      103,
+      102,
+      103,
+      102,
+      103,
+      102,
+      999
+    ],
+    "number1": [
+      100,
+      10,
+      200,
+      20,
+      100,
+      30,
+      500,
+      1
+    ],
+    "weight1": [
+      50,
+      50,
+      60,
+      40,
+      30,
+      15,
+      5,
+      1
+    ],
+    "item2": [
+      null
+    ],
+    "number2": [
+      null
+    ],
+    "weight2": [
+      null
+    ],
+    "item3": [
+      null
+    ],
+    "number3": [
+      null
+    ],
+    "weight3": [
+      null
+    ]
+  },
+  {
+    "ID": 10015,
+    "describe": "通关奖励九选三",
+    "item1": [
+      102,
+      102,
+      102,
+      102,
+      102,
+      102,
+      102,
+      102,
+      999
+    ],
+    "number1": [
+      150,
+      200,
+      250,
+      300,
+      350,
+      400,
+      450,
+      500,
+      1
+    ],
+    "weight1": [
+      45,
+      40,
+      35,
+      30,
+      25,
+      20,
+      15,
+      10,
+      1
+    ],
+    "item2": [
+      null
+    ],
+    "number2": [
+      null
+    ],
+    "weight2": [
+      null
+    ],
+    "item3": [
+      null
+    ],
+    "number3": [
+      null
+    ],
+    "weight3": [
+      null
+    ]
+  },
+  {
+    "ID": 10016,
+    "describe": "签到奖励替换备用",
+    "item1": [
+      102
+    ],
+    "number1": [
+      1000
+    ],
+    "weight1": [
+      100
+    ],
+    "item2": [
+      null
+    ],
+    "number2": [
+      null
+    ],
+    "weight2": [
+      null
+    ],
+    "item3": [
+      null
+    ],
+    "number3": [
+      null
+    ],
+    "weight3": [
+      null
+    ]
+  }
+]
+}

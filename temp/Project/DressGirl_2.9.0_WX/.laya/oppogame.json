@@ -1,0 +1,108 @@
+{
+    "copyFilesFilter": [
+        "../bin/**/*.*"
+    ],
+    "openDataZone": false,
+    "compressJson": false,
+    "compressJsonFilter": [
+        "$basePath/**/*.{json,atlas}"
+    ],
+    "compressJsonNoteList": [
+        ""
+    ],
+    "compressImage": false,
+    "compressImageFilter": [
+        "$basePath/**/*.{png,jpg}"
+    ],
+    "compressImageNoteList": [
+        ""
+    ],
+    "compressJs": false,
+    "compressJsFilter": [
+        "$basePath/**/*.js",
+        "!$basePath/libs/min/**/*.js"
+    ],
+    "compressJsNoteList": [
+        "",
+        ""
+    ],
+    "version": false,
+    "versionFilter": [
+        "$basePath/**/*.*",
+        "!$basePath/*.html",
+        "!$basePath/{version.json,game.js,game.json,project.config.json,weapp-adapter.js,project.swan.json,swan-game-adapter.js,main.js,gameConfig.json,my-adapter.js,microgame-adapter.js,qg-adapter.js,huawei-adapter.js,adapter.js,}",
+        "!$basePath/layaforqq/**/*.*"
+    ],
+    "versionNoteList": [
+        "",
+        "",
+        "",
+        ""
+    ],
+    "exclude": false,
+    "excludeFilter": [
+        "!$basePath/res/**/*.*"
+    ],
+    "vexcludeNoteList": [
+        ""
+    ],
+    "packfile": false,
+    "keepPlatformFile": true,
+    "packfileFilter": [
+        ""
+    ],
+    "packfileFullValue": [
+        "$basePath/**/*.*"
+    ],
+    "packfileTargetValue": "",
+    "packfileNoteList": [
+        ""
+    ],
+    "clearReleaseDir": true,
+    "compile": true,
+    "forceCompile": false,
+    "onlyIndexJS": true,
+    "useMinJsLibs": true,
+    "es6toes5": false,
+    "projectType": "ts",
+    "pubTime": 1629467938262,
+    "oppoInfo": {
+        "name": "开心蹦高高",
+        "projName": "quickgame",
+        "package": "com.lekequ.kxbgg.nearme.gamecenter",
+        "icon": "E:\\svn\\泡泡\\Bubble_Laya_2.9.0\\Project\\512icon_02.png",
+        "versionName": "1.0",
+        "versionCode": 1,
+        "minPlatformVersion": 1060,
+        "orientation": "portrait",
+        "logLevel": "log",
+        "adbDebug": true,
+        "apkUpdate": true,
+        "useReleaseSign": true,
+        "subpack": true
+    },
+    "oppoSign": {
+        "generateSign": false,
+        "countryName": "CN",
+        "provinceName": "",
+        "localityName": "",
+        "orgName": "",
+        "orgUnitName": "",
+        "commonName": "",
+        "emailAddr": ""
+    },
+    "oppoSubpack": [
+        {
+            "name": "res",
+            "root": "res//"
+        },
+        {
+            "name": "Game3D",
+            "root": "Game3D//"
+        },
+        {
+            "name": "Game",
+            "root": "Game//"
+        }
+    ]
+}
