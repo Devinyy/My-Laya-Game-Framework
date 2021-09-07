@@ -2,7 +2,7 @@
     "x":0,
     "type":"View",
     "selectedBox":40,
-    "selecteID":32,
+    "selecteID":31,
     "searchKey":"View",
     "props":{"width":576,"sceneColor":"#b7b7b7","height":1024},
     "nodeParent":-1,
@@ -241,20 +241,6 @@
                 {
                     "x":30,
                     "type":"Image",
-                    "searchKey":"Image,btnDirect",
-                    "props":{"y":292,"var":"btnDirect","valign":"middle","text":"直接领取","skin":"Game/UI/img_icon_text_zhijielingqu.png","fontSize":30,"color":"#ffffff","centerX":0,"bold":true,"anchorY":0.5,"anchorX":0.5,"align":"center"},
-                    "nodeParent":40,
-                    "label":"btnDirect",
-                    "isDirectory":false,
-                    "isAniNode":true,
-                    "hasChild":false,
-                    "compId":31,
-                    "child":[
-                        ]
-                },
-                {
-                    "x":30,
-                    "type":"Image",
                     "searchKey":"Image,btnADGet",
                     "props":{"y":212,"width":280,"var":"btnADGet","skin":"Game/UI/img_btn_common_01_normal.png","runtime":"script/Game/Views/Base/AnimationObj.ts","height":110,"centerX":-1,"anchorY":0.5,"anchorX":0.5},
                     "nodeParent":40,
@@ -323,6 +309,20 @@
                             "child":[
                                 ]
                         }]
+                },
+                {
+                    "x":30,
+                    "type":"Image",
+                    "searchKey":"Image,btnDirect",
+                    "props":{"y":292,"var":"btnDirect","valign":"middle","text":"直接领取","skin":"Game/UI/img_icon_text_zhijielingqu.png","fontSize":30,"color":"#ffffff","centerX":0,"bold":true,"anchorY":0.5,"anchorX":0.5,"align":"center"},
+                    "nodeParent":40,
+                    "label":"btnDirect",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":31,
+                    "child":[
+                        ]
                 }]
         },
         {

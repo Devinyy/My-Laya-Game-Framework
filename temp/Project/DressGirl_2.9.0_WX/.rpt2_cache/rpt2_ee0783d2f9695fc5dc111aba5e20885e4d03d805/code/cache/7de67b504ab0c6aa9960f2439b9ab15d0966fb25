@@ -1,6 +1,0 @@
-{
-  "code": "import { LwgEvent } from \"../../Lwg/Lwg\";\r\nexport class GameEvent extends LwgEvent.BaseEvent {\r\n}\r\nGameEvent.changeBoss = 'changeBoss';\r\nGameEvent.updateScore = 'updateScore';\r\nGameEvent.attackByClick = 'attackByClick';\r\nGameEvent.attackByClickStart = 'attackByClickStart';\r\nGameEvent.attackByClickEnd = 'attackByClickEnd';\r\nGameEvent.updateLevelDisplay = 'updateLevelDisplay';\r\nGameEvent.readyVSBOSS = 'readyVSBOSS';\r\nGameEvent.changeBossForm = 'changeBossForm';\r\nGameEvent.updateBossHP = 'updateBossHP';\r\nGameEvent.updateRoleHP = 'updateRoleHP';\r\nGameEvent.updateGrowthValue = 'updateGrowthValue';\r\nGameEvent.updateLvSchedule = 'updateLvSchedule';\r\nGameEvent.updateDiamond = 'updateDiamond';\r\nGameEvent.victory = 'victory';\r\nGameEvent.defeated = 'defeated';\r\nGameEvent.pickedKey = 'pickedKey';\r\nGameEvent.updateKeyNumStart = 'updateKeyNumStart';\r\nGameEvent.updateKeLuckyWheelBtn = 'updateKeLuckyWheelBtn';\r\n",
-  "references": [
-    "E:/SVN/老王哥/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Lwg/Lwg.ts"
-  ]
-}

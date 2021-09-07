@@ -1,1 +1,1 @@
-"use strict";console.log("subRes loaded;");
+console.log("1");

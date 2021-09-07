@@ -432,7 +432,7 @@ export module StateControl {
      */
     export class stateBase {
         /**
-         * 游戏重新准备的时候，重置属性
+         * 游戏重新准备的时候，重置属性，清除所有timer和tween
          */
         reset?: Function;
         /**
@@ -525,6 +525,11 @@ export module StateControl {
             return this.speedBase + this.speedBubble + this.speedSprint;
         }
 
+        /**
+         * 移动方向，默认为Z轴正方向
+         */
+        direction: string;
+
         bubbleCaller: any = {};
         isBubble: boolean;
         bubbleAddSpeed = 0;
@@ -557,6 +562,8 @@ export module StateControl {
                     // console.log(this.speedBase, this.speedBubble, this.speedSprint);
                 });
             }
+            Laya.timer.clearAll(this.bubbleCaller);
+            Laya.timer.clearAll(this.sprintCaller);
         }
         action(args: any[] = []): void {
             // console.log('移动参数：', args);
@@ -571,7 +578,7 @@ export module StateControl {
                 }
                 this.bubble();
             }
-            Laya.timer.frameLoop(1, this, this.actionCb);
+            Laya.timer.loop(16, this, this.actionCb);
         }
         private actionCb(): void {
             LwgEvent.notify(GameEvent.addMileageCur, [this.speed]);
@@ -629,21 +636,12 @@ export module StateControl {
         // stopSprint(): void {
         //     Laya.timer.clearAll(this.sprintCaller);
         // }
-
         actionStop(): void {
             Laya.timer.clear(this, this.actionCb);
 
         }
     }
 
-    /**
-      * 移动范围
-      */
-    export let gMoveScope: [number, number];
-    /**
-     * 移动范围
-     */
-    export let gMoveCameraScope: [number, number];
     /**
      * 横向移动
      */
@@ -654,79 +652,116 @@ export module StateControl {
             this.reset();
         }
         /**
+         * 当前移动方向的中心点坐标，控制左右移动范围
+         */
+        dirCenter: number;
+        public get roleScope(): [number, number] {
+            return [this.dirCenter - 10, this.dirCenter + 10];
+        }
+        public get cameraScope(): [number, number] {
+            return [this.dirCenter - 6, this.dirCenter + 6];
+        }
+        /**
          * 速度
          */
         speed: number;
+        isDestination = false;
         reset(): void {
+            this.dirCenter = 0;
             this.speed = 0.06;
-            gMoveScope = [-10, 10];
-            gMoveCameraScope = [-6, 6];
             this.isDestination = false;
         }
-        isDestination = false;
         /**
          * 记录横向移动是按下的X位置
          */
         mouseX: number;
+        nowMouseX: number;
+        moveType: string = 'normal';
         action(): void {
+            Laya.stage.on(Laya.Event.MOUSE_DOWN, this, this.stageDown);
             Laya.stage.on(Laya.Event.MOUSE_MOVE, this, this.stageMove);
             Laya.stage.on(Laya.Event.MOUSE_UP, this, this.stageUp);
             Laya.stage.on(Laya.Event.MOUSE_OUT, this, this.stageUp);
         }
-        private stageMove(event: Laya.Event): void {
-            if (this.isDestination) {
-                return;
+        private stageDown(event: Laya.Event): void {
+            //当笔状态为聚拢时，点击重新展开为线型
+            this.mouseX = event.stageX;
+            this.nowMouseX = event.stageX;
+            if (this.moveType != 'normal') {
+                Laya.timer.frameLoop(1, this, this.startMove2);
             }
-            if (this.mouseX) {
-                this.setScopeLimit(Role.ins.cameraPoint, event);
-                this.setScopeLimit(Role.ins.role, event);
-                this.mouseX = event.stageX;
-            } else {
-                this.mouseX = event.stageX;
+        }
+        private startMove2(): void {
+            this.setScopeLimit(Role.ins.cameraPoint, this.nowMouseX);
+            this.setScopeLimit(Role.ins.role, this.nowMouseX);
+        }
+        private stageMove(event: Laya.Event): void {
+            this.nowMouseX = event.stageX;
+            if (this.moveType == 'normal') {
+                if (this.mouseX) {
+                    this.setScopeLimit(Role.ins.cameraPoint, this.nowMouseX);
+                    this.setScopeLimit(Role.ins.role, this.nowMouseX);
+                    this.mouseX = event.stageX;
+                } else {
+                    this.mouseX = event.stageX;
+                }
             }
         }
         /**
          * 设置横向移动范围上线
          * @param target 
-         * @param e  Laya.Event
+         * @param e  number 当前的鼠标 x 轴位置
          */
-        setScopeLimit(target: Laya.Sprite3D, e: Laya.Event): void {
+        setScopeLimit(target: Laya.Sprite3D, e: number): void {
             let croMouseX = this.mouseX;
-            let diffX = e.stageX - croMouseX;
-            let targetX = 0;
+            let diffX = e - croMouseX;
             if (target == Role.ins.cameraPoint) {
-                targetX = target.transform.position.x - diffX * this.speed * 0.6;
+                if (this.moveType == 'normal') {
+                    target.transform.position = new Laya.Vector3(target.transform.position.x - diffX * this.speed * 0.6, target.transform.position.y, target.transform.position.z);
+                } else {
+                    target.transform.translate(new Laya.Vector3(-diffX * this.speed * 1.0 * 0.015, target.transform.position.y, 0));
+                }
+
             } else {
-                targetX = target.transform.position.x - diffX * this.speed;
+                if (this.moveType == 'normal') {
+                    target.transform.position = new Laya.Vector3(target.transform.position.x - diffX * this.speed * 1.0, target.transform.position.y, target.transform.position.z);
+                } else {
+                    target.transform.translate(new Laya.Vector3(-diffX * this.speed * 1.0 * 0.015, target.transform.position.y, 0));
+                }
             }
-            target.transform.position = new Laya.Vector3(targetX, target.transform.position.y, target.transform.position.z)
             //摄像机
             const posTarget = target.transform.position.clone();
 
             if (target == Role.ins.cameraPoint) {
-                if (target.transform.position.x < gMoveCameraScope[0]) {
-                    target.transform.position = new Laya.Vector3(gMoveCameraScope[0], posTarget.y, posTarget.z);
+                if (target.transform.position.x < this.cameraScope[0]) {
+                    target.transform.position = new Laya.Vector3(this.cameraScope[0], posTarget.y, posTarget.z);
                 }
-                if (target.transform.position.x > gMoveCameraScope[1]) {
-                    target.transform.position = new Laya.Vector3(gMoveCameraScope[1], posTarget.y, posTarget.z);
+                if (target.transform.position.x > this.cameraScope[1]) {
+                    target.transform.position = new Laya.Vector3(this.cameraScope[1], posTarget.y, posTarget.z);
                 }
             } else {
-                if (target.transform.position.x < gMoveScope[0]) {
-                    target.transform.position = new Laya.Vector3(gMoveScope[0], posTarget.y, posTarget.z);
+                if (target.transform.position.x < this.roleScope[0]) {
+                    target.transform.position = new Laya.Vector3(this.roleScope[0], posTarget.y, posTarget.z);
                 }
-                if (target.transform.position.x > gMoveScope[1]) {
-                    target.transform.position = new Laya.Vector3(gMoveScope[1], posTarget.y, posTarget.z);
+                if (target.transform.position.x > this.roleScope[1]) {
+                    target.transform.position = new Laya.Vector3(this.roleScope[1], posTarget.y, posTarget.z);
                 }
             }
         }
         private stageUp(e: Laya.Event): void {
             this.mouseX = null;
+            Laya.timer.clear(this, this.startMove2);
         }
         actionStop(): void {
             this.mouseX = null;
+            // Role.ins.isFocus = false;
+            Laya.stage.off(Laya.Event.MOUSE_DOWN, this, this.stageDown);
             Laya.stage.off(Laya.Event.MOUSE_MOVE, this, this.stageMove);
             Laya.stage.off(Laya.Event.MOUSE_UP, this, this.stageUp);
             Laya.stage.off(Laya.Event.MOUSE_OUT, this, this.stageUp);
+            if (this.moveType != 'normal') {
+                Laya.timer.clear(this, this.startMove2);
+            }
         }
     }
 
@@ -814,6 +849,7 @@ export module StateControl {
         }
         reset(): void {
             this.isInvincible = false;
+            Laya.timer.clearAll(this.invincibleCaller);
         }
         /**
          * 无敌状态
@@ -891,13 +927,13 @@ export module StateControl {
          * 达到这个值出现彩虹套装
          */
         rainbowEnergyMaxNum = 50;
-        rainbowCaller = {};
         errorCaller = {};
         isDestination = false;
         diamondSumNum = 0;
         reset(): void {
             this.rainbowEnergyNum = Math.round(this.rainbowEnergyMaxNum * GameData.Skill.getSkillAdditionByType(GameEnum.SkillType.energy));
             this.diamondSumNum = 0;
+            Laya.timer.clearAll(this.errorCaller);
         }
         action(args: any = [], continueCb: Function, defeatedCb: Function): void {
             const bubble = args[0] as GameType.BubbleSp3D as GameType.BubbleSp3D;
@@ -1023,6 +1059,8 @@ export module StateControl {
 
         reset(): void {
             Bubble.ins.isDestination = false;
+            LwgAni3D.ClearTween(Role.ins.role);
+            LwgAni3D.ClearTween(Role.ins.cameraPoint);
         }
 
         action(args: any[] = [], continueCb: Function): void {

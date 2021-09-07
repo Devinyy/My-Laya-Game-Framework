@@ -67,6 +67,11 @@ export module GameType {
         type: GameEnum.ResurgenceType.drop,
     }
 
+    export type SoundData = {
+        format: string
+        type: number,
+    } & LwgData.TpBase;
+
     /**
       * item中的属性
       */

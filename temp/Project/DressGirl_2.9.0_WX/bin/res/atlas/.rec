@@ -26,6 +26,28 @@ R 2A22856B audio_zhongdian.mp3
 R 62EF18A4 audio_zhuanpan01.mp3
 R E70C4F6C audio_zhuanpan02.mp3
 R 71E2E1C3 audio_zuanshi.mp3
+D Game/SoundWav
+R BA75FCD7 audio_bgm.wav
+R C0D2A893 audio_bianzhuang.wav
+R BB7F8D69 audio_chick.wav
+R E1ABE776 audio_choose.wav
+R D620BD54 audio_cuowu.wav
+R E8340797 audio_daoju.wav
+R 80C4B482 audio_kaixiang.wav
+R 5EA9459B audio_levelup.wav
+R 28435597 audio_lose.wav
+R 0BB2A8E1 audio_paopao1.wav
+R A8D6E2B6 audio_paopao2.wav
+R 00A0FD77 audio_paopao3.wav
+R 1EE5A148 audio_paopao4.wav
+R 0002E27B audio_pengzhuang.wav
+R 918D929E audio_pifu.wav
+R 94DFA952 audio_siwang.wav
+R 7FD034B6 audio_win.wav
+R 02E89DE7 audio_zhongdian.wav
+R 37DF44FE audio_zhuanpan01.wav
+R B408303B audio_zhuanpan02.wav
+R 44D5CD21 audio_zuanshi.wav
 D Game/UI
 P 91ED9196 bg_xinshou.png
 P ECAE8E91 CursorHand2.png
@@ -56,7 +78,8 @@ P E99CD58D img_btn_mainui_gengduohaowan.png
 P 59E6EBF9 img_btn_mainui_pifu_normal.png
 P 2EB6DC53 img_btn_mainui_qiandao_normal.png
 P ACAF602C img_btn_mainui_shengji_normal.png
-P A5F5D92B img_btn_mainui_tianjiazhuomian.png
+P EE099EA9 img_btn_mainui_tianjiazhuomian.png
+P A5F5D92B img_btn_mainui_tianjiazhuomian2.png
 P 28959B21 img_btn_mainui_wujin_normal.png
 P BA7F55B9 img_btn_mainui_zhuanpan_normal.png
 P 30D6A827 img_btn_money_add_normal.png

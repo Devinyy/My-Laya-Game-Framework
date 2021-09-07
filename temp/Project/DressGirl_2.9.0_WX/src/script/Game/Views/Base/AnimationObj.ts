@@ -1,3 +1,4 @@
+import { FlowLightSprite } from "../../../Lwg/FlowLightSprite";
 import { LwgAni2D, LwgScene, LwgTimer } from "../../../Lwg/Lwg";
 
 /**
@@ -9,6 +10,12 @@ export default class AnimationObj extends LwgScene.RuntimeImgBase {
     }
     lwgOnAwake(): void {
         this.breatheBtnHint();
+        if (this.name === 'imgLogo') {
+            let flowLightSp = new FlowLightSprite();
+            flowLightSp.loadImage("Init/Preload/img_LOGO.png");
+            flowLightSp.zOrder = 1000;
+            this.addChild(flowLightSp);
+        }
     }
     /**b
      * 呼吸按钮提示

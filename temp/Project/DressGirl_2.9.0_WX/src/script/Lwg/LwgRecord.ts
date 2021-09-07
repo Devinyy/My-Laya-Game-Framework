@@ -200,7 +200,7 @@ export module record {
 
         '.智能注释插件': '搜索‘注释’下载插件即可，注意里面的快捷键',
 
-        书写通用代码片段: '搜索javascript.json,这个文件是实例，教如何写出代码片段的，在里面新建一个文件后缀例如lwg.code-snippets，可以设置通用代码片段，格式参考javascirpt.json，在每段前面增加\n为换行，$1为光标所在位置，\t为缩进',
+        书写通用代码片段: '搜索javascript.json,这个文件是实例，教如何写出代码片段的，在里面新建一个文件后缀例如lwg.code-snippets，可以设置通用代码片段，格式参考javascirpt.json，在每段前面增加/n为换行，$1为光标所在位置，/t为缩进',
 
         // vsCode软件相关
         // 显示资源管理器：Ctrl + Shift + E
@@ -379,7 +379,7 @@ export module record {
             3: '资源加载不出02,上传平台，如果还有些资源包括文件夹，因为大小写对不上而加载不出来，但是在浏览器中可能会忽略大小写',
             4: '如果无法横屏，可以在game.json的第一列改变设备的横竖屏"deviceOrientation": "sensor_landscape",landscape横屏 portrait竖屏 sensor_landscape横屏(双方向) sensor_portrait竖屏(双方向)',
         },
-        OV: {
+        OPPO: {
             1: '如果出现一些类似于npm、cmd、node-modoul、VIVO-minigame等问题，很有可能是nodejs、npm出现问题，卸载安装nodejs，有时候也有必要安装一下VIVO-minigame，网上搜索‘VIVO-minigame’即可通过npm安装',
             2: '网上教程可以用eclipse连接手机进行调试，如果控制面板中的安卓连接出现问题，可能是没有驱动，可以通过豌豆荚app，他会自动安装连接的驱动',
             3: '手机上快应用游戏调试器如果消失了，可以通过设置->应用->显示系统进程找到，卸载重装也是个方法，下载地址 https://activity-cdo.heytapimage.com/cdo-activity/static/201810/26/quickgame/documentation/#/games/use',
@@ -403,11 +403,78 @@ export module record {
                 6: '分包生成的rpk在和不分生成的rpk只能存在一个包文件，否则不能找到最新的',
                 7: 'eclipse日志被自动清空的解决办法 https://www.cnblogs.com/lenve/p/5865918.html',
                 8: '使用7-zip软件可以查看压缩包内的分包情况',
+                9: '分包目录下增加main.js,并且里面不要是空的，随便加一段',
+                10: "勾选调起手机调试可以自动将包放入对应文件夹，不需要再赋值，直接打开快游戏就可以调试新包",
+            },
+        },
+        VIVO: {
+            1: 'chrome调试路径为devtools://devtools/bundled/inspector.html?v8only=true&ws=手机IP地址:5086/00010002-0003-4004-8005-000600070008',
+            2: "chrome调试必须在同一个局域网下",
+            3: "开始步骤如下https://ldc2.layabox.com/doc/?nav=zh-ts-5-4-0",
+            4: "打包填写的签名和oppo一样，其余填写的内容也和oppo一样",
+            5: "扫码安装不成功，将包放在内部存储设备下路径games中，没有则新建一个,然后点击小游戏调试器中的本地安装即可安装",
+            分包: {
+                分包目录下: '分包目录下放game.js'
             },
         },
         ByteDance: {
             1: '打包成字节小游戏不通过，则用打包成微信小游戏也可以上传',
             2: 'bin文件夹下project.config.json需要手动添加appid',
+        },
+        Android: {
+            构建app: "构建app的Native release 版本要和laya版本一致,Android工程，填写好包名，资源路径，勾选单机",
+            2: '下载安卓sdk',
+            3: '下载安装java的jdk,流行java8（java1.8.0）',
+            查看jdk版本: '报错类似the project uses Gradle 2.9 which is incompatible with IDEA running on Java 10 or newer的问题，可能是java版本不对， File>Project Structure>SDk Location>JDk.... Gradle Setting> Gradle JDK > Android Studio java home 后面是当前安装的Jdk版本',
+
+            5: "报错类似License for package Android SDK Build-Tools 28 not accepted. 是没有允许认证，File>SDK Location >Android SDK Location 找到skd的文件夹，进入C:/Users/admin/AppData/Local/Android/Sdk/tools/bin执行命令sdkmanager.bat --licenses，执行之后，它会提示你去允许认证，然后命令会提醒你确定y/n（accept lincense），一路y下去便可以了",
+
+            6: "native 运行器和安卓打包有声音没有画面，可能是因为bin/index.js中的屏幕方向设置不对",
+
+            7: '资源改变后可以直接用layanative2 refreshres命令刷新,然后打包apk，就不用重新构建app了',
+            
+            8: 'MP3音效转成ogg或者wav',
+
+            9: '生成.jks文件的方法，任意文件夹内用git输入如下格式keytool -genkey -keyalg RSA -keysize 1024 -validity 365 -dname "CN=spdb, OU=spdb,O=spdb, L=shanghai, ST=shanghai, C=CN" -alias csii_key -keypass 888888 -keystore test.jks -storepass 123456,123456是密码',
+            更换icon: '更换icon在 android_studio/app/src/main/res/drawable中放一张图片，android_studio/app/src/main/AndroidManifest.xml中的有一条为android:icon="@drawable/icon_02"替换图片地址即可',
+
+            11: '如果包名上有unsigin说明没有签名库，也就是说没有.jks文件',
+
+            修改屏幕横竖屏: '项目中bin/index.js中，修改屏幕参数后还需再android studio中修改屏幕参数，使这两个参数一致，例如修改成竖屏后，游戏中是对的，但是开始动画中一般默认为横屏，并且可能导致两者混乱，导致旋转有问题，android_studio/app/src/main/AndroidManifest.xml中有一条android:screenOrientation="portrait"，横竖屏修改方法和bin/index.js中一样',
+
+            刷新Android工程: "npm安装layanative2 后,如果只是更新资源和代码可以直接用layanative2 refreshres刷新，无需重新构建,必须在工程目录下",
+
+            13: '报错类似Caused by: org.gradle.api.internal.plugins.PluginApplicationException: Failed to apply plugin [id ‘com.android.internal.application在 Gradle.Scripts中的gradle.properties 添加android.overridePathCheck=true',
+
+            14: 'Android工程目录地址不要有中文',
+
+            修改开始屏幕的样式: "android_studio/app/src/main/assets/scripts/config.js,中有window.loadingView.bgColor，window.loadingView.setFontColor等属性参数可以修改，android_studio/app/src/main/res/layout中修改开始屏幕的样式，颜色和图片都可以替换",
+
+            修改调试模式参数: "打开android_studio/app/src/main/assets/config.ini，修改JSDebugMode的值,设置需要的调试模式1或者2，0为不调试，正式版时调回来",
+            真机调试JS: "https://ldc2.layabox.com/doc/?nav=zh-ts-6-1-8",
+            关于包名: "app/src/main/res/AndroidManifest.xml中的包名和src/build.Gradle中的包名必须一致",
+            更新引用: "asrc/build.Gradle中引用了包，需要同步，右上角Sync Now按钮",
+            打包步骤: {
+                1: "构建app",
+                2: "将工程导入Android Studio中",
+                3: "更换icon",
+                4: "修改屏幕横竖屏",
+                5: "修改开始屏幕的样式",
+                6: "修改调试模式参数,正式上线版本要将这个参数变成0",
+                7: "查看jdk版本",
+                8: "打包，Build>clear Project>GSB/APK",
+                9: "真机调试JS",
+                10: "修改代码和资源，刷新Android工程",
+            },
+            平台233: {
+                自测工具: '每次更新新包的时候，将包名输入后，选择清除，然后进入程序应用信息界面，清除缓存，否则可能会还是以前的包',
+            },
+            AndroidStudio: {
+                日志logCat: '位于IDE左下方，点击选择，其中有各种选项可以查看打印，搜索框中输入js，可以看到js日志，输入java可以看到java日志，搜索要console.log中的内容也可以搜索到',
+            },
+            LayaNative二次开发: {
+
+            }
         },
         eclipse: {
             1: 'eclipse上没有安卓选项如下步骤检查，检查一下baiWindows->Show View中有没有Android，如du果zhi没有，再看看Windows->Show View->Other中有没有Android，如果Other中也没有，Android插件dao没装好，从头zhuan检查有没有遗漏什么安装步骤。如果Other中有，那就只是配置的问题，接着往下看。1、打开Eclipse, New->Project->Android Project, 随便新建一个HelloWorld工程。2、建好了之后，Windows->New Window。3、看看新打开的Eclipse, New 菜单是不是有Android Project了?4、关掉第一个Eclipse',
@@ -417,12 +484,15 @@ export module record {
             4: '日志的等级jswrapper是调试OV包的日志，在logCat窗口坐标saved filters过滤器中点击‘+’号，打开面板后，filterName 填写jswrapper，by log Tag 也写上jswrapper，点击确定，既可以出现jswrapper窗口，这个窗口的意义大概就是js调试',
             5: '有时候调试不成功可能是java没有装,cmd， java -version为查看java的方法',
             6: 'eclipse日志被自动清空的解决办法网址 https://www.cnblogs.com/lenve/p/5865918.html',
-            7: 'eclipse日志被自动清空的解决办法 1.配置环境变量:环境变量的配置并不是必需的，但是为了使用命令时方便，我们最好还是配置一下，具体操作方式就不说了，说两个要点：1.新建Android_SDK_HOME，值为你的SDK目录，我的是D:\Program\android\SDKForEclipse,2.在Path中添加  ;%Android_SDK_HOME%\tools;%Android_SDK_HOME%\platform-tools，不过要注意%前的; 2.使用adb log命令:当我们的logcat清除的太快的以至于我们没法看清楚错误信息的时候，我们可以使用下面的方式来打印日志：1.打开cmd，输入如下命令并回车：注意，>后面的D:\aaa.txt表示我们将日志打印到D盘中的aaa.txt文件中。2.打开我们的app进行操作，当你操作完成之后，按下Ctrl+C，停止该命令的执行，这时打开D盘，就会看到日志文件都存在了aaa.txt文件里。3.打开aaa.txt，搜索fatal，可以快速找到错误信息。',
+            7: 'eclipse日志被自动清空的解决办法 1.配置环境变量:环境变量的配置并不是必需的，但是为了使用命令时方便，我们最好还是配置一下，具体操作方式就不说了，说两个要点：1.新建Android_SDK_HOME，值为你的SDK目录，我的是D:/Program/android/SDKForEclipse,2.在Path中添加  ;%Android_SDK_HOME%/tools;%Android_SDK_HOME%/platform-tools，不过要注意%前的; 2.使用adb log命令:当我们的logcat清除的太快的以至于我们没法看清楚错误信息的时候，我们可以使用下面的方式来打印日志：1.打开cmd，输入如下命令并回车：注意，>后面的D:/aaa.txt表示我们将日志打印到D盘中的aaa.txt文件中。2.打开我们的app进行操作，当你操作完成之后，按下Ctrl+C，停止该命令的执行，这时打开D盘，就会看到日志文件都存在了aaa.txt文件里。3.打开aaa.txt，搜索fatal，可以快速找到错误信息。',
             8: 'eclipse和手机连接不上可以尝试拔出usb再插入，或者关闭eclipse再打开',
             9: '网上教程可以用eclipse连接手机进行调试，如果控制面板中的安卓连接出现问题，可能是没有驱动，可以通过豌豆荚app，他会自动安装连接的驱动',
         },
         wechat: {
             1: '3D项目中，如果微信开发工具中运行没有问题，但是上传后3D场景看不见了，可能需要关闭摄像机中的Allow HDR 高清属性',
+            分包: {
+                1: "分包目录下增加game.js",
+            }
         }
     }
     export let chrome = {
@@ -434,7 +504,7 @@ export module record {
     export let Git = {
         TortoiseGit安装: '网上搜索TortoiseGit安装，里面也有一个语言选择包，可以选择中文，TortoiseGit安装在任意目录，语言包则旋转默认安装，当然应该也可以安装在其他目录',
         clone远程项目: '将远程项目的http//开头的地址改复制一下，用命令或者TortoiseGit都可以拉取',
-        生成密钥才可以推送: 'gitbash输入命令ssh-keygen -t rsa -C "849567502@qq.com" 为生成密钥，地址在C:\Users\用户名（我的是老王哥）\.ssh中，id_rsa.pub这个文件中有密钥，填写到github中去，右上角选项中能看到密钥按钮进去填写即可',
+        生成密钥才可以推送: 'gitbash输入命令ssh-keygen -t rsa -C "849567502@qq.com" 为生成密钥，地址在C:/Users/用户名（我的是老王哥）/.ssh中，id_rsa.pub这个文件中有密钥，填写到github中去，右上角选项中能看到密钥按钮进去填写即可',
         如果用TortoiseGit推送的话: 'TortoiseGit推送时会有一个弹窗弹出来，是输入密钥的，输入后会弹出输入用户名，就是‘849567502@qq.com’，然后弹出输入密码，即可推送，三次输入缺一不可',
         TortoiseGit的好处: '自动记录一些信息，并且可视化操作，不过最好用git命令行',
         如果不能推送了: '就在重复一次密钥',

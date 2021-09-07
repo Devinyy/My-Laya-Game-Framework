@@ -1,6 +1,6 @@
 import { ui } from "../../ui/layaMaxUI";
 export module LwgPlatform {
-    export class Init {
+    export class InitBase {
         /**
          * @param _type 类型，除了类型Test和Exploit，一般不需要填写，默认Test
          */
@@ -26,12 +26,18 @@ export module LwgPlatform {
             } else {
                 type = EmType.ExploitNoAD;
             }
+            if (Laya.Browser.window['conch'] && _type === EmType.TwoTwoThree) {
+                type = EmType.TwoTwoThree;
+                isConch = true;
+            }
+            AD = new _AD();
+            System = new _System;
         }
-        public get LwgPlatform(): string {
+        get LwgPlatform(): string {
             return 'LwgPlatform';
         }
     }
-
+    export let isConch: boolean;
     /**平台类型 */
     export enum EmType {
         /**
@@ -70,6 +76,10 @@ export module LwgPlatform {
          * web测试包,每次登录会清除本地数据，触发广告回调
          */
         WebTestClear,
+        /**
+         * 233平台
+         */
+        TwoTwoThree,
     };
     export let type: EmType = EmType.ExploitNoAD;
 
@@ -94,7 +104,7 @@ export module LwgPlatform {
             if (type === EmType.WeChat) {
                 this.wx(packageList, endCb);
             }
-            else if (type === EmType.OPPO) {
+            else if (type === EmType.OPPO || type === EmType.VIVO) {
                 this.OPPO(packageList, endCb);
             }
             else {
@@ -167,338 +177,324 @@ export module LwgPlatform {
                 cb && cb();
             }
         }
-
-        VIVO(packList: string[], cb: Function) {
-            if (Laya.Browser.window.qg) {
-                Laya.Stat.hide();
-                const list = packList;
-                const temp = () => {
-                    const name = list.shift();
-                    if (name) {
-                        const loadTask = Laya.Browser.window.qg.loadSubpackage({
-                            name: name,
-                            success: (res: any) => {
-                                console.log('分包加载成功=', name);
-                                temp();
-                            },
-                            fail: (res: any) => {
-                                console.log('分包加载失败=', name);
-                                list.unshift(name);
-                                setTimeout(temp, 1000);
-                            }
-                        });
-                        // loadTask.onProgressUpdate(res => {
-                        //     console.log('下载进度', res.progress)
-                        //     console.log('已经下载的数据长度', res.totalBytesWritten)
-                        //     console.log('预期需要下载的数据总长度', res.totalBytesExpectedToWrite)
-                        // })
-                    } else {
-                        cb && cb();
-                    }
-                };
-                temp();
-            } else {
-                cb && cb();
-            }
-        }
     }
-    export class InitAD {
+    export class InitPlatForm {
         constructor(
             _LwgWx: LwgWX.Init,
             _LwgOPPO: LwgOPPO.Init,
-        ) { }
+            _LwgVIVO: LwgVIVO.Init,
+            _Lwg233: LwgTwoTwoThree.Init,
+        ) {
+            AD.setInstance();
+            System.setInstance();
+        }
     }
-    export class AD {
-        static showVideo(watchCompelet: Function, watchClose?: Function): void {
+    /**
+     * 基本接口
+     */
+    export class TpADBase {
+        /**
+         * 场景打开时检测显示
+         */
+        checkShowWhenOpenScene(sceneName?: string): void { };
+        /**
+         * 场景关闭后检测显示
+         */
+        checkShowAfterCloseScene(sceneName?: string): void { };
+        /**
+         * 关闭弹窗时检测显示
+         */
+        checkShowWhenCloseOverlayScene(sceneName?: string): void { };
+        /**
+         * 展示视频广告
+         */
+        showVideo(watchCompelet: Function, watchClose?: Function): void { };
+        /**
+         * 手动打开一个原生广告
+         */
+        showNativeByManual?(): void { };
+    }
+    export let AD: _AD;
+    class _AD implements TpADBase {
+        constructor() {
+        }
+        setInstance(): void {
+            switch (type) {
+                case EmType.WeChat:
+                    this.instance = LwgWX.AD;
+                    break;
+                case EmType.OPPO:
+                    this.instance = LwgOPPO.AD;
+                    break;
+
+                case EmType.VIVO:
+                    this.instance = LwgVIVO.AD;
+                    break;
+
+                case EmType.TwoTwoThree:
+                    this.instance = LwgTwoTwoThree.AD;
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        instance: TpADBase;
+        /**
+         * 视频广告
+         * @param watchCompelet 观看完成回调
+         * @param watchClose 中途关闭回调
+         */
+        showVideo(watchCompelet: Function, watchClose?: Function): void {
             if (LwgPlatform.type === LwgPlatform.EmType.Exploit || LwgPlatform.type === LwgPlatform.EmType.ExploitNoAD || LwgPlatform.type === LwgPlatform.EmType.WebTest || LwgPlatform.type === LwgPlatform.EmType.WebTestClear) {
                 watchCompelet && watchCompelet();
-            } else if (type === EmType.WeChat) {
-                LwgWX.AD.showVideo(watchCompelet, watchClose);
-            }
-            else if (type === EmType.OPPO) {
-                LwgOPPO.AD.showVideo(watchCompelet, watchClose);
-            }
-        }
-        /**
-         * 直接打开一个原生广告
-         */
-        static showNative(): void {
-            if (type === EmType.OPPO) {
-                LwgOPPO.AD.showNative();
+            } else {
+                if (!this.instance || !this.instance.showVideo) {
+                    LwgDialogue.showTips('暂无广告！');
+                } else {
+                    this.instance.showVideo(watchCompelet, watchClose);
+                }
             }
         }
-
-        static showADInScene(sceneName: string): void {
-            if (type === EmType.WeChat) {
-                LwgWX.AD && LwgWX.AD.setShowInScenes(sceneName);
-            }
-            else if (type === EmType.OPPO) {
-                LwgOPPO.AD && LwgOPPO.AD.setShowInScenes(sceneName);
-                LwgOPPO.System && LwgOPPO.System.checkInstallShortcut(sceneName);
+        showNativeByManual(): void {
+            if (!this.instance || !this.instance.showNativeByManual) {
+                LwgDialogue.showTips('暂无广告！');
+            } else {
+                this.instance.showNativeByManual()
             }
         }
-
-        static showADCloseSceneLater(sceneName: string): void {
-            if (type === EmType.WeChat) {
-                LwgWX.AD && LwgWX.AD.showInsertCloseSceneCheck(sceneName);
-            }
-            else if (type === EmType.OPPO) {
-                LwgOPPO.AD && LwgOPPO.AD.showInsertCloseSceneCheck(sceneName);
-            }
+        checkShowWhenOpenScene(sceneName: string): void {
+            this.instance && this.instance.checkShowWhenOpenScene && this.instance.checkShowWhenOpenScene(sceneName);
         }
-
-        static hideADInScene(): void {
-            if (type === EmType.WeChat) {
-                LwgWX.AD && LwgWX.AD.setHideInScenes();
-            }
-            else if (type === EmType.OPPO) {
-                LwgOPPO.AD && LwgOPPO.AD.setHideInScenes();
-            }
+        checkShowAfterCloseScene(sceneName: string): void {
+            this.instance && this.instance.checkShowAfterCloseScene && this.instance.checkShowAfterCloseScene(sceneName);
+        }
+        checkShowWhenCloseOverlayScene(sceneName: string): void {
+            this.instance && this.instance.checkShowWhenCloseOverlayScene && this.instance.checkShowWhenCloseOverlayScene(sceneName);
         }
     }
 
-    export class System {
-        static shakeShort(): void {
-            if (type === EmType.WeChat) {
-                LwgWX.System.vibrateShort();
-            }
-            else if (type === EmType.OPPO) {
-                LwgOPPO.System.vibrateShort();
+    export class TpSystemBase {
+        checkShowWhenOpenScene?(sceneName: string): void { };
+        vibrateShort?(): void { };
+        vibrateLong?(): void { };
+        share?(rewardCb?: Function): void { };
+    }
+    export let System: _System;
+    class _System {
+        constructor() {
+        }
+        setInstance(): void {
+            switch (type) {
+                case EmType.WeChat:
+                    this.instance = LwgWX.System;
+                    break;
+                case EmType.OPPO:
+                    this.instance = LwgOPPO.System;
+                    break;
+
+                case EmType.VIVO:
+                    this.instance = LwgVIVO.System;
+                    break;
+
+                case EmType.TwoTwoThree:
+                    this.instance = LwgTwoTwoThree.System;
+                    break;
+                default:
+                    break;
             }
         }
-        static shakeLong(): void {
-            if (type === EmType.WeChat) {
-                LwgWX.System.vibrateLong();
-            }
-            else if (type === EmType.OPPO) {
-                LwgOPPO.System.vibrateLong();
+        instance: TpSystemBase;
+        checkShowWhenOpenScene(sceneName: string): void {
+            this.instance && this.instance.checkShowWhenOpenScene && this.instance.checkShowWhenOpenScene(sceneName);
+        }
+        shakeShort(): void {
+            this.instance && this.instance.vibrateShort && this.instance.vibrateShort();
+        }
+        shakeLong(): void {
+            this.instance && this.instance.vibrateLong && this.instance.vibrateLong();
+        }
+        share(rewardCb?: Function): void {
+            this.instance && this.instance.share && this.instance.share(rewardCb);
+        }
+    }
+}
+
+
+/**
+ * 233平台
+ */
+export module LwgTwoTwoThree {
+    export let AD: _AD;
+    export let System: _System;
+
+    export class Init {
+        constructor(ADData: TpADData) {
+            AD = new _AD(ADData);
+            System = new _System;
+        }
+    }
+    export class _System implements LwgPlatform.TpSystemBase {
+        vibrateShort(): void {
+            var PlatformClass = Laya.Browser.window.PlatformClass.createClass("demo.MainActivity");
+            PlatformClass.callWithBack(null, "vibrateShort");
+        }
+    }
+    export type TpADbanner = {
+        /**
+         * 用户手动关闭banner的时间，关闭后1分钟内不可以在出现
+         */
+        lastCloseTime?: number,
+        isShow?: boolean,
+        showScenes: string[],
+        /**
+         * 用户关闭5次之后不会在展示
+         */
+        closeCount?: number,
+
+    }
+    export type TpADInsert = {
+        showCloseScenes: string[]
+    }
+    export type TpADData = {
+        banner: TpADbanner;
+        insert: TpADInsert;
+    }
+    /**
+      * 用户手动关闭banner的时间，关闭后1分钟内不可以在出现
+      * 屏幕上只能出现一种类型的广告
+      */
+    export class _AD implements LwgPlatform.TpADBase {
+        constructor(ADData: TpADData) {
+            this.banner = ADData.banner;
+            this.insert = ADData.insert;
+        }
+        banner: TpADbanner;
+        insert: TpADInsert;
+
+        checkShowWhenOpenScene(): void {
+            this.checkShowBannerInScene();
+        }
+        checkShowWhenCloseOverlayScene(): void {
+            this.checkShowBannerInScene();
+        }
+        checkShowAfterCloseScene(sceneName: string): void {
+            this.checkShowInsertAfterCloseScene(sceneName);
+        }
+        checkShowInsertAfterCloseScene(sceneName: string): void {
+            for (let index = 0; index < this.insert.showCloseScenes.length; index++) {
+                const element = this.insert.showCloseScenes[index];
+                if (element == sceneName) {
+                    var PlatformClass = Laya.Browser.window.PlatformClass.createClass("demo.MainActivity");
+                    PlatformClass.callWithBack(null, "showInterstitial");
+                    break;
+                }
             }
         }
-        static share(watchCompelet?: Function): void {
-            if (type === EmType.WeChat) {
-                LwgWX.System.share(watchCompelet);
+        checkShowBannerInScene(): void {
+            console.log('JS准备展示banner广告！');
+            if (this.banner.lastCloseTime === undefined) {
+                this.banner.lastCloseTime = 0;
             }
+            if (LwgDate.Now.time - this.banner.lastCloseTime < 60000) {
+                console.log('1分钟内不得再次展现视频广告！');
+                return;
+            }
+            if (this.banner.isShow) {
+                console.log('已经展示了！');
+                return;
+            }
+            if (this.banner.closeCount === undefined) {
+                this.banner.closeCount = 0;
+            }
+            if (this.banner.closeCount >= 5) {
+                console.log('关闭次数达到5次，不会在展示banner！');
+                return;
+            }
+            LwgScene.getCurShowSceneArr((scene: Laya.View) => {
+                for (let index = 0; index < this.banner.showScenes.length; index++) {
+                    const sceneName = this.banner.showScenes[index];
+                    if (sceneName == scene.name) {
+                        console.log('准备展示banner!');
+                        var PlatformClass = Laya.Browser.window.PlatformClass.createClass("demo.MainActivity");
+                        PlatformClass.callWithBack((close: string) => {
+                            if (close === 'show') {
+                                this.banner.isShow = true;
+                                // console.log('js端展示banner成功');
+                            }
+                            else if (close === '"showFailed"') {
+                                // console.log('js端展示banner失败');
+                                this.banner.isShow = false;
+                            }
+                            else if (close === 'close') {
+                                // console.log('js端关闭banner成功');
+                                this.banner.isShow = false;
+                                this.banner.closeCount++;
+                                this.banner.lastCloseTime = LwgDate.Now.time;
+                            }
+                        }, "showBanner");
+                        break;
+                    }
+                }
+            });
+        }
+
+        showVideoTime: number;
+        showVideo(watchCompelet: Function, watchClose: Function): void {
+            //5秒钟之内不能再看广告
+            if (this.showVideoTime === undefined) {
+                this.showVideoTime = 0;
+            }
+            if (LwgDate.Now.time - this.showVideoTime < 5000) {
+                console.log('5秒内不得再次看视频广告！');
+                return;
+            }
+            this.showVideoTime = LwgDate.Now.time;
+            var PlatformClass = Laya.Browser.window.PlatformClass.createClass("demo.MainActivity");
+            PlatformClass.callWithBack((status: any) => {
+                console.log('广告返回状态为', status);
+                if (status == "true") {
+                    watchCompelet && watchCompelet();
+                } else if (status == "false") {
+                    watchClose && watchClose();
+                    LwgDialogue.showTips("您的视频还没看完，无法获得奖励");
+                } else {
+                    watchClose && watchClose();
+                    LwgDialogue.showTips("视频拉取失败");
+                }
+            }, "showVideo")
         }
     }
 }
 
 export module LwgOPPO {
-    export type TpADBase = {
-        onLoad: Function,
-        offLoad: Function,
-        onError: Function,
-        offError: Function,
-        show: Function,
-        hide: Function,
-        offHide: Function,
-        destroy: Function,
-        loadCb: Function,
-        errCb: Function,
-        load: Function,
-        onClose: Function,
-        offClose: Function,
-        closeCb: Function,
-    }
-    /**
-     * banner广告
-     */
-    export type TpADbanner = {
-        adUnitId: string,
-        showScenes: string[],
-        instance?: TpADBase,
-        /**
-         * 不输入则在最底下显示
-         */
-        style: {
-            top?: number,
-            left?: number,
-            width?: number,
-            height?: number
-        },
-        showTrack?: {
-            sceneName: string,
-            show: boolean,
-        }[],
-        /**
-         * 如果是1，说明上个界面也是打开，所以不会再次打开，这样会重复请求
-         */
-        lastState?: number,
-    };
-    /**
-     * 视频广告
-     */
-    export type TpADVideo = {
-        adUnitId: string,
-        instance?: TpADBase,
-        /**
-         * 5秒内不得再点击
-         */
-        lastShowTime?: number,
-        watchCompelet?: Function,
-        watchClose?: Function
-        closeCB?: Function,
-        lodeCB?: Function,
-        errCB?: Function,
-    }
-
-    /**
-     * 用于获取哪张图片进行展示
-     */
-    export enum EmADNativeType {
-        icon,
-        banner,
-    }
-    export class NatievView extends Laya.View {
-        constructor(native: TpADNative) {
-            super();
-            if (!AD.nativeData || !AD.nativeData.instance || !AD.nativeData.lodeNativeRes || !AD.nativeData.lodeNativeRes.adList) {
-                this.removeSelf();
+    export class Init {
+        constructor(ADData: TpADData, shortcutInstalle: TpShortcutInstalled) {
+            if (LwgPlatform.type !== LwgPlatform.EmType.OPPO) {
                 return;
             }
-            if (AD.insert && AD.insert.isShow) {
-                this.removeSelf();
-                return;
-            }
-            this.bntClose = new Laya.Image();
-            this.addChild(this.bntClose);
-            this.bntClose.skin = LwgPath.LwgUI + 'img_close2.png';
-            this.bntClose.size(24, 24);
-            this.bntClose.top = 10;
-            this.bntClose.right = 10;
-            this.bntClose.zOrder = 1000;
-
-            this.imgAdTag = new Laya.Image();
-            this.addChild(this.imgAdTag);
-            this.imgAdTag.skin = LwgPath.LwgUI + 'img_ad_text2.png';
-            this.imgAdTag.size(40, 14);
-            this.imgAdTag.right = 0;
-            this.imgAdTag.bottom = 0;
-            this.imgAdTag.zOrder = 1000;
-
-            this.imgADPic = new Laya.Image();
-            this.addChild(this.imgADPic);
-            this.imgADPic.top = 0;
-            this.imgADPic.bottom = 0;
-            this.imgADPic.left = 0;
-            this.imgADPic.right = 0;
-
-            this.zOrder = 10000;
-            this.left = native.style.left;
-            this.right = native.style.right;
-            this.top = native.style.top;
-            this.bottom = native.style.bottom;
-            this.centerX = native.style.centerX;
-            this.centerY = native.style.centerY;
-            this.x = native.style.x;
-            this.y = native.style.y;
-
-            native.view = this;
-
-            const adListItem = AD.nativeData.lodeNativeRes.adList[0];
-            if (native.type === EmADNativeType.icon) {
-                this.imgADPic.skin = adListItem.icon;
-                //如果没有图片，则相互替代一下
-                if (adListItem.icon.length === 0) {
-                    this.imgADPic.skin = adListItem.imgUrlList[0];
-                } else {
-                    this.imgADPic.skin = adListItem.icon;
-                }
-            }
-            else if (native.type === EmADNativeType.banner) {
-                if (adListItem.imgUrlList.length === 0) {
-                    this.imgADPic.skin = adListItem.icon;
-                } else {
-                    this.imgADPic.skin = adListItem.imgUrlList[0];
-                }
-            }
-            this.size(native.style.width, native.style.height);
-            this.bntClose.once(Laya.Event.CLICK, this, () => {
-                this.destroy();
-            })
-            //展示和点击上传
-            AD.nativeData.instance && AD.nativeData.instance.reportAdShow({ adId: adListItem.adId });
-            this.imgADPic.on(Laya.Event.CLICK, this, () => {
-                this.destroy();
-                AD.nativeData.instance && AD.nativeData.instance.reportAdClick({
-                    adId: adListItem.adId,
-                })
-                AD.createNative();
-            })
+            AD = new _AD(ADData);
+            System = new _System(shortcutInstalle);
         }
-        /**
-         * 关闭按钮
-         */
-        bntClose: Laya.Image;
-        /**
-         * 广告提示图标
-         */
-        imgAdTag: Laya.Image;
-        /**
-         * 广告展示的图片
-         */
-        imgADPic: Laya.Image;
-    };
-
-    export type TpADNativeData = {
-        adUnitId: string,
-        lodeNativeRes?: TpLodeNativeRes,
-        lastShowTime?: number,
-        lastCreateTime?: number,
-        intervalTime?: number,
-        updateTime?: number,
-        instance?: {
-            reportAdShow: Function,
-            reportAdClick: Function,
-        } & TpADBase,
-        dataArr: TpADNative[];
-    }
-    /**
-     * 原生广告
-     */
-    export type TpADNative = {
-        type: EmADNativeType,
-        style: {
-            width: number,
-            height: number,
-            left?: number,
-            right?: number,
-            top?: number,
-            bottom?: number,
-            centerX?: number,
-            centerY?: number,
-            x?: number,
-            y?: number,
-        },
-        showScenes: string[],
-        view?: Laya.View,
-    }
-    export type TpLodeNativeRes =
-        {
-            adList: {
-                adId: string,
-                title: string,
-                desc: string,
-                icon: string,
-                imgUrlList: string[],
-                logoUrl: string,
-                clickBtnTxt: string,
-                creativeType: number,
-                interactionType: number,
-            }[]
+        get LwgOPPO(): string {
+            return 'LwgOPPO';
         }
+    }
 
     /**
-     * 互推9宫格
+     * 桌面图标
      */
-    export type TpADGamePortal = {
-        adUnitId: string,
-        instance?: TpADBase,
-        showScene: {
-            sceneName: string,
-            btnStyle: BtnGamePortalStyle,
-        }[],
-    };
-    export type BtnGamePortalStyle = {
+    export type TpShortcutInstalled = {
+        isShow: boolean,
+        btnStyle: BtnStyle;
+        sceneName: string,
+        rewardCb?: Function,
+    }
+
+    /**
+    * 一些按钮样式
+    */
+    export type BtnStyle = {
         width?: number,
         height?: number,
         skin: string,
@@ -513,8 +509,11 @@ export module LwgOPPO {
         anchorX?: number,
         anchorY?: number,
     }
-    export class BtnGamePortal extends Laya.Image {
-        constructor(style: BtnGamePortalStyle) {
+    /**
+     * 一些按钮的基本设置
+     */
+    export class BtnBase extends Laya.Image {
+        constructor(style: BtnStyle) {
             super();
             this.skin = style.skin;
             this.left = style.left;
@@ -527,99 +526,44 @@ export module LwgOPPO {
             this.y = style.y;
             this.anchorX = style.anchorX;
             this.anchorY = style.anchorY;
+            this.zOrder = 1000;
             this.lwgButton();
         }
-        lwgButton(): void {
-            LwgClick.on(null, this, this, null, null, () => {
-                AD.showGamePortal();
-            })
-        }
+        lwgButton(): void { };
     }
 
-    export enum EmInsertType {
-        /**
-         * 9宫格广告
-         */
-        GamePortal,
-    }
-    /**
-     * oppo小游戏没有插屏广告，只能用互推盒子替代
-     */
-    export type TpADInsert = {
-        instance?: TpADBase,
-        type: EmInsertType,
-        isShow?: boolean,
-        /**
-         * 在某些场景关闭后显示
-         */
-        showCloseScenesLaterArr: string[],
-    };
-    /**
-     * 广告
-     */
-    export type TpADData = {
-        /**
-        * 延迟一段时间展示广告
-        */
-        delayTime?: number,
-        banner: TpADbanner,
-        video: TpADVideo,
-        nativeData: TpADNativeData,
-        gamePortal: TpADGamePortal,
-        insert: TpADInsert,
-    }
-
-    /**
-     * 桌面图标
-     */
-    export type TpShortcutInstalled = {
-        isShow: boolean,
-        btnStyle: BtnGamePortalStyle;
-        sceneName: string,
-        rewardCb?: Function,
-    }
-
-    export class BtnShortcutInstalled extends BtnGamePortal {
-        constructor(style: BtnGamePortalStyle) {
+    export class ShortcutInstalledBtn extends BtnBase {
+        constructor(systemIns: LwgOPPO._System, style: BtnStyle) {
             super(style);
+            this.systemIns = systemIns;
         }
+        systemIns: LwgOPPO._System;
         lwgButton(): void {
             LwgClick.on(null, this, this, null, null, () => {
-                System.installShortcut(() => {
+                this.systemIns.installShortcut(() => {
                     this.destroy();
                 });
             })
         }
     }
 
-    export class Init {
-        constructor(ADData: TpADData, shortcutInstalle: TpShortcutInstalled) {
-            if (LwgPlatform.type !== LwgPlatform.EmType.OPPO) {
-                return;
-            }
-            AD = new _AD(ADData);
-            System = new _System(shortcutInstalle);
-        }
-        get LwgOPPO(): string {
-            return 'LwgOPPO';
-        }
-    }
-
-    export let AD: _AD;
     export let System: _System;
 
-    class _System {
+    export class _System implements LwgPlatform.TpSystemBase {
+
         constructor(shortcutInstalle: TpShortcutInstalled) {
             this.shortcutInstalle = shortcutInstalle;
         }
         shortcutInstalle: TpShortcutInstalled;
-
-        checkInstallShortcut(sceneName: string): void {
+        checkShowWhenOpenScene(sceneName: string): void {
+            this.checkShowInstallShortcutBtn(sceneName);
+        }
+        checkShowInstallShortcutBtn(sceneName: string): void {
             if (this.shortcutInstalle.isShow && sceneName === this.shortcutInstalle.sceneName) {
                 this.hasShortcutInstalled(() => {
                     const scene = LwgScene.sceneControl[sceneName] as Laya.View;
                     //加载延迟后，界面可能被关闭
-                    scene && scene.parent && scene.addChild(new BtnShortcutInstalled(this.shortcutInstalle.btnStyle));
+                    scene && scene.parent && scene.addChild(new ShortcutInstalledBtn(this, this.shortcutInstalle.btnStyle));
                 })
             }
         }
@@ -627,7 +571,7 @@ export module LwgOPPO {
         /**
          * 是否已创建桌面图标
          */
-        hasShortcutInstalled(cb: Function) {
+        private hasShortcutInstalled(cb: Function) {
             Laya.Browser.window.qg.hasShortcutInstalled({
                 success: (res: any) => {
                     // 判断图标未存在时，创建图标
@@ -636,13 +580,13 @@ export module LwgOPPO {
                     }
                 },
                 fail: (err: any) => {
-                    console.log('检测图标是否存在失败:', JSON.stringify(err))
+                    console.log('检测图标是否存在失败:', JSON.stringify(err));
                 },
                 complete: () => { }
             })
         }
         /**
-         * 是否已创建桌面图标
+         * 创建桌面图标
          */
         installShortcut(cb: Function) {
             Laya.Browser.window.qg.installShortcut({
@@ -671,49 +615,425 @@ export module LwgOPPO {
                 complete: (res: any) => { },
             })
         }
+        showToast(title: string, duration: number, icon?: string): void {
+            Laya.Browser.window.qg.showToast({
+                title: title,
+                icon: icon,
+                duration: duration
+            })
+        }
     }
 
     /**
-     * 广告的位置以stage为基准
+     * 基本接口，有些广告只有一部分
      */
-    class _AD {
+    export type TpADInstanceBase = {
+        show: Function,
+        hide: Function,
+        //vivo没有，为了统一，可以不用
+        // destroy: Function,
+        load: Function,
+        onLoad: Function,
+        offLoad: Function,
+        loadCb: Function,
+
+        onError: Function,
+        offError: Function,
+        errCb: Function,
+
+        onfHide: Function,
+        offHide: Function,
+
+        onClose: Function,
+        offClose: Function,
+        closeCb: Function,
+    }
+    /**
+     * banner广告
+     */
+    export type TpADbanner = {
+        /**
+         * OPPO
+         */
+        adUnitId?: string,
+        /**
+         * vivo用
+         */
+        posId?: string,
+        showScenes: string[],
+        instance?: TpADInstanceBase,
+        /**
+         * 值为{}则在最底下显示
+         */
+        style: {
+            top?: number,
+            left?: number,
+            width?: number,
+            height?: number
+        },
+        showTrack?: {
+            sceneName: string,
+            show: boolean,
+        }[],
+        /**
+         * 如果是true，说明上个界面也是打开，所以不会再次打开，防止重复请求
+         */
+        lastIsShow?: boolean,
+    };
+
+    /**
+     * 视频广告
+     */
+    export type TpADVideo = {
+        /**
+         * OPPO
+         */
+        adUnitId?: string,
+        /**
+         * vivo用
+         */
+        posId?: string,
+        instance?: TpADInstanceBase,
+        /**
+         * 5秒内不得再点击
+         */
+        lastShowTime?: number,
+        watchCompelet?: Function,
+        watchClose?: Function
+    }
+
+    /**
+     * 用于获取哪张图片进行展示
+     */
+    export enum EmADNativeType {
+        icon,
+        banner,
+    }
+    export class NatievView extends Laya.View {
+        constructor(ADIns: LwgOPPO._AD, nativeView: TpADNativeView) {
+            super();
+            this.ADIns = ADIns;
+            this.bntClose = new Laya.Image(LwgPath.LwgUI + 'img_close2.png');
+            this.addChild(this.bntClose);
+            this.bntClose.size(24, 24);
+            this.bntClose.top = 10;
+            this.bntClose.right = 10;
+            this.bntClose.zOrder = 100;
+
+            this.imgADWord = new Laya.Image(LwgPath.LwgUI + 'img_ad_text2.png');
+            this.addChild(this.imgADWord);
+            this.imgADWord.size(40, 14);
+            this.imgADWord.right = 0;
+            this.imgADWord.bottom = 0;
+            this.imgADWord.zOrder = 1000;
+
+            this.imgADPic = new Laya.Image();
+            this.addChild(this.imgADPic);
+            this.imgADPic.top = 0;
+            this.imgADPic.bottom = 0;
+            this.imgADPic.left = 0;
+            this.imgADPic.right = 0;
+
+            this.zOrder = 1000;
+            this.left = nativeView.style.left;
+            this.right = nativeView.style.right;
+            this.top = nativeView.style.top;
+            this.bottom = nativeView.style.bottom;
+            this.centerX = nativeView.style.centerX;
+            this.centerY = nativeView.style.centerY;
+            this.x = nativeView.style.x;
+            this.y = nativeView.style.y;
+            this.size(nativeView.style.width, nativeView.style.height);
+
+            nativeView.view = this;
+
+            const adListItem = this.ADIns.native.lodeNativeRes.adList[0];
+            if (nativeView.type === EmADNativeType.icon) {
+                this.imgADPic.skin = adListItem.icon;
+                //如果没有图片，则相互替代一下
+                if (adListItem.icon.length === 0) {
+                    this.imgADPic.skin = adListItem.imgUrlList[0];
+                } else {
+                    this.imgADPic.skin = adListItem.icon;
+                }
+            }
+            else if (nativeView.type === EmADNativeType.banner) {
+                if (adListItem.imgUrlList.length === 0) {
+                    this.imgADPic.skin = adListItem.icon;
+                } else {
+                    this.imgADPic.skin = adListItem.imgUrlList[0];
+                }
+            }
+            this.bntClose.once(Laya.Event.CLICK, this, () => {
+                this.destroy();
+            })
+            //展示和点击上传
+            this.ADIns.native.instance && this.ADIns.native.instance.reportAdShow({ adId: adListItem.adId });
+            this.imgADPic.on(Laya.Event.CLICK, this, () => {
+                this.destroy();
+                this.ADIns.native.instance && this.ADIns.native.instance.reportAdClick({
+                    adId: adListItem.adId,
+                })
+                this.ADIns.updateNative();
+            })
+        }
+        ADIns: LwgOPPO._AD;
+        /**
+         * 关闭按钮
+         */
+        bntClose: Laya.Image;
+        /**
+         * 广告提示图标
+         */
+        imgADWord: Laya.Image;
+        /**
+         * 广告展示的图片
+         */
+        imgADPic: Laya.Image;
+    };
+
+    /**
+     * 原生广告
+     */
+    export type TpADNative = {
+        /**
+         * OPPO
+         */
+        adUnitId?: string,
+        /**
+         * vivo用
+         */
+        posId?: string,
+        lodeNativeRes?: TpLodeNativeRes,
+        lastCreateTime?: number,
+        intervalTime?: number,
+        updateTime?: number,
+        instance?: {
+            reportAdShow: Function,
+            reportAdClick: Function,
+        } & TpADInstanceBase,
+        nativeViewArr: TpADNativeView[];
+    }
+
+    /**
+     * 原生广告视图
+     */
+    export type TpADNativeView = {
+        type: EmADNativeType,
+        style: {
+            width: number,
+            height: number,
+            left?: number,
+            right?: number,
+            top?: number,
+            bottom?: number,
+            centerX?: number,
+            centerY?: number,
+            x?: number,
+            y?: number,
+        },
+        showScenes: string[],
+        view?: Laya.View,
+    }
+    /**
+     * 原生广告加载成功后的信息
+     */
+    export type TpLodeNativeRes =
+        {
+            adList: {
+                adId: string,
+                title: string,
+                desc: string,
+                icon: string,
+                imgUrlList: string[],
+                logoUrl: string,
+                clickBtnTxt: string,
+                creativeType: number,
+                interactionType: number,
+            }[]
+        }
+
+    /**
+     * 互推9宫格
+     */
+    export type TpADGamePortal = {
+        adUnitId: string,
+        instance?: TpADInstanceBase,
+        showScene: {
+            sceneName: string,
+            btnStyle: BtnStyle,
+        }[],
+    };
+    /**
+     * 9宫格按钮
+     */
+    export class GamePortalBtn extends BtnBase {
+        constructor(ADIns: LwgOPPO._AD, style: BtnStyle) {
+            super(style);
+            this.ADIns = ADIns;
+        }
+        ADIns: LwgOPPO._AD;
+        lwgButton(): void {
+            LwgClick.on(null, this, this, null, null, () => {
+                this.ADIns.showGamePortal();
+            })
+        }
+    }
+
+    /**
+     * 插屏广告，oppo没有
+     */
+    export type TpADInsertVIVO = {
+        posId: string,
+        /**
+         * 插屏显示的时候其他广告一概不显示
+         */
+        isShow?: boolean,
+        instance?: {
+            onClose: Function,
+        } & TpADInstanceBase,
+        /**
+         * 在某些场景关闭后显示
+         */
+        showCloseScenes: string[],
+    }
+
+    /**
+     * 广告
+     */
+    export type TpADData = {
+        /**
+        * 延迟一段时间展示广告
+        */
+        delayTime?: number,
+        /**
+         * 初始化时候的时间
+         */
+        initTime?: number,
+
+        banner: TpADbanner,
+        video: TpADVideo,
+        native: TpADNative,
+        gamePortal?: TpADGamePortal,
+        /**
+         * vivo有插屏
+         */
+        insert?: TpADInsertVIVO,
+    }
+
+    /**
+     * 广告
+     */
+    export let AD: _AD;
+
+    /**
+      * 1.同时只能展示1个广告
+      * 2.没有插屏
+      * 3.广告不可频繁刷新，否则不显示
+      * 4.位置大小和Laya.stage一样
+      * 5.原生只需一个ID即可，因为同屏只可展示一个广告
+      */
+    export class _AD implements LwgPlatform.TpADBase {
         constructor(data: TpADData) {
             this.ADData = data;
             this.banner = data.banner;
             this.video = data.video;
-            this.nativeData = data.nativeData;
-            this.gamePortal = data.gamePortal;
+            this.native = data.native;
             this.insert = data.insert;
-
-            this.nativeData.lastShowTime = LwgDate.Now.time;
+            this.gamePortal = data.gamePortal;
+            this.ADData.initTime = LwgDate.Now.time;
             this.ADData.delayTime = this.ADData.delayTime ? this.ADData.delayTime : 60000;
-            // Laya.timer.once(this.delayShowTime, this, this.createNative);
-            this.createNative();
+            Laya.timer.once(this.ADData.delayTime, this, () => {
+                this.checkShowWhenOpenScene();
+            });
         }
-        ADData: TpADData;
         /**
-         * 记录展示次数，刚进游戏30s内不得展示广告
+         * 所有广告信息
          */
-        setShowInScenes(sceneName: string): void {
-            this.showBannerInSceneCheck(sceneName);
-            this.showNativeInSceneCheck(sceneName);
-            this.showGamePortalBtnInSceneCheck(sceneName);
+        ADData: TpADData;
+        checkShowWhenOpenScene(sceneName?: string): void {
+            this.checkShowGamePortalBtnInScene();
+            this.checkShowBannerAndNativeInScene();
         }
-        setHideInScenes(): void {
-            this.hideBannerInSceneCheck();
+        checkShowAfterCloseScene(sceneName?: string): void {
+            this.checkShowInsertAfterCloseScene(sceneName);
         }
+        checkShowWhenCloseOverlayScene(sceneName?: string): void {
+            this.checkShowGamePortalBtnInScene();
+            this.checkShowBannerAndNativeInScene();
+        }
+        /**
+         * banner广告信息
+         */
         banner: TpADbanner;
         /**
-         * banner没有load方法
+         * 检测的广告规则：原生第1，banner第2，格子广告和插屏广告出来则关闭原生和banner
+         * @param sceneName 
+         * @returns 
          */
-        showBanner(): void {
-            if (this.insert.isShow) {
+        checkShowBannerAndNativeInScene(): void {
+            if (LwgDate.Now.time - this.ADData.initTime <= this.ADData.delayTime) {
                 return;
             }
-            if (this.banner.lastState === 1) {
+            if (this.insert && this.insert.isShow) {
                 return;
             }
-            this.banner.instance = Laya.Browser.window.qg.createBannerAd({
+            //如果当前场景内有原生，则关闭banner，如果没有则检测banner
+            const hasShowNative = this.checkShowNativeInScene();
+            if (hasShowNative) {
+                this.hideBanner();
+                console.log('展示插屏，关掉banner');
+            } else {
+                this.checkShowBannerInScene();
+                console.log('展示banner，关掉插屏');
+            }
+        }
+        /**
+         * 隐藏两种自动开启和关闭的广告
+         */
+        hideBannerAndNative(): void {
+            this.hideBanner();
+            this.hideNative();
+        }
+
+        insert: TpADInsertVIVO;
+        /**
+         * 插屏广告，在某些场景关闭后显示,oppo暂时没有
+         * @param sceneName 
+         * @returns 
+         */
+        protected checkShowInsertAfterCloseScene(sceneName: string): void { }
+
+        /**
+         * 检查当前显示的场景中的banner显示
+         * @returns 
+         */
+        protected checkShowBannerInScene(): void {
+            if (this.banner.lastIsShow) {
+                return;
+            }
+            this.banner.instance = this.createBanner();
+            let hasShow = false;
+            LwgScene.getCurShowSceneArr((scene: Laya.View) => {
+                for (let index = 0; index < this.banner.showScenes.length; index++) {
+                    const element = this.banner.showScenes[index];
+                    if (element == scene.name) {
+                        hasShow = true;
+                        this.banner.instance.show().then(() => {
+                            console.log('banner广告展示成功！');
+                            this.banner.lastIsShow = true;
+                        }).catch((err: any) => {
+                            console.log('banner广告展示失败！', JSON.stringify(err));
+                            this.banner.lastIsShow = false;
+                        })
+                        break;
+                    }
+                }
+            });
+            !hasShow && this.hideBanner();
+        }
+        protected createBanner(): any {
+            return Laya.Browser.window.qg.createBannerAd({
                 adUnitId: this.banner.adUnitId,
                 style: {
                     top: this.banner.style.top,
@@ -722,74 +1042,186 @@ export module LwgOPPO {
                     height: this.banner.style.height,
                 }
             })
-            this.banner.instance.show().then(() => {
-                console.log('banner广告展示完成');
-                this.banner.lastState = 1;
-            }).catch((err: any) => {
-                console.log('banner广告展示失败', JSON.stringify(err));
-                this.banner.lastState = 0;
+        }
+
+        /**
+         * banner视频只有打开的时候才会hide
+         */
+        protected hideBanner(): void {
+            this.banner.lastIsShow = false;
+            this.banner && this.banner.instance && this.banner.instance.hide();
+        }
+
+        native: TpADNative;
+        /**
+         * 点击之后会刷新
+         * 一定时间后会刷新
+         */
+        updateNative(): void {
+            //定时刷新
+            Laya.timer.clearAll(this.native);
+            Laya.timer.once(this.native.updateTime, this.native, () => {
+                this.updateNative();
+            })
+            //间隔小于一定时间不会创建
+            if (this.native.lastCreateTime === undefined) {
+                this.native.lastCreateTime = LwgDate.Now.time;
+            } else {
+                if (LwgDate.Now.time - this.native.lastCreateTime < this.native.intervalTime) {
+                    console.log('间隔太短，不会重新刷新');
+                    return;
+                }
+            }
+            this.native.lastCreateTime = LwgDate.Now.time;
+
+            //一旦从新加载了，无论加载成功与否，上个广告一定没有了，所以直接关闭
+            const nativeViewArr = this.native.nativeViewArr;
+            for (let index = 0; index < nativeViewArr.length; index++) {
+                const nativeView = nativeViewArr[index];
+                nativeView.view && nativeView.view.destroy();
+                nativeView.view = null;
+            }
+            this.native.instance = null;
+            this.native.lodeNativeRes = null;
+
+            this.native.instance = this.createNative();
+            this.native.instance.offLoad(this.native.instance.loadCb);
+            this.native.instance.offError(this.native.instance.errCb);
+
+            this.native.instance.load();
+            this.native.instance.loadCb = (res: TpLodeNativeRes) => {
+                if (res && res.adList) {
+                    this.native.lodeNativeRes = res;
+                    console.log("原生广告加载成功：", JSON.stringify(res.adList));
+                    //多次循环请求会被屏蔽，所以不会死循环
+                    this.checkShowNativeInScene();
+                } else {
+                    console.log('原生广告加载成功！但是信息错误！', JSON.stringify(res));
+                }
+            }
+            this.native.instance.onLoad(this.native.instance.loadCb);
+
+            this.native.instance.errCb = (err: any) => {
+                this.native.instance = null;
+                this.native.lodeNativeRes = null;
+                console.log("原生广告加载错误", JSON.stringify(err));
+            }
+            this.native.instance.onError(this.native.instance.errCb);
+        }
+        protected createNative(): any {
+            return Laya.Browser.window.qg.createNativeAd({
+                adUnitId: this.native.adUnitId,
             })
         }
 
         /**
-         * 检测再当前场景中的显示
+         * 手动展示一个原生
          */
-        showBannerInSceneCheck(sceneName: string): void {
-            if (LwgDate.Now.time - this.nativeData.lastShowTime <= this.ADData.delayTime) {
+        showNativeByManual(): void {
+            if (LwgDate.Now.time - this.ADData.initTime <= this.ADData.delayTime) {
+                LwgDialogue.showTips('稍后再试！');
                 return;
             }
-            if (!this.banner.showTrack) {
-                this.banner.showTrack = [];
-            }
-            let appear = false;
-            for (let index = 0; index < this.banner.showScenes.length; index++) {
-                const element = this.banner.showScenes[index];
-                if (element == sceneName) {
-                    appear = true;
-                    break;
-                }
-            }
-            if (appear) {
-                this.showBanner();
-                this.banner.showTrack.push({
-                    sceneName: sceneName,
-                    show: true,
-                });
+            if (!this.native.instance || !this.native.lodeNativeRes) {
+                LwgDialogue.showTips('稍后再试！');
             } else {
-                this.hideBanner();
-                this.banner.showTrack.push({
-                    sceneName: sceneName,
-                    show: false,
-                });
+                const adListItem = this.native.lodeNativeRes.adList[0];
+                this.native.instance.reportAdClick({
+                    adId: adListItem.adId,
+                })
+            }
+            //无论展示与否都会刷新
+            this.updateNative();
+        }
+
+        /**
+         * 对当前显示的场景进行重新显示
+         */
+        protected checkShowNativeInScene(): boolean {
+            this.hideNative();
+            let hasShow = false;
+            LwgScene.getCurShowSceneArr((scene: Laya.View) => {
+                const nativeViewArr = this.native.nativeViewArr;
+                for (let i = 0; i < nativeViewArr.length; i++) {
+                    const nativeView = nativeViewArr[i];
+                    for (let j = 0; j < nativeView.showScenes.length; j++) {
+                        const name = nativeView.showScenes[j];
+                        if (name === scene.name) {
+                            hasShow = true;
+                            if (this.native.instance && this.native.lodeNativeRes && this.native.lodeNativeRes.adList && this.native.lodeNativeRes.adList[0]) {
+                                scene.parent && scene.addChild(new NatievView(this, nativeView));
+                            } else {
+                                this.updateNative();
+                            }
+                        }
+                    }
+                }
+            });
+            return hasShow;
+        }
+
+        /**
+         * 关闭所有原生
+         */
+        hideNative(): void {
+            const nativeViewArr = this.native.nativeViewArr;
+            for (let index = 0; index < nativeViewArr.length; index++) {
+                const nativeView = nativeViewArr[index];
+                nativeView.view && nativeView.view.removeSelf();
             }
         }
-        /**
-         * 关闭页面的时候判断上个元素是否是显示的，如果是则打开，不是则直接关闭
-         */
-        hideBannerInSceneCheck(): void {
-            if (LwgDate.Now.time - this.nativeData.lastShowTime <= this.ADData.delayTime) {
-                return;
-            }
-            if (!this.banner.showTrack) {
-                this.banner.showTrack = [];
-            }
-            this.banner.showTrack.pop();
-            if (this.banner.showTrack.length > 0) {
-                if (this.banner.showTrack[this.banner.showTrack.length - 1].show) {
-                    this.showBanner();
-                } else {
-                    this.hideBanner();
+
+        gamePortal: TpADGamePortal;
+        checkShowGamePortalBtnInScene(): void {
+            LwgScene.getCurShowSceneArr((scene: Laya.View) => {
+                for (let index = 0; index < this.gamePortal.showScene.length; index++) {
+                    const showSceneData = this.gamePortal.showScene[index];
+                    const sceneName = showSceneData.sceneName;
+                    if (scene.name === sceneName) {
+                        let gamePortalBtn = scene.getChildByName('GamePortalBtn');
+                        if (!gamePortalBtn) {
+                            gamePortalBtn = new GamePortalBtn(this, showSceneData.btnStyle);
+                            gamePortalBtn.name = 'GamePortalBtn';
+                            scene && scene.parent && scene.addChild(gamePortalBtn);
+                        }
+                    }
                 }
-            } else {
-                this.hideBanner();
-            }
+            })
         }
+
         /**
-         * 关闭banner广告
+         * 互推盒子九宫格广告
          */
-        hideBanner(): void {
-            this.banner && this.banner.instance && this.banner.instance.hide();
-            this.banner.lastState = 0;
+        showGamePortal() {
+            this.hideBannerAndNative();
+            if (Laya.Browser.window.qg.getSystemInfoSync().platformVersionCode >= 1076) {
+                this.gamePortal.instance = Laya.Browser.window.qg.createGamePortalAd({
+                    adUnitId: this.gamePortal.adUnitId,
+                });
+                this.gamePortal.instance.offClose(this.gamePortal.instance.closeCb);
+                this.gamePortal.instance.offError(this.gamePortal.instance.errCb);
+                this.gamePortal.instance.offLoad(this.gamePortal.instance.loadCb);
+
+                this.gamePortal.instance.load();
+                this.gamePortal.instance.loadCb = () => {
+                    // console.log('互推盒子九宫格广告加载成功');
+                    this.gamePortal.instance.show();
+                }
+                this.gamePortal.instance.onLoad(this.gamePortal.instance.loadCb);
+
+                this.gamePortal.instance.errCb = () => {
+                    LwgDialogue.showTips('稍后！');
+                }
+                this.gamePortal.instance.onError(this.gamePortal.instance.errCb);
+
+                this.gamePortal.instance.closeCb = () => {
+                    this.checkShowWhenOpenScene();
+                }
+                this.gamePortal.instance.onClose(this.gamePortal.instance.closeCb);
+
+            } else {
+                console.log('快应用平台版本号低于1076，暂不支持互推盒子相关API');
+            }
         }
 
         video: TpADVideo;
@@ -813,264 +1245,50 @@ export module LwgOPPO {
                 return;
             }
             this.video.lastShowTime = LwgDate.Now.time;
-            this.video.instance = Laya.Browser.window.qg.createRewardedVideoAd({
-                adUnitId: this.video.adUnitId,
-            });
+            this.video.instance = this.createVideo();
             // 清除上次的回调，vedio是单例
-            this.video.instance.offClose(this.video.closeCB);
-            this.video.instance.offLoad(this.video.lodeCB);
-            this.video.instance.offError(this.video.errCB);
+            this.video.instance.offClose(this.video.instance.closeCb);
+            this.video.instance.offLoad(this.video.instance.loadCb);
+            this.video.instance.offError(this.video.instance.errCb);
 
             this.video.instance.load();
-
-            this.video.lodeCB = () => {
-                this.video.instance.show();
+            LwgSound.stopMusic();
+            console.log('关掉背景音乐！');
+            this.video.instance.loadCb = () => {
+                this.video.instance.show().then(() => {
+                }).catch((err: any) => {
+                    console.log('激励视频广告展示失败', JSON.stringify(err));
+                    LwgSound.stopMusic();
+                    console.log('开启背景音乐！');
+                });
             }
-            this.video.instance.onLoad(this.video.lodeCB);
+            this.video.instance.onLoad(this.video.instance.loadCb);
 
-            this.video.errCB = (err: any) => {
+            this.video.instance.errCb = (err: any) => {
                 console.log(JSON.stringify(err));
                 LwgDialogue.showTips('暂无广告，稍后再试!');
             }
-            this.video.instance.onError(this.video.errCB);
+            this.video.instance.onError(this.video.instance.errCb);
 
-            this.video.closeCB = (res: any) => {
+            this.video.instance.closeCb = (res: any) => {
                 if (res.isEnded) {
                     this.video.watchCompelet && this.video.watchCompelet();
                     LwgDialogue.showTips('观看完成，获得奖励!');
+                    LwgSound.playMusic();
+                    console.log('开启背景音乐！');
                 } else {
                     this.video.watchClose && this.video.watchClose();
                     LwgDialogue.showTips('观看完整广告才可以领取奖励!');
+                    LwgSound.playMusic();
+                    console.log('开启背景音乐！');
                 }
             }
-            this.video.instance.onClose(this.video.closeCB);
+            this.video.instance.onClose(this.video.instance.closeCb);
         }
-
-        nativeData: TpADNativeData;
-        /**
-         * 点击之后会刷新
-         * 一定时间后会刷新
-         */
-        createNative(): void {
-            if (LwgDate.Now.time - this.nativeData.lastShowTime <= this.ADData.delayTime) {
-                return;
-            }
-            //定时刷新
-            Laya.timer.clearAll(this.nativeData);
-            Laya.timer.once(this.nativeData.updateTime, this.nativeData, () => {
-                this.createNative();
-            })
-
-            //间隔小于一定时间不会创建
-            if (this.nativeData.lastCreateTime === undefined) {
-                this.nativeData.lastCreateTime = LwgDate.Now.time;
-            } else {
-                if (LwgDate.Now.time - this.nativeData.lastCreateTime < this.nativeData.intervalTime) {
-                    console.log('间隔太短，不会重新刷新');
-                    return;
-                }
-            }
-            this.nativeData.lastCreateTime = LwgDate.Now.time;
-
-            const dataArr = this.nativeData.dataArr;
-            for (let index = 0; index < dataArr.length; index++) {
-                const element = dataArr[index];
-                element.view && element.view.destroy();
-                element.view = null;
-            }
-            this.nativeData.instance = null;
-            this.nativeData.lodeNativeRes = null;
-
-            this.nativeData.instance = Laya.Browser.window.qg.createNativeAd({
-                adUnitId: this.nativeData.adUnitId,
-            })
-            this.nativeData.instance.offLoad(this.nativeData.instance.loadCb);
-            this.nativeData.instance.offError(this.nativeData.instance.errCb);
-
-            this.nativeData.instance.load();
-            this.nativeData.instance.loadCb = (res: TpLodeNativeRes) => {
-                if (res && res.adList) {
-                    this.nativeData.lodeNativeRes = res;
-                    console.log("原生广告加载成功,广告信息：", JSON.stringify(res.adList));
-                    this.showNativeInCurScene();
-                } else {
-                    console.log('原生广告加载成功！但是信息错误！', JSON.stringify(res));
-                }
-            }
-            this.nativeData.instance.onLoad(this.nativeData.instance.loadCb);
-
-            this.nativeData.instance.errCb = (err: any) => {
-                this.nativeData.instance = null;
-                this.nativeData.lodeNativeRes = null;
-                console.log("原生广告加载错误,10秒内可能不会再次加载", JSON.stringify(err));
-            }
-            this.nativeData.instance.onError(this.nativeData.instance.errCb);
-        }
-
-        /**
-         * 手动展示一个原生
-         */
-        showNative(): void {
-            if (!this.nativeData.instance || !this.nativeData.lodeNativeRes) {
-                LwgDialogue.showTips('稍后再试！');
-            } else {
-                const adListItem = this.nativeData.lodeNativeRes.adList[0];
-                this.nativeData.instance.reportAdClick({
-                    adId: adListItem.adId,
-                })
-            }
-            //无论展示与否都会刷新
-            this.createNative();
-        }
-
-        /**
-         * 检测在当前场景中的显示
-         */
-        private showNativeInSceneCheck(sceneName: string): void {
-            if (!AD.nativeData.instance) {
-                this.createNative();
-            } else {
-                const dataArr = this.nativeData.dataArr;
-                for (let i = 0; i < dataArr.length; i++) {
-                    const native = dataArr[i];
-                    let appear = false;
-                    for (let j = 0; j < native.showScenes.length; j++) {
-                        const name = native.showScenes[j];
-                        if (name == sceneName) {
-                            appear = true;
-                            break;
-                        }
-                    }
-                    if (appear) {
-                        const scene = LwgScene.sceneControl[sceneName] as Laya.View;
-                        scene && scene.parent && scene.addChild(new NatievView(native));
-                    }
-                }
-            }
-        }
-
-        /**
-         * 对当前显示的场景进行重新刷新
-         */
-        showNativeInCurScene(): void {
-            LwgScene.getCurShowSceneArr((scene: Laya.View) => {
-                const dataArr = this.nativeData.dataArr;
-                for (let i = 0; i < dataArr.length; i++) {
-                    const native = dataArr[i];
-                    for (let j = 0; j < native.showScenes.length; j++) {
-                        const name = native.showScenes[j];
-                        if (name == scene.name) {
-                            scene.parent && scene.addChild(new NatievView(native));
-                            break;
-                        }
-                    }
-                }
+        createVideo(): any {
+            return Laya.Browser.window.qg.createRewardedVideoAd({
+                adUnitId: this.video.adUnitId,
             });
-        }
-
-        /**
-         * 打开其他广告的时候会关闭原生，原生广告和banner广告用场景唯一性来屏蔽
-         */
-        hideNative(): void {
-            const dataArr = this.nativeData.dataArr;
-            for (let index = 0; index < dataArr.length; index++) {
-                const element = dataArr[index];
-                element.view && element.view.removeSelf();
-            }
-        }
-
-        insert: TpADInsert;
-        /**
-         * 插屏广告是在游戏结束后执行,插屏默认层级最高
-         * @param sceneName 
-         * @returns 
-         */
-        showInsertCloseSceneCheck(sceneName: string): void {
-            console.log('准备展示插屏！');
-            for (let index = 0; index < this.insert.showCloseScenesLaterArr.length; index++) {
-                const element = this.insert.showCloseScenesLaterArr[index];
-                if (element == sceneName) {
-                    if (this.insert.type === EmInsertType.GamePortal) {
-                        this.insert.isShow = true;
-                        this.showGamePortal();
-                    }
-                    break;
-                }
-            }
-        }
-
-        gamePortal: TpADGamePortal;
-        /**
-         * 创建九宫格广告，每次进入新界面会重新创建，每次点击的时候不会重新加载，否则延迟
-         */
-        createGamePortal(): void {
-            if (Laya.Browser.window.qg.getSystemInfoSync().platformVersionCode >= 1076) {
-                this.gamePortal.instance = Laya.Browser.window.qg.createGamePortalAd({
-                    adUnitId: this.gamePortal.adUnitId,
-                });
-
-                this.gamePortal.instance.offClose(this.gamePortal.instance.closeCb);
-                this.gamePortal.instance.offError(this.gamePortal.instance.errCb);
-                this.gamePortal.instance.offLoad(this.gamePortal.instance.loadCb);
-
-                this.gamePortal.instance.load();
-                this.gamePortal.instance.loadCb = () => {
-                    // console.log('互推盒子九宫格广告加载成功');
-                    this.gamePortal.instance.show();
-                }
-                this.gamePortal.instance.onLoad(this.gamePortal.instance.loadCb);
-
-                this.gamePortal.instance.errCb = () => {
-                    LwgDialogue.showTips('稍后！');
-                }
-                this.gamePortal.instance.onError(this.gamePortal.instance.errCb);
-
-                this.gamePortal.instance.closeCb = () => {
-                    this.checkADShowRule();
-                }
-                this.gamePortal.instance.onClose(this.gamePortal.instance.closeCb);
-
-            } else {
-                console.log('快应用平台版本号低于1076，暂不支持互推盒子相关API');
-            }
-        }
-
-        /**
-         * 只有一个场景存在的时候，检测banner广告，多个页面则检测原生广告
-         */
-        checkADShowRule(): void {
-            this.insert.isShow = false;
-            const arr = LwgScene.getCurShowSceneArr();
-            if (arr.length === 1) {
-                this.showBannerInSceneCheck(LwgScene.lastSceneName);
-            }
-            else {
-                this.showNativeInCurScene();
-            }
-        }
-
-        /**
-         * 互推盒子九宫格广告
-         * 
-         */
-        showGamePortal() {
-            this.createGamePortal();
-            this.hideBanner();
-            this.hideNative();
-        }
-
-        /**
-         * 检测再当前场景中的显示,每次进场景的时候会重新加载
-         */
-        private showGamePortalBtnInSceneCheck(sceneName: string): void {
-            const showSceneData = this.gamePortal.showScene;
-            for (let i = 0; i < showSceneData.length; i++) {
-                const sceneData = showSceneData[i];
-                if (sceneData.sceneName === sceneName) {
-                    const scene = LwgScene.sceneControl[sceneName] as Laya.View;
-                    scene.parent && scene.addChild(new BtnGamePortal(sceneData.btnStyle));
-                }
-            }
         }
     }
 
@@ -1228,6 +1446,110 @@ export module LwgOPPO {
         }
     }
 }
+export module LwgVIVO {
+    export class Init {
+        constructor(ADData: LwgOPPO.TpADData, shortcutInstalle: LwgOPPO.TpShortcutInstalled) {
+            if (LwgPlatform.type !== LwgPlatform.EmType.VIVO) {
+                return;
+            }
+
+            AD = new _AD(ADData);
+            System = new _System(shortcutInstalle);
+        }
+        get LwgOPPO(): string {
+            return 'LwgVIVO';
+        }
+    }
+    export let AD: _AD;
+    export let System: _System;
+    export class _AD extends LwgOPPO._AD {
+        constructor(ADData: LwgOPPO.TpADData) {
+            super(ADData);
+        }
+        checkShowWhenOpenScene(sceneName?: string): void {
+            this.checkShowBannerAndNativeInScene();
+        }
+        checkShowWhenCloseOverlayScene(sceneName?: string): void {
+            this.checkShowBannerAndNativeInScene();
+        }
+        checkShowAfterCloseScene(sceneName?: string): void {
+            this.checkShowInsertAfterCloseScene(sceneName);
+        }
+
+        createBanner(): any {
+            return Laya.Browser.window.qg.createBannerAd({
+                posId: this.banner.posId,
+                style: {
+                    top: this.banner.style.top,
+                    left: this.banner.style.left,
+                    width: this.banner.style.width,
+                    height: this.banner.style.height,
+                }
+            })
+        }
+        createNative(): any {
+            return Laya.Browser.window.qg.createNativeAd({
+                posId: this.native.posId,
+            })
+        }
+        createVideo(): any {
+            return Laya.Browser.window.qg.createRewardedVideoAd({
+                posId: this.video.posId,
+            });
+        }
+
+        insert: LwgOPPO.TpADInsertVIVO;
+        checkShowInsertAfterCloseScene(sceneName: string): void {
+            if (LwgDate.Now.time - this.ADData.initTime <= this.ADData.delayTime) {
+                return;
+            }
+            console.log('插屏广告检测展示', sceneName);
+            for (let index = 0; index < this.insert.showCloseScenes.length; index++) {
+                const element = this.insert.showCloseScenes[index];
+                if (element == sceneName) {
+                    this.insert.isShow = true;
+                    this.hideBannerAndNative();
+                    this.insert.instance = Laya.Browser.window.qg.createInterstitialAd({
+                        posId: this.insert.posId,
+                    });
+                    this.insert.instance.offError(this.insert.instance.errCb);
+                    this.insert.instance.offClose(this.insert.instance.closeCb);
+
+                    this.insert.instance.errCb = (err: any) => {
+                        console.log("插屏广告加载失败", err);
+                        this.insert.isShow = false;
+                        this.checkShowBannerAndNativeInScene();
+                    }
+                    this.insert.instance.onError(this.insert.instance.errCb);
+
+                    this.insert.instance.closeCb = () => {
+                        this.insert.isShow = false;
+                        this.checkShowBannerAndNativeInScene();
+                    }
+                    this.insert.instance.onClose(this.insert.instance.closeCb);
+
+                    this.insert.instance.show().then(() => {
+                        this.insert.isShow = true;
+                        console.log('插屏广告展示成功');
+                    }).catch((err: any) => {
+                        console.log('插屏广告展示失败', JSON.stringify(err));
+                        this.insert.isShow = false;
+                        this.checkShowBannerAndNativeInScene();
+                    })
+                    break;
+                }
+            }
+        }
+    }
+    export class _System extends LwgOPPO._System {
+        showToast(message: string, duration: number): void {
+            Laya.Browser.window.qg.showToast({
+                message: message,
+                duration: duration,
+            })
+        }
+    }
+}
 
 export module LwgWX {
     export let Login: _Login;
@@ -1266,9 +1588,6 @@ export module LwgWX {
      */
     class _Login {
         constructor() {
-            if (!Laya.Browser.onWeiXin) {
-                return;
-            }
             this.onShow();
             this.onHide();
         }
@@ -1309,7 +1628,7 @@ export module LwgWX {
             imgUrl: string
         }
     }
-    class _System {
+    class _System implements LwgPlatform.TpSystemBase {
         constructor(systemData: TpSystemData) {
             this.shareTattle = systemData.share.tattle;
             this.shareImgUrl = systemData.share.imgUrl;
@@ -1335,7 +1654,7 @@ export module LwgWX {
         /**
          * 分享按钮
          */
-        onShareAppMessage(): void {
+        private onShareAppMessage(): void {
             if (!Laya.Browser.onMiniGame) {
                 return;
             }
@@ -1357,28 +1676,18 @@ export module LwgWX {
         vibrateShort(): void {
             if (Laya.Browser.onMiniGame) {
                 wx.vibrateShort({
-                    success: () => {
-                        // console.log('短震动成功！');
-                    },
-                    fail: () => {
-                        // console.log('短震动失败！');
-                    },
-                    complete: () => {
-                    }
+                    success: () => { },
+                    fail: () => { },
+                    complete: () => { }
                 });
             }
         }
         vibrateLong(): void {
             if (Laya.Browser.onMiniGame) {
                 wx.vibrateLong({
-                    success: () => {
-                        // console.log('长震动成功！');
-                    },
-                    fail: () => {
-                        // console.log('长震动失败！');
-                    },
-                    complete: () => {
-                    }
+                    success: () => { },
+                    fail: () => { },
+                    complete: () => { }
                 });
             }
         }
@@ -1386,7 +1695,7 @@ export module LwgWX {
     /**
      * 广告基础
      */
-    export type TpADBase = {
+    export type TpADInstanceBase = {
         load?: Function,
         onLoad?: Function,
         onError?: Function,
@@ -1401,7 +1710,7 @@ export module LwgWX {
     export type TpADbanner = {
         adUnitId: string,
         showScenes: string[],
-        instance?: TpADBase,
+        instance?: TpADInstanceBase,
         /**
          * 刷新时间
          */
@@ -1426,7 +1735,7 @@ export module LwgWX {
             offClose: Function,
             offError: Function,
             offLoad: Function,
-        } & TpADBase,
+        } & TpADInstanceBase,
         /**
         * 广告状态,如果没有视频广告则是分享
         */
@@ -1450,7 +1759,7 @@ export module LwgWX {
      */
     export type TpADCustom = {
         adUnitId: string,
-        instance?: { onHide?: Function } & TpADBase,
+        instance?: { onHide?: Function } & TpADInstanceBase,
         style: {
             left: number,
             top: number,
@@ -1472,11 +1781,11 @@ export module LwgWX {
         closeCb?: Function,
         instance?: {
             onClose: Function,
-        } & TpADBase,
+        } & TpADInstanceBase,
         /**
          * 在某些场景关闭后显示
          */
-        showCloseScenesLaterArr: string[],
+        showCloseScenes: string[],
     }
 
     /**
@@ -1522,13 +1831,11 @@ export module LwgWX {
     /**
      * 广告
      */
-    class _AD {
+    class _AD implements LwgPlatform.TpADBase {
         constructor(data: TpADData) {
-            if (LwgPlatform.type !== LwgPlatform.EmType.WeChat) {
-                return;
-            }
             this.lodeVideo(data.video);
-            this.lodeBanner(data.banner);
+            this.banner = data.banner;
+            this.lodeBanner();
             this.loadInsert(data.Insert);
             this.lodeCustom(data.customArr);
         }
@@ -1551,32 +1858,34 @@ export module LwgWX {
         /**
          * 设置banner广告再场景中的显示
          */
-        setShowInScenes(sceneName: string): void {
+        checkShowWhenOpenScene(sceneName: string): void {
             this.showBannerInSceneCheck(sceneName);
             this.showCustomInSceneCheck(sceneName);
         }
-        setHideInScenes(): void {
-            this.hideBannerInSceneCheck();
-            this.hideCustomInSceneCheck();
+        checkShowWhenCloseOverlayScene(): void {
+            this.showBannerByCloseOverlayScene();
+            this.showCustomByCloseOverlayScenes();
+        }
+        checkShowAfterCloseScene(closeSceneName: string): void {
+            this.checkShowInsertAfterCloseScene(closeSceneName);
         }
         /**
          * 初始化banner广告
          * @param bannerData 
          * @param show 
          */
-        private lodeBanner(bannerData: TpADbanner, show?: boolean): void {
+        private lodeBanner(show?: boolean): void {
             // 创建 Banner 广告实例，提前初始化
-            this.banner = bannerData;
             if (!this.banner.adUnitId) {
                 return;
             }
             this.banner.instance = Laya.Browser.window.wx.createBannerAd({
-                adUnitId: bannerData.adUnitId,
+                adUnitId: this.banner.adUnitId,
                 adIntervals: this.banner.autoUpdateTime ? this.banner.autoUpdateTime : 30,
                 style: {
-                    left: bannerData.style.left ? bannerData.style.left : 0,
-                    top: bannerData.style.top ? bannerData.style.top : Laya.Browser.onWeiXin ? Laya.Browser.window.wx.systemInfoSync().windowWidth - 148 : 0,
-                    width: bannerData.style.width ? bannerData.style.width : 750,
+                    left: this.banner.style.left ? this.banner.style.left : 0,
+                    top: this.banner.style.top ? this.banner.style.top : Laya.Browser.onWeiXin ? Laya.Browser.window.wx.systemInfoSync().windowWidth - 148 : 0,
+                    width: this.banner.style.width ? this.banner.style.width : 750,
                 }
             })
             this.banner.instance.onLoad(() => {
@@ -1617,11 +1926,10 @@ export module LwgWX {
                 });
             }
         }
-
         /**
          * 关闭页面的时候判断上个元素是否是显示的，如果是则打开，不是则直接关闭
          */
-        private hideBannerInSceneCheck(): void {
+        private showBannerByCloseOverlayScene(): void {
             if (!this.banner.showTrack) {
                 this.banner.showTrack = [];
             }
@@ -1640,16 +1948,17 @@ export module LwgWX {
          * 显示banner广告
          */
         showBanner(): void {
-            this.banner && this.banner.instance && this.banner.instance.show().then(() => console.log('banner 广告显示'));
+            this.banner.instance && this.banner.instance.show().then(() => console.log('banner 广告显示'));
         }
         /**
          * 显示一个新的banner广告,相当于刷新,必须删除原来的banner,还是原来的 adUnitId
          */
         showBannerNew() {
-            this.banner.instance.destroy();
+            this.banner.instance && this.banner.instance.destroy();
             this.banner.instance = null;
-            this.lodeBanner(this.banner, true);
+            this.lodeBanner(true);
         }
+
         /**
          * 关闭banner广告
          */
@@ -1728,7 +2037,7 @@ export module LwgWX {
         /**
          * 关闭页面的时候判断上个元素是否是显示的，如果是则打开，不是则直接关闭
          */
-        private hideCustomInSceneCheck(): void {
+        private showCustomByCloseOverlayScenes(): void {
             for (let index = 0; index < this.customArr.length; index++) {
                 const custom = this.customArr[index];
                 if (!custom.showTrack) {
@@ -1833,13 +2142,10 @@ export module LwgWX {
         /**
          * 检测再当前场景中的显示
          */
-        showInsertCloseSceneCheck(sceneName: string): void {
-            if (!Laya.Browser.onWeiXin) {
-                return;
-            }
-            for (let index = 0; index < this.insert.showCloseScenesLaterArr.length; index++) {
-                const element = this.insert.showCloseScenesLaterArr[index];
-                if (element == sceneName) {
+        private checkShowInsertAfterCloseScene(closeSceneName: string): void {
+            for (let index = 0; index < this.insert.showCloseScenes.length; index++) {
+                const element = this.insert.showCloseScenes[index];
+                if (element == closeSceneName) {
                     this.insert && this.insert.instance && this.insert.instance.show().catch((err: any) => {
                         console.error('插屏广告展示失败！', JSON.stringify(err));
                     })
@@ -1847,6 +2153,7 @@ export module LwgWX {
                 }
             }
         }
+
         /**
          * 加载并展示插屏
          * @returns 
@@ -2471,7 +2778,9 @@ export module LwgScene {
         const openScript = openScene[openScene.name] as SceneBase;
         const openSceneName = openScene.name;
         var cb = () => {
-            closeScene && closeScene.close();
+            if (closeScene) {
+                closeScene.close();
+            }
             !openScript.isOverlay && closeAllExceptSelf(openSceneName);
             openAniAfterCommCb(openScript);
         }
@@ -2503,7 +2812,7 @@ export module LwgScene {
     export function goOverlaySceneCloseAni(scene: Laya.View): void {
         LwgClick.Filter.setValue(LwgClick.EmfilterType.none);
         LwgSceneAni.playOverlaySceneClose(commOverlaySceneCloseAniType, scene, () => {
-            closeAniAfterCommCb(scene);
+            closeOverlayAniAfterCommCb(scene);
         });
     }
 
@@ -2529,7 +2838,7 @@ export module LwgScene {
         const closeAni = script.Doalog[script.closeAniType] as Laya.Animation;
         closeAni.play(0, false);
         closeAni.once(Laya.Event.COMPLETE, this, () => {
-            closeAniAfterCommCb(dialog);
+            closeOverlayAniAfterCommCb(dialog);
         })
     }
 
@@ -2549,10 +2858,11 @@ export module LwgScene {
     }
 
     /**
-    * 设置通用关闭动画结束回调
-    */
-    function closeAniAfterCommCb(scene: Laya.View): void {
+     * 设置通用关闭动画结束回调
+     */
+    function closeOverlayAniAfterCommCb(scene: Laya.View): void {
         scene.close();
+        LwgPlatform.AD.checkShowWhenCloseOverlayScene(scene.name);
         LwgClick.Filter.setValue(LwgClick.EmfilterType.all);
     }
 
@@ -3029,7 +3339,8 @@ export module LwgScene {
             LwgCurrency.Stamina.showInSceneCheck(this.owner.name);
             LwgCurrency.Diamond.showInSceneCheck(this.owner.name);
             LwgCommon.BtnGameManager.showInSceneCheck(this.owner.name);
-            LwgPlatform.AD.showADInScene(this.owner.name);
+            LwgPlatform.AD.checkShowWhenOpenScene(this.owner.name);
+            LwgPlatform.System.checkShowWhenOpenScene(this.owner.name);
         }
 
         /**
@@ -3078,10 +3389,10 @@ export module LwgScene {
             //加载页不会执行view的显示操作
             if (this.owner.name !== NameBase.PreLoadCutIn) {
                 // 插屏广告在任何场景关闭后都会检测
-                LwgPlatform.AD.showADCloseSceneLater(this.owner.name);
+                LwgPlatform.AD.checkShowAfterCloseScene(this.owner.name);
                 //只需要在弹窗关闭时判断，因为场景不需要判断
                 if (this.isOverlay) {
-                    LwgPlatform.AD.hideADInScene();
+                    // LwgPlatform.AD.showByCloseOverlayScene();
                     LwgCurrency.Gold.hideInSceneCheck();
                     LwgCurrency.Diamond.hideInSceneCheck();
                     LwgCurrency.Stamina.hideInSceneCheck();
@@ -10473,13 +10784,11 @@ export module LwgSound {
             btnUrl = _btnUrl;
             getMoneyUrl = _getMoneyUrl;
             LwgSound.playMusic();
-            // console.log('LwgSound');
         }
         public get LwgSound(): string {
             return 'LwgSound';
         }
     }
-
     /**
      * 背景音效地址
      */
@@ -10488,14 +10797,6 @@ export module LwgSound {
      * 按钮音效地址
      */
     export let btnUrl = '';
-    /**
-    * 胜利音效
-    */
-    export let victoryUrl = '';
-    /**
-     * 失败音效
-     */
-    export let defeatedUrl = '';
     /**
      * 获得金币
      */
@@ -10521,7 +10822,6 @@ export module LwgSound {
             }));
         }
     }
-
 
     /**通用音效播放
      * @param url 音效地址，不传则是默认音效
@@ -10567,7 +10867,7 @@ export module LwgSound {
     export function stopAll() {
         Laya.SoundManager.stopAll();
     }
-    //ios推出后台后背景概率性不会出现
+    //ios退出后台后背景概率性不会出现
     // static _visibilityChange() {
     //     if (ILaya.stage.isVisibility) {
     //         this._recreateWebAudio(() => { SoundManager._stageOnFocus(); });
@@ -10594,7 +10894,9 @@ export module LwgSound {
     //     }
     // }
 }
-/**工具模块*/
+/**
+ * 工具
+ */
 export module LwgTools {
     /**
      * 关卡操作,节点信息
@@ -13441,7 +13743,7 @@ export module LwgInit {
             /**
              * 平台相关
              */
-            _LwgPlatform: LwgPlatform.Init,
+            _LwgPlatform: LwgPlatform.InitBase,
             /**
              * 一些控制
              */
@@ -13727,7 +14029,9 @@ export module Lwg3D {
         }
     }
 }
+
 LwgPlatform;
+LwgTwoTwoThree;
 LwgOPPO;
 LwgWX;
 LwgControl;

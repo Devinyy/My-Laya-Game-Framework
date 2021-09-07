@@ -4,127 +4,148 @@
   {
     "ID": 1,
     "describe": "背景音乐",
-    "name": "audio_bgm.mp3",
+    "name": "audio_bgm",
+    "format": ".mp3",
     "type": 1
   },
   {
     "ID": 2,
     "describe": "点击按钮",
-    "name": "audio_chick.mp3",
+    "name": "audio_chick",
+    "format": ".mp3",
     "type": 2
   },
   {
     "ID": 3,
     "describe": "选中",
-    "name": "audio_choose.mp3",
+    "name": "audio_choose",
+    "format": ".mp3",
     "type": 2
   },
   {
     "ID": 4,
     "describe": "转盘转动",
-    "name": "audio_zhuanpan01.mp3",
+    "name": "audio_zhuanpan01",
+    "format": ".mp3",
     "type": 2
   },
   {
     "ID": 5,
     "describe": "转盘停止",
-    "name": "audio_zhuanpan02.mp3",
+    "name": "audio_zhuanpan02",
+    "format": ".mp3",
     "type": 2
   },
   {
     "ID": 6,
     "describe": "获得钻石",
-    "name": "audio_zuanshi.mp3",
+    "name": "audio_zuanshi",
+    "format": ".mp3",
     "type": 2
   },
   {
     "ID": 7,
     "describe": "获得新皮肤",
-    "name": "audio_pifu.mp3",
+    "name": "audio_pifu",
+    "format": ".mp3",
     "type": 2
   },
   {
     "ID": 8,
     "describe": "升级",
-    "name": "audio_levelup.mp3",
+    "name": "audio_levelup",
+    "format": ".mp3",
     "type": 2
   },
   {
     "ID": 9,
     "describe": "打开宝箱",
-    "name": "audio_kaixiang.mp3",
+    "name": "audio_kaixiang",
+    "format": ".mp3",
     "type": 2
   },
   {
     "ID": 10,
     "describe": "获得道具/钥匙",
-    "name": "audio_daoju.mp3",
+    "name": "audio_daoju",
+    "format": ".mp3",
     "type": 2
   },
   {
     "ID": 11,
     "describe": "踩正确的泡泡1",
-    "name": "audio_paopao1.mp3",
+    "name": "audio_paopao1",
+    "format": ".mp3",
     "type": 2
   },
   {
     "ID": 12,
     "describe": "踩正确的泡泡2",
-    "name": "audio_paopao2.mp3",
+    "name": "audio_paopao2",
+    "format": ".mp3",
     "type": 2
   },
   {
     "ID": 13,
     "describe": "踩正确的泡泡3",
-    "name": "audio_paopao3.mp3",
+    "name": "audio_paopao3",
+    "format": ".mp3",
     "type": 2
   },
   {
     "ID": 14,
     "describe": "踩正确的泡泡4",
-    "name": "audio_paopao4.mp3",
+    "name": "audio_paopao4",
+    "format": ".mp3",
     "type": 2
   },
   {
     "ID": 15,
     "describe": "关卡内触碰障碍",
-    "name": "audio_pengzhuang.mp3",
+    "name": "audio_pengzhuang",
+    "format": ".mp3",
     "type": 2
   },
   {
     "ID": 16,
     "describe": "变装",
-    "name": "audio_bianzhuang.mp3",
+    "name": "audio_bianzhuang",
+    "format": ".mp3",
     "type": 2
   },
   {
     "ID": 17,
     "describe": "到达终点",
-    "name": "audio_zhongdian.mp3",
+    "name": "audio_zhongdian",
+    "format": ".mp3",
     "type": 2
   },
   {
     "ID": 18,
     "describe": "死亡",
-    "name": "audio_siwang.mp3",
+    "name": "audio_siwang",
+    "format": ".mp3",
     "type": 2
   },
   {
     "ID": 19,
     "describe": "胜利",
-    "name": "audio_win.mp3",
+    "name": "audio_win",
+    "format": ".mp3",
     "type": 2
   },
   {
     "ID": 20,
     "describe": "失败",
-    "name": "audio_lose.mp3",
+    "name": "audio_lose",
+    "format": ".mp3",
     "type": 2
   },
   {
     "ID": 21,
     "describe": "踩错泡泡",
-    "name": "audio_cuowu.mp3",
+    "name": "audio_cuowu",
+    "format": ".mp3",
     "type": 2
   }
 ]

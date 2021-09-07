@@ -8,7 +8,7 @@
         ],
     "props":{"width":576,"sceneColor":"#cfcfcf","height":1024},
     "nodeParent":-1,
-    "maxID":243,
+    "maxID":248,
     "label":"View",
     "isOpen":true,
     "isDirectory":true,
@@ -495,31 +495,73 @@
                     "child":[
                         {
                             "x":45,
-                            "type":"Image",
-                            "searchKey":"Image",
-                            "props":{"skin":"Game/UI/img_text_btn_icon_yes.png","centerY":0,"centerX":31},
+                            "type":"Box",
+                            "searchKey":"Box,boxFreeWord",
+                            "props":{"y":0,"x":0,"width":250,"var":"boxFreeWord","height":102},
                             "nodeParent":218,
-                            "label":"Image",
-                            "isDirectory":false,
+                            "label":"boxFreeWord",
+                            "isOpen":true,
+                            "isDirectory":true,
                             "isAniNode":true,
-                            "hasChild":false,
-                            "compId":237,
+                            "hasChild":true,
+                            "compId":245,
                             "child":[
-                                ]
+                                {
+                                    "x":60,
+                                    "type":"Image",
+                                    "searchKey":"Image",
+                                    "props":{"y":33,"skin":"Game/UI/img_text_btn_icon_yes.png","centerY":0,"centerX":0},
+                                    "nodeParent":245,
+                                    "label":"Image",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":247,
+                                    "child":[
+                                        ]
+                                }]
                         },
                         {
                             "x":45,
-                            "type":"Image",
-                            "searchKey":"Image",
-                            "props":{"y":30,"skin":"Game/UI/img_icon_common_ad_01.png","centerX":-29},
+                            "type":"Box",
+                            "searchKey":"Box,boxADWord",
+                            "props":{"y":0,"x":0,"width":250,"var":"boxADWord","height":102},
                             "nodeParent":218,
-                            "label":"Image",
-                            "isDirectory":false,
+                            "label":"boxADWord",
+                            "isOpen":true,
+                            "isDirectory":true,
                             "isAniNode":true,
-                            "hasChild":false,
-                            "compId":242,
+                            "hasChild":true,
+                            "compId":244,
                             "child":[
-                                ]
+                                {
+                                    "x":60,
+                                    "type":"Image",
+                                    "searchKey":"Image",
+                                    "props":{"y":30,"x":70,"skin":"Game/UI/img_icon_common_ad_01.png","centerX":-29},
+                                    "nodeParent":244,
+                                    "label":"Image",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":242,
+                                    "child":[
+                                        ]
+                                },
+                                {
+                                    "x":60,
+                                    "type":"Image",
+                                    "searchKey":"Image",
+                                    "props":{"y":33,"x":139,"skin":"Game/UI/img_text_btn_icon_yes.png","centerY":0,"centerX":31},
+                                    "nodeParent":244,
+                                    "label":"Image",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":237,
+                                    "child":[
+                                        ]
+                                }]
                         }]
                 }],
             "$HIDDEN":false

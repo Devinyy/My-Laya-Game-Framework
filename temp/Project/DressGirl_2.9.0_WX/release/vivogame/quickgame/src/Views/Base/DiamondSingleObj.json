@@ -1,0 +1,1 @@
+{"type":"View","props":{"y":50,"x":50,"width":50,"pivotY":50,"pivotX":50,"height":50},"compId":2,"child":[{"type":"Image","props":{"width":40,"skin":"Game/UI/img_icon_money_01.png","height":35,"centerY":0,"centerX":0},"compId":3}],"loadList":["Game/UI/img_icon_money_01.png"],"loadList3D":[]}

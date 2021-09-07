@@ -2,13 +2,13 @@
     "x":0,
     "type":"View",
     "selectedBox":2,
-    "selecteID":643,
+    "selecteID":624,
     "searchKey":"View",
     "referenceLines":[
         ],
     "props":{"width":576,"visible":true,"sceneColor":"#b4b4b4","height":1024},
     "nodeParent":-1,
-    "maxID":647,
+    "maxID":658,
     "label":"View",
     "isOpen":true,
     "isDirectory":true,
@@ -272,8 +272,8 @@
         {
             "x":15,
             "type":"Image",
-            "searchKey":"Image,imgLogo",
-            "props":{"y":211,"visible":true,"var":"imgLogo","skin":"Init/Preload/img_LOGO.png","scaleY":0.85,"scaleX":0.85,"runtime":"script/Game/Views/Base/AnimationObj.ts","centerX":0,"anchorY":0.5,"anchorX":0.5},
+            "searchKey":"Image,imgLogo,imgLogo",
+            "props":{"y":211,"visible":true,"var":"imgLogo","skin":"Init/Preload/img_LOGO.png","scaleY":0.85,"scaleX":0.85,"runtime":"script/Game/Views/Base/AnimationObj.ts","name":"imgLogo","centerX":0,"anchorY":0.5,"anchorX":0.5},
             "nodeParent":2,
             "label":"imgLogo",
             "isOpen":true,
@@ -303,7 +303,7 @@
             "x":15,
             "type":"Box",
             "searchKey":"Box,boxChangeMode",
-            "props":{"zOrder":1000,"visible":false,"var":"boxChangeMode","top":0,"right":0,"left":0,"bottom":0},
+            "props":{"zOrder":20000,"visible":false,"var":"boxChangeMode","top":0,"right":0,"left":0,"bottom":0},
             "nodeParent":2,
             "label":"boxChangeMode",
             "isOpen":true,
@@ -330,7 +330,7 @@
                     "x":30,
                     "type":"Image",
                     "searchKey":"Image",
-                    "props":{"y":249,"x":0,"visible":true,"skin":"Init/Preload/img_LOGO.png","runtime":"script/Game/Views/Base/AnimationObj.ts","centerX":0,"anchorY":0.5,"anchorX":0.5},
+                    "props":{"y":249,"width":405,"visible":true,"skin":"Init/Preload/img_LOGO.png","runtime":"script/Game/Views/Base/AnimationObj.ts","height":194,"centerX":0,"anchorY":0.5,"anchorX":0.5},
                     "nodeParent":624,
                     "label":"Image",
                     "isOpen":true,
@@ -358,7 +358,7 @@
                             "x":45,
                             "type":"Label",
                             "searchKey":"Label",
-                            "props":{"wordWrap":true,"width":541,"visible":false,"valign":"middle","underlineColor":"#ffffff","text":"Tips:在无尽模式中尽可能的跑的更远","strokeColor":"#3d3a3a","overflow":"scroll","leading":3,"height":83,"fontSize":25,"color":"#ffffff","centerY":-57,"centerX":0,"bold":true,"align":"center"},
+                            "props":{"wordWrap":true,"width":541,"visible":false,"valign":"middle","underlineColor":"#ffffff","text":"Tips:在无尽模式中尽可能的跑的更远","strokeColor":"#3f4f67","stroke":3,"overflow":"scroll","leading":3,"height":83,"fontSize":25,"font":"Microsoft YaHei","color":"#ffffff","centerY":-57,"centerX":0,"bold":true,"align":"center"},
                             "nodeParent":636,
                             "label":"Label",
                             "isDirectory":false,
@@ -381,7 +381,8 @@
                             "compId":637,
                             "child":[
                                 ]
-                        }]
+                        }],
+                    "$LOCKED":true
                 }],
             "$HIDDEN":true
         }],

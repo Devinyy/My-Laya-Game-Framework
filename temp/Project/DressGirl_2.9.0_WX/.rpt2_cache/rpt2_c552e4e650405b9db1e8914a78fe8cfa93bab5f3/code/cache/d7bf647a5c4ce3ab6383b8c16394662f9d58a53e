@@ -1,7 +1,0 @@
-{
-  "code": "import { LwgClick, LwgScene } from \"../../../Lwg/Lwg\";\r\nexport default class CloseBtnObj extends LwgScene.RuntimeImgBase {\r\n    lwgOnAwake() {\r\n        LwgClick.off(this);\r\n        LwgClick.on(undefined, this, this, null, null, () => {\r\n            this.closeSene();\r\n        });\r\n    }\r\n    closeSene() {\r\n        if (this.isClose) {\r\n            return;\r\n        }\r\n        this.isClose = true;\r\n        LwgScene.closeOverlayScene(LwgScene.findNodeBelongToScene(this));\r\n    }\r\n}\r\n",
-  "references": [
-    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/ui/layaMaxUI.ts",
-    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Lwg/Lwg.ts"
-  ]
-}

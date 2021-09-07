@@ -13,7 +13,7 @@ export default class Resurgence extends LwgScene.SceneBase {
     item: GameType.ItemData;
     openData: GameType.OpenResurgence;
     lwgOnAwake(): void {
-        if (LwgPlatform.type === LwgPlatform.EmType.OPPO) {
+        if (LwgPlatform.type === LwgPlatform.EmType.OPPO || LwgPlatform.type === LwgPlatform.EmType.VIVO) {
             this.owner.btnADNative.visible = true;
             this.owner.btnADGet.centerX = 140;
         }
@@ -38,6 +38,9 @@ export default class Resurgence extends LwgScene.SceneBase {
         this.btnOnUp(this.owner.btnAbandon, () => {
             this.evNotify(GameEvent.defeated);
             this.closeScene();
+        })
+        this.btnOnUp(this.owner.btnADNative, () => {
+            LwgPlatform.AD.showNativeByManual();
         })
     }
 }

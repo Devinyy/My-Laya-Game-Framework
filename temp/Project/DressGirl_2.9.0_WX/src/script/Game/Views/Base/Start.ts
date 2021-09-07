@@ -1,4 +1,5 @@
 import { ui } from "../../../../ui/layaMaxUI";
+import { FlowLightSprite } from "../../../Lwg/FlowLightSprite";
 import { LwgClick, LwgControl, LwgCurrency, LwgDialogue, LwgEvent, LwgScene, LwgTools } from "../../../Lwg/Lwg";
 import { GameData } from "../../Control/GameData";
 import { GameEnum } from "../../Control/GameEnum";
@@ -8,8 +9,6 @@ import GameSceneName from "../../Control/GameSceneName";
 import { GameType } from "../../Control/GameType";
 import { Control3D } from "../../Game3D/Control3D";
 
-/**测试模块,每个模块分开，默认导出一个类，这个类是默认挂载的脚本类，如果有多个脚本，
- * 那么在这个默认类中进行添加，或者在其他地方动态添加*/
 export default class Start extends LwgScene.SceneBase {
     owner: ui.Views.Base.StartUI;
     openData: GameType.openStart;
@@ -17,6 +16,7 @@ export default class Start extends LwgScene.SceneBase {
         // LwgTools.NodeData.getMsgFromSprite3D(GameRes.Prefab3D.Roads.instance as any);
         // console.log(GameRes.Prefab3D.Roads.instance);
         this.showCurMode();
+    
     }
     lwgOpenAniAfter(): void {
         Laya.timer.once(500, this, () => {

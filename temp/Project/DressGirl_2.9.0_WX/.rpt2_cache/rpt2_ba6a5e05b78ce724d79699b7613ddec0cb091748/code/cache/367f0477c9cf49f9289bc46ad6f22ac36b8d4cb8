@@ -1,6 +1,0 @@
-{
-  "code": "import { LwgScene } from \"../../Lwg/Lwg\";\r\nexport default class GameSceneName extends LwgScene.NameBase {\r\n}\r\nGameSceneName.PersonalInfo = 'PersonalInfo';\r\nGameSceneName.Levels = 'Levels';\r\nGameSceneName.SelectLevel = 'SelectLevel';\r\nGameSceneName.Settle = 'Settle';\r\nGameSceneName.Victory = 'Victory';\r\nGameSceneName.Defeated = 'Defeated';\r\nGameSceneName.Share = 'Share';\r\nGameSceneName.CheckIn = 'CheckIn';\r\nGameSceneName.Ranking = 'Ranking';\r\nGameSceneName.Shop = 'Shop';\r\nGameSceneName.Task = 'Task';\r\nGameSceneName.LuckyWheel = 'LuckyWheel';\r\nGameSceneName.BeRewarded = 'BeRewarded';\r\nGameSceneName.Lottery = 'Lottery';\r\nGameSceneName.ADGetReward = 'ADGetReward';\r\nGameSceneName.Skin = 'Skin';\r\nGameSceneName.SkinTry = 'SkinTry';\r\nGameSceneName.EndLessSettle = 'EndLessSettle';\r\nGameSceneName.SpecialAwards = 'SpecialAwards';\r\n",
-  "references": [
-    "E:/svn/泡泡/Bubble_Laya_2.9.0/Project/src/script/Lwg/Lwg.ts"
-  ]
-}

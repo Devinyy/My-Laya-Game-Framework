@@ -1,6 +1,0 @@
-{
-  "code": "import { LwgEvent } from \"../../Lwg/Lwg\";\r\nexport class GameEvent extends LwgEvent.BaseEvent {\r\n}\r\nGameEvent.beAttacked = 'beAttacked';\r\nGameEvent.addMileageCur = 'addMileageCur';\r\nGameEvent.changeBoss = 'changeBoss';\r\nGameEvent.updateScore = 'updateScore';\r\nGameEvent.D3_2DScore = 'D3to2DScore';\r\nGameEvent.D2_3DScore = 'D2_3DScore';\r\nGameEvent.attackByClickStart = 'attackByClickStart';\r\nGameEvent.attackByClick = 'attackByClick';\r\nGameEvent.attackByClickEnd = 'attackByClickEnd';\r\nGameEvent.updateHead = 'updateHead';\r\nGameEvent.updateLevelDisplay = 'updateLevelDisplay';\r\nGameEvent.readyVSBOSS = 'readyVSBOSS';\r\nGameEvent.changeBossForm = 'changeBossForm';\r\nGameEvent.updateBossHP = 'updateBossHP';\r\nGameEvent.updateRoleHP = 'updateRoleHP';\r\nGameEvent.hideRoleHP = 'hideRoleHP';\r\nGameEvent.showRoleHP = 'showRoleHP';\r\nGameEvent.updateGrowthValue = 'updateGrowthValue';\r\nGameEvent.updateLvSchedule = 'updateLvSchedule';\r\nGameEvent.receiveAward = 'receiveAward';\r\nGameEvent.defeated = 'defeated';\r\nGameEvent.pickedKey = 'pickedKey';\r\nGameEvent.updateKeyNumStart = 'updateKeyNumStart';\r\nGameEvent.updateKeLuckyWheelBtn = 'updateKeLuckyWheelBtn';\r\nGameEvent.LEVELMODE = 'LEVELMODE';\r\n",
-  "references": [
-    "E:/svn/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Lwg/Lwg.ts"
-  ]
-}

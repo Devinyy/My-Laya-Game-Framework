@@ -2,7 +2,7 @@
     "x":0,
     "type":"View",
     "selectedBox":44,
-    "selecteID":9,
+    "selecteID":11,
     "searchKey":"View",
     "props":{"width":576,"sceneColor":"#ffffff","height":1024},
     "nodeParent":-1,
@@ -197,21 +197,6 @@
                 },
                 {
                     "x":30,
-                    "type":"Image",
-                    "searchKey":"Image,btnDirect",
-                    "props":{"y":204,"width":128,"var":"btnDirect","valign":"middle","text":"直接领取","skin":"Game/UI/img_icon_text_zhijielingqu.png","height":29,"fontSize":30,"color":"#ffffff","centerX":0,"bold":true,"anchorY":0.5,"anchorX":0.5,"align":"center"},
-                    "nodeParent":44,
-                    "label":"btnDirect",
-                    "isOpen":true,
-                    "isDirectory":false,
-                    "isAniNode":true,
-                    "hasChild":false,
-                    "compId":11,
-                    "child":[
-                        ]
-                },
-                {
-                    "x":30,
                     "type":"Box",
                     "searchKey":"Box,boxNum",
                     "props":{"y":32,"width":240,"var":"boxNum","height":56,"centerX":0,"anchorY":0.5,"anchorX":0.5},
@@ -293,6 +278,21 @@
                             "child":[
                                 ]
                         }]
+                },
+                {
+                    "x":30,
+                    "type":"Image",
+                    "searchKey":"Image,btnDirect",
+                    "props":{"y":204,"width":128,"var":"btnDirect","valign":"middle","text":"直接领取","skin":"Game/UI/img_icon_text_zhijielingqu.png","height":29,"fontSize":30,"color":"#ffffff","centerX":0,"bold":true,"anchorY":0.5,"anchorX":0.5,"align":"center"},
+                    "nodeParent":44,
+                    "label":"btnDirect",
+                    "isOpen":true,
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":11,
+                    "child":[
+                        ]
                 }]
         }],
     "animations":[

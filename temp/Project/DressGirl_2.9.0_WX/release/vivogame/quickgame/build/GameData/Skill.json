@@ -1,0 +1,665 @@
+{ 
+"RECORDS": 
+[
+  {
+    "ID": 1,
+    "describe": "移动速度",
+    "name": "speed",
+    "level": 1,
+    "type": 0,
+    "consume": 100,
+    "addition": [
+      0.025
+    ]
+  },
+  {
+    "ID": 2,
+    "describe": "移动速度",
+    "name": "speed",
+    "level": 2,
+    "type": 0,
+    "consume": 200,
+    "addition": [
+      0.05
+    ]
+  },
+  {
+    "ID": 3,
+    "describe": "移动速度",
+    "name": "speed",
+    "level": 3,
+    "type": 0,
+    "consume": 300,
+    "addition": [
+      0.075
+    ]
+  },
+  {
+    "ID": 4,
+    "describe": "移动速度",
+    "name": "speed",
+    "level": 4,
+    "type": 0,
+    "consume": 400,
+    "addition": [
+      0.1
+    ]
+  },
+  {
+    "ID": 5,
+    "describe": "移动速度",
+    "name": "speed",
+    "level": 5,
+    "type": 0,
+    "consume": 500,
+    "addition": [
+      0.125
+    ]
+  },
+  {
+    "ID": 6,
+    "describe": "移动速度",
+    "name": "speed",
+    "level": 6,
+    "type": 0,
+    "consume": 600,
+    "addition": [
+      0.15
+    ]
+  },
+  {
+    "ID": 7,
+    "describe": "移动速度",
+    "name": "speed",
+    "level": 7,
+    "type": 0,
+    "consume": 700,
+    "addition": [
+      0.175
+    ]
+  },
+  {
+    "ID": 8,
+    "describe": "移动速度",
+    "name": "speed",
+    "level": 8,
+    "type": 0,
+    "consume": 800,
+    "addition": [
+      0.2
+    ]
+  },
+  {
+    "ID": 9,
+    "describe": "移动速度",
+    "name": "speed",
+    "level": 9,
+    "type": 0,
+    "consume": 900,
+    "addition": [
+      0.225
+    ]
+  },
+  {
+    "ID": 10,
+    "describe": "移动速度",
+    "name": "speed",
+    "level": 10,
+    "type": 0,
+    "consume": 1000,
+    "addition": [
+      0.25
+    ]
+  },
+  {
+    "ID": 11,
+    "describe": "移动速度",
+    "name": "speed",
+    "level": 11,
+    "type": 0,
+    "consume": 1100,
+    "addition": [
+      0.275
+    ]
+  },
+  {
+    "ID": 12,
+    "describe": "移动速度",
+    "name": "speed",
+    "level": 12,
+    "type": 0,
+    "consume": 1200,
+    "addition": [
+      0.3
+    ]
+  },
+  {
+    "ID": 13,
+    "describe": "移动速度",
+    "name": "speed",
+    "level": 13,
+    "type": 0,
+    "consume": 1300,
+    "addition": [
+      0.325
+    ]
+  },
+  {
+    "ID": 14,
+    "describe": "移动速度",
+    "name": "speed",
+    "level": 14,
+    "type": 0,
+    "consume": 1400,
+    "addition": [
+      0.35
+    ]
+  },
+  {
+    "ID": 15,
+    "describe": "移动速度",
+    "name": "speed",
+    "level": 15,
+    "type": 0,
+    "consume": 1500,
+    "addition": [
+      0.375
+    ]
+  },
+  {
+    "ID": 16,
+    "describe": "移动速度",
+    "name": "speed",
+    "level": 16,
+    "type": 0,
+    "consume": 1600,
+    "addition": [
+      0.4
+    ]
+  },
+  {
+    "ID": 17,
+    "describe": "移动速度",
+    "name": "speed",
+    "level": 17,
+    "type": 0,
+    "consume": 1700,
+    "addition": [
+      0.425
+    ]
+  },
+  {
+    "ID": 18,
+    "describe": "移动速度",
+    "name": "speed",
+    "level": 18,
+    "type": 0,
+    "consume": 1800,
+    "addition": [
+      0.45
+    ]
+  },
+  {
+    "ID": 19,
+    "describe": "移动速度",
+    "name": "speed",
+    "level": 19,
+    "type": 0,
+    "consume": 1900,
+    "addition": [
+      0.475
+    ]
+  },
+  {
+    "ID": 20,
+    "describe": "移动速度",
+    "name": "speed",
+    "level": 20,
+    "type": 0,
+    "consume": 3000,
+    "addition": [
+      0.5
+    ]
+  },
+  {
+    "ID": 21,
+    "describe": "初始蓄力",
+    "name": "energy",
+    "level": 1,
+    "type": 1,
+    "consume": 100,
+    "addition": [
+      0.05
+    ]
+  },
+  {
+    "ID": 22,
+    "describe": "初始蓄力",
+    "name": "energy",
+    "level": 2,
+    "type": 1,
+    "consume": 200,
+    "addition": [
+      0.1
+    ]
+  },
+  {
+    "ID": 23,
+    "describe": "初始蓄力",
+    "name": "energy",
+    "level": 3,
+    "type": 1,
+    "consume": 300,
+    "addition": [
+      0.15
+    ]
+  },
+  {
+    "ID": 24,
+    "describe": "初始蓄力",
+    "name": "energy",
+    "level": 4,
+    "type": 1,
+    "consume": 400,
+    "addition": [
+      0.2
+    ]
+  },
+  {
+    "ID": 25,
+    "describe": "初始蓄力",
+    "name": "energy",
+    "level": 5,
+    "type": 1,
+    "consume": 500,
+    "addition": [
+      0.25
+    ]
+  },
+  {
+    "ID": 26,
+    "describe": "初始蓄力",
+    "name": "energy",
+    "level": 6,
+    "type": 1,
+    "consume": 600,
+    "addition": [
+      0.3
+    ]
+  },
+  {
+    "ID": 27,
+    "describe": "初始蓄力",
+    "name": "energy",
+    "level": 7,
+    "type": 1,
+    "consume": 700,
+    "addition": [
+      0.35
+    ]
+  },
+  {
+    "ID": 28,
+    "describe": "初始蓄力",
+    "name": "energy",
+    "level": 8,
+    "type": 1,
+    "consume": 800,
+    "addition": [
+      0.4
+    ]
+  },
+  {
+    "ID": 29,
+    "describe": "初始蓄力",
+    "name": "energy",
+    "level": 9,
+    "type": 1,
+    "consume": 900,
+    "addition": [
+      0.45
+    ]
+  },
+  {
+    "ID": 30,
+    "describe": "初始蓄力",
+    "name": "energy",
+    "level": 10,
+    "type": 1,
+    "consume": 1000,
+    "addition": [
+      0.5
+    ]
+  },
+  {
+    "ID": 31,
+    "describe": "初始蓄力",
+    "name": "energy",
+    "level": 11,
+    "type": 1,
+    "consume": 1100,
+    "addition": [
+      0.55
+    ]
+  },
+  {
+    "ID": 32,
+    "describe": "初始蓄力",
+    "name": "energy",
+    "level": 12,
+    "type": 1,
+    "consume": 1200,
+    "addition": [
+      0.6
+    ]
+  },
+  {
+    "ID": 33,
+    "describe": "初始蓄力",
+    "name": "energy",
+    "level": 13,
+    "type": 1,
+    "consume": 1300,
+    "addition": [
+      0.65
+    ]
+  },
+  {
+    "ID": 34,
+    "describe": "初始蓄力",
+    "name": "energy",
+    "level": 14,
+    "type": 1,
+    "consume": 1400,
+    "addition": [
+      0.7
+    ]
+  },
+  {
+    "ID": 35,
+    "describe": "初始蓄力",
+    "name": "energy",
+    "level": 15,
+    "type": 1,
+    "consume": 1500,
+    "addition": [
+      0.75
+    ]
+  },
+  {
+    "ID": 36,
+    "describe": "初始蓄力",
+    "name": "energy",
+    "level": 16,
+    "type": 1,
+    "consume": 1600,
+    "addition": [
+      0.8
+    ]
+  },
+  {
+    "ID": 37,
+    "describe": "初始蓄力",
+    "name": "energy",
+    "level": 17,
+    "type": 1,
+    "consume": 1700,
+    "addition": [
+      0.85
+    ]
+  },
+  {
+    "ID": 38,
+    "describe": "初始蓄力",
+    "name": "energy",
+    "level": 18,
+    "type": 1,
+    "consume": 1800,
+    "addition": [
+      0.9
+    ]
+  },
+  {
+    "ID": 39,
+    "describe": "初始蓄力",
+    "name": "energy",
+    "level": 19,
+    "type": 1,
+    "consume": 1900,
+    "addition": [
+      0.95
+    ]
+  },
+  {
+    "ID": 40,
+    "describe": "初始蓄力",
+    "name": "energy",
+    "level": 20,
+    "type": 1,
+    "consume": 3000,
+    "addition": [
+      1
+    ]
+  },
+  {
+    "ID": 41,
+    "describe": "结算加成",
+    "name": "reward",
+    "level": 1,
+    "type": 2,
+    "consume": 100,
+    "addition": [
+      0.05
+    ]
+  },
+  {
+    "ID": 42,
+    "describe": "结算加成",
+    "name": "reward",
+    "level": 2,
+    "type": 2,
+    "consume": 200,
+    "addition": [
+      0.1
+    ]
+  },
+  {
+    "ID": 43,
+    "describe": "结算加成",
+    "name": "reward",
+    "level": 3,
+    "type": 2,
+    "consume": 300,
+    "addition": [
+      0.15
+    ]
+  },
+  {
+    "ID": 44,
+    "describe": "结算加成",
+    "name": "reward",
+    "level": 4,
+    "type": 2,
+    "consume": 400,
+    "addition": [
+      0.2
+    ]
+  },
+  {
+    "ID": 45,
+    "describe": "结算加成",
+    "name": "reward",
+    "level": 5,
+    "type": 2,
+    "consume": 500,
+    "addition": [
+      0.25
+    ]
+  },
+  {
+    "ID": 46,
+    "describe": "结算加成",
+    "name": "reward",
+    "level": 6,
+    "type": 2,
+    "consume": 600,
+    "addition": [
+      0.3
+    ]
+  },
+  {
+    "ID": 47,
+    "describe": "结算加成",
+    "name": "reward",
+    "level": 7,
+    "type": 2,
+    "consume": 700,
+    "addition": [
+      0.35
+    ]
+  },
+  {
+    "ID": 48,
+    "describe": "结算加成",
+    "name": "reward",
+    "level": 8,
+    "type": 2,
+    "consume": 800,
+    "addition": [
+      0.4
+    ]
+  },
+  {
+    "ID": 49,
+    "describe": "结算加成",
+    "name": "reward",
+    "level": 9,
+    "type": 2,
+    "consume": 900,
+    "addition": [
+      0.45
+    ]
+  },
+  {
+    "ID": 50,
+    "describe": "结算加成",
+    "name": "reward",
+    "level": 10,
+    "type": 2,
+    "consume": 1000,
+    "addition": [
+      0.5
+    ]
+  },
+  {
+    "ID": 51,
+    "describe": "结算加成",
+    "name": "reward",
+    "level": 11,
+    "type": 2,
+    "consume": 1100,
+    "addition": [
+      0.55
+    ]
+  },
+  {
+    "ID": 52,
+    "describe": "结算加成",
+    "name": "reward",
+    "level": 12,
+    "type": 2,
+    "consume": 1200,
+    "addition": [
+      0.6
+    ]
+  },
+  {
+    "ID": 53,
+    "describe": "结算加成",
+    "name": "reward",
+    "level": 13,
+    "type": 2,
+    "consume": 1300,
+    "addition": [
+      0.65
+    ]
+  },
+  {
+    "ID": 54,
+    "describe": "结算加成",
+    "name": "reward",
+    "level": 14,
+    "type": 2,
+    "consume": 1400,
+    "addition": [
+      0.7
+    ]
+  },
+  {
+    "ID": 55,
+    "describe": "结算加成",
+    "name": "reward",
+    "level": 15,
+    "type": 2,
+    "consume": 1500,
+    "addition": [
+      0.75
+    ]
+  },
+  {
+    "ID": 56,
+    "describe": "结算加成",
+    "name": "reward",
+    "level": 16,
+    "type": 2,
+    "consume": 1600,
+    "addition": [
+      0.8
+    ]
+  },
+  {
+    "ID": 57,
+    "describe": "结算加成",
+    "name": "reward",
+    "level": 17,
+    "type": 2,
+    "consume": 1700,
+    "addition": [
+      0.85
+    ]
+  },
+  {
+    "ID": 58,
+    "describe": "结算加成",
+    "name": "reward",
+    "level": 18,
+    "type": 2,
+    "consume": 1800,
+    "addition": [
+      0.9
+    ]
+  },
+  {
+    "ID": 59,
+    "describe": "结算加成",
+    "name": "reward",
+    "level": 19,
+    "type": 2,
+    "consume": 1900,
+    "addition": [
+      0.95
+    ]
+  },
+  {
+    "ID": 60,
+    "describe": "结算加成",
+    "name": "reward",
+    "level": 20,
+    "type": 2,
+    "consume": 3000,
+    "addition": [
+      1
+    ]
+  }
+]
+}

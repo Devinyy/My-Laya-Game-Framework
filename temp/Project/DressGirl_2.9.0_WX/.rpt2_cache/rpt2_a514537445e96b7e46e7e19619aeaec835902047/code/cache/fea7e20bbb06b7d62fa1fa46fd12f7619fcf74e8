@@ -1,7 +1,0 @@
-{
-  "code": "import { LwgTools } from \"../../Lwg/Lwg\";\r\nimport { GameRes } from \"../Control/GameRes\";\r\nexport class Effect3D {\r\n    constructor() {\r\n        Effect3D.ins = this;\r\n        this.effParent = new Laya.Sprite3D;\r\n        GameRes.Scene3D.MainScene.instance.addChild(this.effParent);\r\n        this.play_grow(new Laya.Vector3(0, 0, 0));\r\n        this.play_get(new Laya.Vector3(0, 0, 0));\r\n    }\r\n    ready() {\r\n        LwgTools.Node.destroyAllChildren(this.effParent);\r\n    }\r\n    play_EatPoint(v3, prent) {\r\n    }\r\n    play_grow(v3) {\r\n    }\r\n    play_get(v3) {\r\n    }\r\n    playBase(eff, v3, time, prent) {\r\n        this.effParent.addChild(eff);\r\n        if (prent) {\r\n            prent.addChild(eff);\r\n        }\r\n        else {\r\n            this.effParent.addChild(eff);\r\n        }\r\n        eff.transform.position = v3;\r\n        Laya.timer.once(time, this, () => {\r\n            eff.destroy(true);\r\n        });\r\n    }\r\n}\r\n",
-  "references": [
-    "E:/svn/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Lwg/Lwg.ts",
-    "E:/svn/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Game/Control/GameRes.ts"
-  ]
-}

@@ -2,11 +2,11 @@
     "x":0,
     "type":"View",
     "selectedBox":2,
-    "selecteID":28,
+    "selecteID":34,
     "searchKey":"View",
     "props":{"y":72,"x":70,"width":160,"sceneColor":"#f6f0ef","pivotY":72,"pivotX":70,"height":200},
     "nodeParent":-1,
-    "maxID":33,
+    "maxID":36,
     "label":"View",
     "isOpen":true,
     "isDirectory":true,
@@ -82,7 +82,8 @@
                     "hasChild":false,
                     "compId":19,
                     "child":[
-                        ]
+                        ],
+                    "$LOCKED":true
                 }]
         },
         {

@@ -127,20 +127,6 @@
                 {
                     "x":30,
                     "type":"Image",
-                    "searchKey":"Image,btnNextTime",
-                    "props":{"y":202,"width":111,"var":"btnNextTime","skin":"Game/UI/img_icon_text_xiacizaishuo.png","pivotY":13,"pivotX":56,"height":26,"centerX":0},
-                    "nodeParent":56,
-                    "label":"btnNextTime",
-                    "isDirectory":false,
-                    "isAniNode":true,
-                    "hasChild":false,
-                    "compId":48,
-                    "child":[
-                        ]
-                },
-                {
-                    "x":30,
-                    "type":"Image",
                     "searchKey":"Image,btnADGet",
                     "props":{"y":118,"x":-110,"width":280,"var":"btnADGet","skin":"Game/UI/img_btn_common_01_normal.png","runtime":"script/Game/Views/Base/AnimationObj.ts","height":110,"centerX":0,"anchorY":0.5,"anchorX":0.5},
                     "nodeParent":56,
@@ -263,6 +249,20 @@
                             "child":[
                                 ]
                         }]
+                },
+                {
+                    "x":30,
+                    "type":"Image",
+                    "searchKey":"Image,btnNextTime",
+                    "props":{"y":202,"width":111,"var":"btnNextTime","skin":"Game/UI/img_icon_text_xiacizaishuo.png","pivotY":13,"pivotX":56,"mouseThrough":true,"height":26,"centerX":0},
+                    "nodeParent":56,
+                    "label":"btnNextTime",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":48,
+                    "child":[
+                        ]
                 }]
         }],
     "animations":[

@@ -1,6 +1,9 @@
 import GameConfig from "./GameConfig";
+import { FlowLightShader } from "./script/Lwg/FlowLightShader";
+import { LwgShader2D } from "./script/Lwg/LwgShader2D";
 class Main {
 	constructor() {
+		LwgShader2D.CustomShader.realizeShader();
 		//根据IDE设置初始化引擎		
 		if (window["Laya3D"]) 
 			Laya3D.init(GameConfig.width, GameConfig.height,null,Laya.Handler.create(this,this.initMain));
@@ -8,7 +11,7 @@ class Main {
 			Laya.init(GameConfig.width, GameConfig.height, Laya["WebGL"]);
 			this.initMain();
 		}
-	
+		LwgShader2D.CustomShader.InitShder(FlowLightShader.name, FlowLightShader.vs, FlowLightShader.ps, FlowLightShader.mainID);	
 	}
 	initMain(){
 		Laya["Physics"] && Laya["Physics"].enable();

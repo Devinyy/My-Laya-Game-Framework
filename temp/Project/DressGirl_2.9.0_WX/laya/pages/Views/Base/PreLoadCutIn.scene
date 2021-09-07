@@ -2,7 +2,7 @@
     "x":0,
     "type":"View",
     "selectedBox":2,
-    "selecteID":191,
+    "selecteID":184,
     "searchKey":"View",
     "referenceLines":[
         ],
@@ -89,7 +89,7 @@
                             "x":45,
                             "type":"Label",
                             "searchKey":"Label",
-                            "props":{"wordWrap":true,"width":541,"valign":"middle","text":"Tips:在无尽模式中尽可能的获得更多的金币","overflow":"scroll","leading":3,"height":83,"fontSize":25,"color":"#ffffff","centerY":-57,"centerX":0,"bold":true,"align":"center"},
+                            "props":{"wordWrap":true,"width":541,"visible":false,"valign":"middle","text":"Tips:在无尽模式中尽可能的获得更多的金币","overflow":"scroll","leading":3,"height":83,"fontSize":25,"color":"#ffffff","centerY":-57,"centerX":0,"bold":true,"align":"center"},
                             "nodeParent":187,
                             "label":"Label",
                             "isDirectory":false,

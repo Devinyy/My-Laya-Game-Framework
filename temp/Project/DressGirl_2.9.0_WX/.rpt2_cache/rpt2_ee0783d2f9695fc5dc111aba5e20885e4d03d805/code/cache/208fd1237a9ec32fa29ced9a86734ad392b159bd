@@ -1,7 +1,0 @@
-{
-  "code": "import { LwgTools } from \"../../Lwg/Lwg\";\r\nimport { GameRes, GameResCutIn } from \"../Control/GameRes\";\r\nexport class SkinScene {\r\n    constructor() {\r\n        SkinScene.ins = this;\r\n    }\r\n    add() {\r\n        this.scene = GameResCutIn.Skin.Scene3D.SkinScene.instance;\r\n        Laya.stage.addChild(this.scene);\r\n        let camera = this.scene.getChildByName('Main Camera');\r\n        if (Laya.Browser.pixelRatio >= 16 / 9) {\r\n            camera.fieldOfView += 5;\r\n        }\r\n    }\r\n    remove() {\r\n        GameResCutIn.Skin.Scene3D.SkinScene.destoryAndClear();\r\n    }\r\n    change(name) {\r\n        if (this.scene) {\r\n            const dinoPoint = this.scene.getChildByName('DinoPoint');\r\n            LwgTools.Node.destroyAllChildren(dinoPoint);\r\n            const skin = GameRes.Prefab3D[name].instance.clone();\r\n            if (skin) {\r\n                dinoPoint.addChild(skin);\r\n            }\r\n            else {\r\n                console.log('当前皮肤不存在!');\r\n            }\r\n        }\r\n    }\r\n}\r\n",
-  "references": [
-    "E:/SVN/老王哥/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Lwg/Lwg.ts",
-    "E:/SVN/老王哥/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Game/Control/GameRes.ts"
-  ]
-}

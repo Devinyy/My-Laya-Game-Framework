@@ -1,8 +1,0 @@
-{
-  "code": "import { GameResCutIn } from \"../Control/GameRes\";\r\nexport class SkinScene {\r\n    constructor() {\r\n        SkinScene.ins = this;\r\n    }\r\n    add() {\r\n        this.scene = GameResCutIn.Skin.Scene3D.SkinScene.instance;\r\n        Laya.stage.addChild(this.scene);\r\n    }\r\n    remove() {\r\n        GameResCutIn.Skin.Scene3D.SkinScene.destoryAndClear();\r\n    }\r\n    change(name) {\r\n    }\r\n}\r\n",
-  "references": [
-    "E:/svn/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Lwg/Lwg.ts",
-    "E:/svn/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Game/Control/GameData.ts",
-    "E:/svn/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Game/Control/GameRes.ts"
-  ]
-}

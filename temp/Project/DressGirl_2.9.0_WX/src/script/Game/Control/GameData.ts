@@ -1,4 +1,4 @@
-import { LwgControl, LwgData, LwgDate, LwgEvent, LwgSound, LwgStorage, LwgTools } from "../../Lwg/Lwg";
+import { LwgControl, LwgData, LwgDate, LwgEvent, LwgPlatform, LwgSound, LwgStorage, LwgTools } from "../../Lwg/Lwg";
 import { GameEnum } from "./GameEnum";
 import { GameEvent } from "./GameEvent";
 import { GameRes, GameResCutIn } from "./GameRes";
@@ -420,11 +420,15 @@ export module GameData {
          * @returns 
          */
         getUrlByID(ID: number): string {
-            const obj = this.getObjByID(ID);
+            const obj = <unknown>this.getObjByID(ID) as GameType.SoundData;
             if (!obj) {
                 return null;
             } else {
-                return `Game/Sound/${obj.name}`;
+                if (LwgPlatform.isConch) {
+                    return `Game/SoundWav/${obj.name}.wav`;
+                } else {
+                    return `Game/Sound/${obj.name}${obj.format}`;
+                }
             }
         }
         playSoundByID(ID: number): void {
@@ -723,6 +727,20 @@ export module GameData {
         get playEndlessNum(): number {
             return LwgStorage.number('LevelData/playEndlessNum', null, 1).value;
         }
+
+        /**上次免费*/
+        get freeLastDate(): number {
+            return LwgStorage.number('LevelData/lastDate', null, -1).value;
+        }
+        set freeLastDate(date: number) {
+            LwgStorage.number('LevelData/lastDate').value = date;
+        }
+
+        /**今日有免费次数*/
+        get todayFree(): boolean {
+            return this.freeLastDate !== LwgDate.Now.date;
+        }
+
         /**
          * 交替切换无尽关卡的数据
          */

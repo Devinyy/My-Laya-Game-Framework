@@ -1,0 +1,59 @@
+{ 
+"RECORDS": 
+[
+  {
+    "ID": 1,
+    "name": "半个鸡腿",
+    "constant": 1,
+    "meat": 1,
+    "vegan": 1,
+    "evolve_meat": 1,
+    "evolve_vegan": 1
+  },
+  {
+    "ID": 2,
+    "name": "半个西瓜",
+    "constant": 1,
+    "meat": 1,
+    "vegan": 1,
+    "evolve_meat": 1,
+    "evolve_vegan": 1
+  },
+  {
+    "ID": 3,
+    "name": "苹果",
+    "constant": 1,
+    "meat": -1,
+    "vegan": 2,
+    "evolve_meat": -1,
+    "evolve_vegan": 3
+  },
+  {
+    "ID": 4,
+    "name": "香蕉",
+    "constant": 1,
+    "meat": -3,
+    "vegan": 5,
+    "evolve_meat": -3,
+    "evolve_vegan": 6
+  },
+  {
+    "ID": 5,
+    "name": "鸡腿",
+    "constant": 1,
+    "meat": 2,
+    "vegan": -1,
+    "evolve_meat": 3,
+    "evolve_vegan": -1
+  },
+  {
+    "ID": 6,
+    "name": "火鸡",
+    "constant": 1,
+    "meat": 5,
+    "vegan": -3,
+    "evolve_meat": 6,
+    "evolve_vegan": -3
+  }
+]
+}

@@ -9,12 +9,12 @@ export module ui.Views {
 		public tattle:Laya.Image;
 		public tattleWard:Laya.Image;
 		public rewardBigPic:Laya.Image;
-		public btnNextTime:Laya.Image;
 		public btnADGet:any;
 		public imgBtnWord:Laya.Image;
 		public rewardIcon:Laya.Image;
 		public rewardNum:Laya.Label;
 		public btnADNative:any;
+		public btnNextTime:Laya.Image;
         constructor(){ super()}
         createChildren():void {
             super.createChildren();
@@ -28,11 +28,11 @@ export module ui.Views {
 		public btnADGet:any;
 		public imgBtnWordThree:Laya.Image;
 		public imgBtnDirectWord:Laya.Image;
-		public btnDirect:Laya.Image;
 		public boxNum:Laya.Box;
 		public rewardIcon:Laya.Image;
 		public rewardNum:Laya.Label;
 		public btnADNative:any;
+		public btnDirect:Laya.Image;
         constructor(){ super()}
         createChildren():void {
             super.createChildren();
@@ -105,9 +105,9 @@ export module ui.Views {
 		public tattle:Laya.Image;
 		public rewardIcon:Laya.Image;
 		public lbRewardNum:Laya.Label;
-		public btnDirect:Laya.Image;
 		public btnADGet:any;
 		public btnADNative:any;
+		public btnDirect:Laya.Image;
         constructor(){ super()}
         createChildren():void {
             super.createChildren();
@@ -414,6 +414,8 @@ export module ui.Views.Base {
 		public btnCloseDouble:Laya.Image;
 		public btnCancelDouble:Laya.Image;
 		public btnConfirmDouble:Laya.Image;
+		public boxFreeWord:Laya.Box;
+		public boxADWord:Laya.Box;
         constructor(){ super()}
         createChildren():void {
             super.createChildren();

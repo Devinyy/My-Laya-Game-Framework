@@ -1,6 +1,0 @@
-{
-  "code": "import { LwgAni2D, LwgScene, LwgTimer } from \"../../../Lwg/Lwg\";\r\nexport default class AnimationObj extends LwgScene.RuntimeImgBase {\r\n    constructor() {\r\n        super();\r\n    }\r\n    lwgOnAwake() {\r\n        this.breatheBtnHint();\r\n    }\r\n    breatheBtnHint() {\r\n        LwgAni2D.circulation_scale(this, 0.05, 200, 0, () => {\r\n            this.breatheBtnHint();\r\n        });\r\n    }\r\n    bombFlexLR(node) {\r\n        LwgTimer.loop(2000, this, () => {\r\n            LwgAni2D.bomb_LeftRight(node, 1.22, 250);\r\n        }, true);\r\n    }\r\n}\r\n",
-  "references": [
-    "E:/svn/泡泡/Bubble_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Lwg/Lwg.ts"
-  ]
-}

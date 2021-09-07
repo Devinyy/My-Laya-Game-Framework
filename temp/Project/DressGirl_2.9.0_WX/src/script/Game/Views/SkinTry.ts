@@ -14,7 +14,7 @@ export default class SkinTry extends LwgScene.SceneBase {
     owner: ui.Views.SkinTryUI;
     openData: GameType.openSkinTry;
     lwgOnAwake(): void {
-        if (LwgPlatform.type === LwgPlatform.EmType.OPPO) {
+        if (LwgPlatform.type === LwgPlatform.EmType.OPPO || LwgPlatform.type === LwgPlatform.EmType.VIVO) {
             this.owner.btnADNative.visible = true;
             this.owner.btnADGet.centerX = 140;
         }
@@ -29,6 +29,9 @@ export default class SkinTry extends LwgScene.SceneBase {
         })
         this.btnOnUp(this.owner.btnDirect, () => {
             this.rule();
+        })
+        this.btnOnUp(this.owner.btnADNative, () => {
+            LwgPlatform.AD.showNativeByManual();
         })
     }
     rule(): void {

@@ -15,7 +15,7 @@ export default class BeRewarded extends LwgScene.SceneBase {
     // item: GameType.ItemData;
     lwgOnAwake(): void {
 
-        if (LwgPlatform.type === LwgPlatform.EmType.OPPO) {
+        if (LwgPlatform.type === LwgPlatform.EmType.OPPO || LwgPlatform.type === LwgPlatform.EmType.VIVO) {
             this.owner.btnADNative.visible = true;
             this.owner.btnADGet.centerX = 140;
         }
@@ -79,6 +79,9 @@ export default class BeRewarded extends LwgScene.SceneBase {
                 this.closeRule();
                 this.evNotify(GameEvent.updateLuckyWheel);
             })
+        this.btnOnUp(this.owner.btnADNative, () => {
+            LwgPlatform.AD.showNativeByManual();
+        })
     }
 
     closeRule(): void {

@@ -13,7 +13,7 @@ export default class LuckyWheel extends LwgScene.SceneBase {
         this.updateRewardView();
         this.playAutoTurn();
 
-        if (LwgPlatform.type === LwgPlatform.EmType.OPPO) {
+        if (LwgPlatform.type === LwgPlatform.EmType.OPPO || LwgPlatform.type === LwgPlatform.EmType.VIVO) {
             this.owner.btnADNative.visible = true;
             this.owner.btnADGet.centerX = 140;
         }
@@ -67,7 +67,7 @@ export default class LuckyWheel extends LwgScene.SceneBase {
             }
         })
         this.btnOnUp(this.owner.btnADNative, () => {
-            LwgPlatform.AD.showNative();
+            LwgPlatform.AD.showNativeByManual();
         })
     }
 

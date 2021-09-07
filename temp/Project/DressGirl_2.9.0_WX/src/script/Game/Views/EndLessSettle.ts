@@ -1,11 +1,8 @@
 import { LwgClick, LwgCommon, LwgControl, LwgCurrency, LwgData, LwgDate, LwgPlatform, LwgScene, LwgTimer, LwgTools } from "../../Lwg/Lwg";
-import { GameRes } from "../Control/GameRes";
-import { GameEvent } from "../Control/GameEvent";
 import { ui } from "../../../ui/layaMaxUI";
 import GameSceneName from "../Control/GameSceneName";
 import { GameType } from "../Control/GameType";
 import { GameData } from "../Control/GameData";
-import { Control3D } from "../Game3D/Control3D";
 import { GameEnum } from "../Control/GameEnum";
 import { GameAni2D } from "../Control/GameAni2D";
 import { GameEff2D } from "../Control/GameEff2D";
@@ -15,7 +12,7 @@ export default class EndLessSettle extends LwgScene.SceneBase {
     openData: GameType.openSettlement;
     lwgOnAwake(): void {
 
-        if (LwgPlatform.type === LwgPlatform.EmType.OPPO) {
+        if (LwgPlatform.type === LwgPlatform.EmType.OPPO || LwgPlatform.type === LwgPlatform.EmType.VIVO) {
             this.owner.btnADNative.visible = true;
             this.owner.btnADGet.centerX = 140;
         }
@@ -33,6 +30,9 @@ export default class EndLessSettle extends LwgScene.SceneBase {
         })
         this.btnOnceUp(this.owner.btnDirect, () => {
             this.getReward(1);
+        })
+        this.btnOnUp(this.owner.btnADNative, () => {
+            LwgPlatform.AD.showNativeByManual();
         })
     }
     getReward(multiple: number = 1): void {

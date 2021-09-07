@@ -16,8 +16,7 @@ export default class PropTry extends LwgScene.SceneBase {
     item: GameType.ItemData;
 
     lwgOnAwake(): void {
-
-        if (LwgPlatform.type === LwgPlatform.EmType.OPPO) {
+        if (LwgPlatform.type === LwgPlatform.EmType.OPPO || LwgPlatform.type === LwgPlatform.EmType.VIVO) {
             this.owner.btnADNative.visible = true;
             this.owner.btnADGet.centerX = 140;
         }
@@ -34,6 +33,9 @@ export default class PropTry extends LwgScene.SceneBase {
         })
         this.btnOnUp(this.owner.btnDirect, () => {
             this.rule(GameEnum.MoveForwardArgs.none);
+        })
+        this.btnOnUp(this.owner.btnADNative, () => {
+            LwgPlatform.AD.showNativeByManual();
         })
     }
     rule(prop?: GameEnum.MoveForwardArgs): void {

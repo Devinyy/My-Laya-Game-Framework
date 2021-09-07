@@ -29,8 +29,8 @@ export default class Init extends LwgPreLoad.PreLoadBase {
     owner: ui.Views.Base.InitUI;
     lwgOnAwake(): void {
         new LwgInit.InitBase(
-            new LwgPlatform.Init(
-                LwgPlatform.EmType.ExploitNoAD,
+            new LwgPlatform.InitBase(
+                LwgPlatform.EmType.TwoTwoThree,
             ),
             new LwgControl.Init(
                 30,

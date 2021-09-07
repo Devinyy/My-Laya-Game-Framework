@@ -1,7 +1,0 @@
-{
-  "code": "import { LwgClick, LwgScene } from \"../../../Lwg/Lwg\";\r\nexport default class CloseBtnObj extends LwgScene.RuntimeImgBase {\r\n    constructor() {\r\n        super();\r\n        LwgClick.off(undefined, this, this, null, null, this.closeSene);\r\n        LwgClick.once(undefined, this, this, null, null, this.closeSene);\r\n    }\r\n    closeSene() {\r\n        LwgScene.closeOverlayScene(LwgScene.findNodeBelongToScene(this));\r\n    }\r\n}\r\n",
-  "references": [
-    "E:/svn/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/ui/layaMaxUI.ts",
-    "E:/svn/恐龙跑酷/DinosaursGrow_Laya_2.9.0/DinosaursGrowUp_2.9.0/src/script/Lwg/Lwg.ts"
-  ]
-}

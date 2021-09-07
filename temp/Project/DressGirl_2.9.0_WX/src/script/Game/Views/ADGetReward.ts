@@ -11,7 +11,7 @@ export default class ADGetReward extends LwgScene.SceneBase {
     multiple: number = 1;
     lwgOnAwake(): void {
 
-        if (LwgPlatform.type === LwgPlatform.EmType.OPPO) {
+        if (LwgPlatform.type === LwgPlatform.EmType.OPPO || LwgPlatform.type === LwgPlatform.EmType.VIVO) {
             this.owner.btnADNative.visible = true;
             this.owner.btnADGet.centerX = 140;
         }
@@ -54,8 +54,11 @@ export default class ADGetReward extends LwgScene.SceneBase {
                 this.closeScene();
             })
         })
-        this.btnOnUpAD(this.owner.btnNextTime, () => {
+        this.btnOnceUp(this.owner.btnNextTime, (e: Laya.Event) => {
             this.closeScene();
+        })
+        this.btnOnUp(this.owner.btnADNative, () => {
+            LwgPlatform.AD.showNativeByManual();
         })
     }
 }
